@@ -1,14 +1,8 @@
 // api/generate.js
-// Vercel Serverless Function: safely parses the body and proxies to OpenRouter
+// Vercel Serverless Function – accepts notes from body, query, or header.
 
 module.exports = async (req, res) => {
-  // Only POST is allowed
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
-
-  // ---- Robust body parsing (handles object, string, or raw stream) ----
+  // --- helper: robust body parsing (object, string, or raw stream) ---
   const readBody = async () => {
     if (req.body) {
       if (typeof req.body === 'string') {
@@ -25,14 +19,45 @@ module.exports = async (req, res) => {
   };
 
   try {
-    const body = await readBody();
+    // Accept POST normally. If you hit it with GET while debugging,
+    // we'll just echo what we received so you can see it.
+    const method = req.method || 'POST';
 
-    const notes = (body.notes ?? '').toString().trim();
-    const style = (body.style ?? 'reflective').toString();
-    const tone  = (body.tone  ?? 'calm').toString();
+    const body = method === 'POST' ? await readBody() : {};
+    const q = req.query || {};
+    const h = req.headers || {};
+
+    // Try multiple sources for notes to avoid empty payload issues
+    const notesRaw =
+      body?.notes ??
+      q?.notes ??
+      h['x-notes'] ??
+      '';
+
+    const notes = (notesRaw ?? '').toString().trim();
+    const style = (body?.style ?? q?.style ?? 'reflective').toString();
+    const tone  = (body?.tone  ?? q?.tone  ?? 'calm').toString();
 
     if (!notes) {
-      return res.status(400).json({ error: 'Missing or invalid "notes" string.' });
+      // Echo back what we saw to help diagnose quickly
+      return res.status(400).json({
+        error: 'Missing or invalid "notes" string.',
+        saw: {
+          method,
+          bodyType: typeof body,
+          bodyPreview: JSON.stringify(body).slice(0, 200),
+          query: q,
+          headersSample: {
+            'content-type': h['content-type'] || null,
+            'x-notes': h['x-notes'] || null
+          }
+        }
+      });
+    }
+
+    // Debug GET: return what we parsed without calling the model
+    if (method !== 'POST') {
+      return res.status(200).json({ ok: true, parsed: { notes, style, tone } });
     }
 
     const prompt = `Transform these brief daily notes into a cohesive, ${style} journal entry with a ${tone} tone.
@@ -44,17 +69,13 @@ Daily notes: "${notes}"
 Write the final journal entry in first person:`;
 
     const apiKey = process.env.OPENROUTER_API_KEY;
-    if (!apiKey) {
-      return res.status(500).json({ error: 'Server missing OPENROUTER_API_KEY' });
-    }
+    if (!apiKey) return res.status(500).json({ error: 'Server missing OPENROUTER_API_KEY' });
 
-    // Call OpenRouter (using OpenAI gpt-3.5-turbo via OpenRouter; change model if you want)
     const upstream = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
-        // Optional but recommended for OpenRouter analytics:
         'HTTP-Referer': process.env.OPENROUTER_SITE || 'https://vercel.app',
         'X-Title': 'DayTale'
       },
@@ -74,19 +95,14 @@ Write the final journal entry in first person:`;
     }
 
     const data = await upstream.json();
-
     const text =
       data?.choices?.[0]?.message?.content?.trim() ||
-      data?.choices?.[0]?.text?.trim() || '';
+      data?.choices?.[0]?.text?.trim() ||
+      '';
 
-    if (!text) {
-      return res.status(502).json({ error: 'No text returned from model.' });
-    }
+    if (!text) return res.status(502).json({ error: 'No text returned from model.' });
 
-    // Return cleaned text
-    return res.status(200).json({
-      text: text.replace(/^["'\s]+|["'\s]+$/g, '')
-    });
+    return res.status(200).json({ text: text.replace(/^["'\s]+|["'\s]+$/g, '') });
   } catch (err) {
     console.error('Server error:', err);
     return res.status(500).json({ error: 'Server error.' });
