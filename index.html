@@ -6,9 +6,9 @@
   <title>DayTale - Transform Your Day Into Stories</title>
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Cal+Sans&family=Syne:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Cal+Sans&family=Syne:wght@400..800&display=swap" rel="stylesheet"/>
 
   <style>
     :root{
@@ -48,9 +48,10 @@
       background:linear-gradient(135deg, var(--lion), var(--primary));
       -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent
     }
+    /* Restored subtitle you liked */
     .subtitle{color:var(--text-muted);font-size:1.05rem;max-width:720px;margin:0 auto;line-height:1.6}
-
     .workspace{display:grid;grid-template-columns:1fr 1fr;gap:2rem;min-height:70vh}
+
     .panel{
       background:var(--bg-card-dark);backdrop-filter:blur(18px);
       border-radius:20px;border:1px solid var(--border-light);
@@ -101,7 +102,20 @@
     .loading{display:none;text-align:center;padding:1.35rem;color:var(--lion);font-style:italic;animation:pulse 1.5s ease-in-out infinite}
     @keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
 
-    /* simple chips for quote candidates (if present in your DOM) */
+    /* swatches (back where they were) */
+    .toolbar{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+    #swatch-bar{display:flex;gap:.4rem;align-items:center}
+    .swatch{width:26px;height:26px;border-radius:6px;border:1px solid rgba(0,0,0,.18);cursor:pointer}
+    .swatch.active{outline:2px solid #fff;outline-offset:2px}
+    .light-mode .swatch.active{outline:2px solid #222}
+
+    /* tiny bullet list above textarea */
+    .fairy-list{list-style:none; margin:.25rem 0 .25rem 0; padding:0;}
+    .fairy-list li{display:flex;align-items:flex-start;gap:.5rem;color:#cfcfd8;font-size:.92rem;line-height:1.5}
+    .fairy-list .icon{font-size:1rem;line-height:1.2}
+    .light-mode .fairy-list li{color:#444}
+
+    /* chips for quote candidates (unchanged) */
     .quote-chip{border:1px solid rgba(198,165,117,.5);background:rgba(198,165,117,.1);color:#f1f5f9;padding:.5rem .6rem;border-radius:999px;margin:.25rem;cursor:pointer}
     .quote-chip.active{background:rgba(198,165,117,.25)}
     .light-mode .quote-chip{color:#1f2937}
@@ -113,6 +127,7 @@
       .controls{flex-direction:column;align-items:stretch}
       .control-group{width:100%}
       select{width:100%}
+      .toolbar{gap:.35rem}
     }
   </style>
 </head>
@@ -136,14 +151,14 @@
           <button class="btn btn-secondary" id="theme-toggle">☀️ Light</button>
         </div>
 
-        <!-- ✅ 1. Prime-the-writing hint -->
-        <p class="hint">
-          Take 2–3 minutes. Use “I” statements. Describe one thing that happened, how it felt in your body, and why it mattered.
-        </p>
-        <!-- ✅ 7. Multilingual reassurance -->
-        <p class="hint"><strong>You can write in any language — try it!</strong></p>
+        <!-- SHORT bullet list (fairy bullets). Nothing between textarea and button below -->
+        <ul class="fairy-list">
+          <li><span class="icon">🧚</span><span>Write “I felt … when … because …”</span></li>
+          <li><span class="icon">🧚</span><span>Notice one body cue (breath, chest, jaw)</span></li>
+          <li><span class="icon">🧚</span><span>You can write in <strong>any language</strong></span></li>
+        </ul>
 
-        <div class="controls" style="margin-top:.5rem">
+        <div class="controls" style="margin-top:.25rem">
           <div class="control-group">
             <label class="control-label">Writing Style</label>
             <select id="style">
@@ -168,16 +183,15 @@
 
         <textarea id="input" aria-label="Write a few notes about your day" placeholder="A few notes... tired this morning, anxious before the meeting, walked at lunch, felt lighter after talking with a friend, cooked pasta at night"></textarea>
 
-        <!-- ✅ 6. Privacy reassurance -->
-        <p class="subhint">We don’t store entries. Text is processed to generate your draft, then discarded.</p>
-
-        <div id="char-count" class="subhint"></div>
-        <div id="save-indicator" class="subhint"></div>
+        <!-- (no text here between textarea and button, per your request) -->
 
         <button class="btn btn-primary transform-btn" id="transform">✨ Craft My Journal Entry</button>
 
-        <div class="example-prompts" style="display:flex;flex-direction:column;gap:.5rem;margin-top:.5rem">
-          <div class="hint">Examples you can click:</div>
+        <!-- Privacy line moved below the button -->
+        <p class="subhint">We don’t store entries. Text is processed to generate your draft, then discarded.</p>
+
+        <div class="example-prompts" style="display:flex;flex-direction:column;gap:.5rem;margin-top:.25rem">
+          <div class="hint">Examples:</div>
           <div class="example-prompt" style="background:rgba(198,165,117,.12);border:1px solid rgba(198,165,117,.35);border-radius:10px;padding:.7rem;cursor:pointer"
                data-text="Woke up late and felt tense. Coffee helped a bit. Long meeting drained me. Evening walk with a friend made my chest feel lighter.">
             💭 “Woke up late… long meeting… evening walk…”
@@ -193,8 +207,11 @@
       <div class="panel">
         <div class="panel-header">
           <h3 class="panel-title">Your Journal Entry</h3>
-          <div>
-            <button class="btn btn-secondary" id="download-btn" style="display:none;">⬇️ Download .txt</button>
+
+          <!-- Toolbar back where it was: Share + Swatches at the TOP of output panel -->
+          <div class="toolbar">
+            <button class="btn btn-secondary" id="share-btn" style="display:none;">📤 Share</button>
+            <div id="swatch-bar" aria-label="Quote image color themes"></div>
             <button class="btn btn-secondary" id="copy-btn" style="display:none;">📋 Copy</button>
           </div>
         </div>
@@ -204,263 +221,181 @@
           Your transformed journal entry will appear here.
         </div>
 
-        <!-- Optional quote candidates row (only if your JS uses it) -->
+        <!-- Quote candidates (unchanged) -->
         <div id="candidates-wrap" style="display:none;margin-top:1rem;">
           <div id="quote-candidates"></div>
         </div>
       </div>
     </div>
 
-    <!-- (Optional) Share modal DOM can remain as you had it -->
+    <!-- Share modal (unchanged structure) -->
     <div id="share-modal" class="modal" aria-hidden="true" style="display:none;">
       <div class="modal-card">
-        <img id="share-preview" alt="Share preview"/>
-        <textarea id="quote-edit" placeholder="Edit your quote"></textarea>
-        <div>
-          <button id="update-preview">Update preview</button>
-          <button id="share-copyquote">Copy quote</button>
-          <button id="share-download">Download PNG</button>
-          <button id="share-do">Share</button>
-          <button id="share-cancel">Close</button>
+        <img id="share-preview" alt="Share preview" style="max-width:100%;height:auto"/>
+        <textarea id="quote-edit" placeholder="Edit your quote" style="width:100%;min-height:96px;margin-top:8px"></textarea>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem">
+          <button id="update-preview" class="btn btn-secondary">Update preview</button>
+          <button id="share-copyquote" class="btn btn-secondary">Copy quote</button>
+          <button id="share-download" class="btn btn-secondary">Download PNG</button>
+          <button id="share-do" class="btn btn-secondary">Share</button>
+          <button id="share-cancel" class="btn btn-secondary">Close</button>
         </div>
       </div>
     </div>
-
-    <!-- Optional palettes row if present in your CSS/JS -->
-    <div id="swatch-bar" style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem;"></div>
-    <button id="share-btn" style="display:none;">Share as image</button>
-    <button id="prompt-btn" style="display:none;">Prompt of the day</button>
   </div>
 
   <script>
-    // -------------------------
     // CONFIG
-    // -------------------------
     const BRAND_ICON_URL = 'https://i.ibb.co/kVyL1XmY/Gemini-Generated-Image-dvk7kidvk7kidvk7.png';
 
-    // -------------------------
     // ELEMENTS
-    // -------------------------
-    const $ = (id) => document.getElementById(id);
+    const $ = (id)=>document.getElementById(id);
+    const themeToggle=$('theme-toggle'), inputEl=$('input'), styleEl=$('style'), moodEl=$('mood');
+    const transformBtn=$('transform'), loading=$('loading'), output=$('output');
+    const copyBtn=$('copy-btn'), shareBtn=$('share-btn'), swatchBar=$('swatch-bar');
+    const examplePrompts=document.querySelectorAll('.example-prompt');
+    const candidatesWrap=$('candidates-wrap'), candidatesEl=$('quote-candidates');
 
-    const themeToggle = $('theme-toggle');
-    const inputEl = $('input');
-    const styleEl = $('style');
-    const moodEl = $('mood');
-    const charCount = $('char-count');
-    const saveIndicator = $('save-indicator');
-    const transformBtn = $('transform');
-    const loading = $('loading');
-    const output = $('output');
-    const copyBtn = $('copy-btn');
-    const downloadBtn = $('download-btn');
-    const shareBtn = $('share-btn');
-    const swatchBar = $('swatch-bar');
-    const candidatesWrap = $('candidates-wrap');
-    const candidatesEl = $('quote-candidates');
-    const promptBtn = $('prompt-btn');
-    const examplePrompts = document.querySelectorAll('.example-prompt');
+    const shareModal=$('share-modal'), sharePreview=$('share-preview'), quoteEdit=$('quote-edit');
+    const updatePreviewBtn=$('update-preview'), shareCopyQuote=$('share-copyquote');
+    const shareDownload=$('share-download'), shareDo=$('share-do'), shareCancel=$('share-cancel');
 
-    // Modal
-    const shareModal = $('share-modal');
-    const sharePreview = $('share-preview');
-    const shareCancel = $('share-cancel');
-    const shareDownload = $('share-download');
-    const shareDo = $('share-do');
-    const shareCopyQuote = $('share-copyquote');
-    const quoteEdit = $('quote-edit');
-    const updatePreviewBtn = $('update-preview');
-
-    // Theme
-    let isDark = true;
-    if (themeToggle) {
-      themeToggle.addEventListener('click', () => {
+    // THEME
+    let isDark=true;
+    if (themeToggle){
+      themeToggle.addEventListener('click',()=>{
         document.body.classList.toggle('light-mode');
-        isDark = !isDark;
-        themeToggle.textContent = isDark ? '☀️ Light' : '🌙 Dark';
-        localStorage.setItem('daytale-theme', isDark ? 'dark' : 'light');
+        isDark=!isDark;
+        themeToggle.textContent=isDark?'☀️ Light':'🌙 Dark';
+        localStorage.setItem('daytale-theme', isDark?'dark':'light');
       });
-      const saved = localStorage.getItem('daytale-theme');
-      if(saved === 'light'){ document.body.classList.add('light-mode'); isDark = false; themeToggle.textContent = '🌙 Dark'; }
+      const saved=localStorage.getItem('daytale-theme');
+      if(saved==='light'){document.body.classList.add('light-mode');isDark=false;themeToggle.textContent='🌙 Dark';}
     }
 
-    // Draft + indicators (keep existing behavior)
-    function saveStamp(){
-      if (!saveIndicator) return;
-      const ts = new Date();
-      saveIndicator.textContent = `Saved · ${ts.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}`;
-    }
-    if (inputEl){
-      inputEl.addEventListener('input', () => {
-        if (charCount) charCount.textContent = `${inputEl.value.length} characters`;
-        localStorage.setItem('daytale-draft', inputEl.value);
-        saveStamp();
-      });
-      const saved = localStorage.getItem('daytale-draft');
-      if(saved){ inputEl.value = saved; if (charCount) charCount.textContent = `${saved.length} characters`; saveStamp(); }
-    }
-
-    // Example prompts
-    examplePrompts.forEach(p => p.addEventListener('click', () => {
-      if(!inputEl) return;
-      inputEl.value = p.dataset.text || '';
-      if (charCount) charCount.textContent = `${inputEl.value.length} characters`;
-      inputEl.focus();
-      localStorage.setItem('daytale-draft', inputEl.value);
-      saveStamp();
-    }));
-
-    // Optional “prompt of the day” button (kept off unless you enable it)
-    if (promptBtn && inputEl) {
-      const mentalPrompts = [
-        "Name one feeling you noticed today and where you felt it in your body.",
-        "What drained your energy and what restored it, even a little?",
-        "Write about one boundary you protected or wish you had protected.",
-        "A small moment of relief you noticed today.",
-        "If today had a headline, what would it be and why?",
-        "What would you tell a friend who felt the way you did today?"
-      ];
-      promptBtn.addEventListener('click', () => {
-        const pick = mentalPrompts[Math.floor(Math.random()*mentalPrompts.length)];
-        inputEl.value = pick;
-        if (charCount) charCount.textContent = `${pick.length} characters`;
+    // EXAMPLE PROMPTS
+    examplePrompts.forEach(p=>{
+      p.addEventListener('click',()=>{
+        inputEl.value=p.dataset.text||'';
         inputEl.focus();
         localStorage.setItem('daytale-draft', inputEl.value);
-        saveStamp();
       });
-    }
+    });
 
-    // Debounce helper
-    function debounce(fn, wait=600){
-      let t; return (...args)=>{ clearTimeout(t); t = setTimeout(()=>fn.apply(this,args), wait); };
-    }
-
-    // API call (unchanged approach)
+    // BACKEND CALL
     async function callBackend(promptText){
-      const res = await fetch('/api/generate', {
+      const res=await fetch('/api/generate',{
         method:'POST',
-        headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({ prompt: promptText })
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({prompt:promptText})
       });
-      if(!res.ok){
-        const msg = await res.text().catch(()=> '');
-        throw new Error(`API ${res.status}: ${msg}`);
-      }
-      const data = await res.json();
-      return (data.text || '').trim();
+      if(!res.ok){const msg=await res.text().catch(()=> '');throw new Error(`API ${res.status}: ${msg}`);}
+      const data=await res.json();
+      return (data.text||'').trim();
     }
 
     function styleToneInstructions(style, mood){
-      const styleMap = {
-        reflective: "Write a reflective, first-person entry that extracts one learning.",
-        mindful: "Write a calm, present-focused reflection that notices sensations and breath.",
-        therapeutic: "Write an introspective entry that validates feelings and suggests one gentle next step.",
-        narrative: "Tell the day as a short scene with beginning, middle, end.",
-        gratitude: "Surface 3 specific things to appreciate, avoiding generic praise.",
-        snapshot: "Return 5 short bullet points: moments, feelings, one insight.",
-        mantra: "Condense into one evocative line as a personal mantra."
+      const styleMap={
+        reflective:"Write a reflective, first-person entry that extracts one learning.",
+        mindful:"Write a calm, present-focused reflection that notices sensations and breath.",
+        therapeutic:"Write an introspective entry that validates feelings and suggests one gentle next step.",
+        narrative:"Tell the day as a short scene with beginning, middle, end.",
+        gratitude:"Surface 3 specific things to appreciate, avoiding generic praise.",
+        snapshot:"Return 5 short bullet points: moments, feelings, one insight.",
+        mantra:"Condense into one evocative line as a personal mantra."
       };
-      const toneMap = {
-        calm: "Keep the tone calm and steady.",
-        compassionate: "Use compassionate, non-judgmental language.",
-        honest: "Be candid without harshness.",
-        hopeful: "Include a thread of hope and progress.",
-        neutral: "Stay neutral and factual.",
-        grounded: "Prefer concrete details over abstractions."
+      const toneMap={
+        calm:"Keep the tone calm and steady.",
+        compassionate:"Use compassionate, non-judgmental language.",
+        honest:"Be candid without harshness.",
+        hopeful:"Include a thread of hope and progress.",
+        neutral:"Stay neutral and factual.",
+        grounded:"Prefer concrete details over abstractions."
       };
       return `${styleMap[style]||styleMap.reflective} ${toneMap[mood]||toneMap.calm}`;
     }
 
-    // ✅ Only modify the prompt text to add 2, 4, 5 (anti-rumination close, reframe, self-compassion)
-    const onTransform = debounce(async () => {
-      if (!inputEl) return;
-      const inputText = inputEl.value.trim();
-      const style = styleEl?.value || 'reflective';
-      const mood = moodEl?.value  || 'calm';
-      if(!inputText){ alert('Please write some notes first.'); return; }
+    // GENERATE
+    transformBtn.addEventListener('click', async ()=>{
+      const notes=(inputEl.value||'').trim();
+      if(!notes){alert('Please write some notes first!');return;}
+      const style=styleEl?.value||'reflective';
+      const mood =moodEl?.value||'calm';
 
-      loading.style.display = 'block';
-      output.textContent = '';
-      if (copyBtn) copyBtn.style.display = 'none';
-      if (downloadBtn) downloadBtn.style.display = 'none';
-      if (shareBtn) shareBtn.style.display = 'none';
-      if (candidatesWrap) candidatesWrap.style.display = 'none';
-      if (candidatesEl) candidatesEl.innerHTML = '';
-
-      transformBtn.disabled = true;
-      transformBtn.textContent = 'Creating...';
-
-      const prompt = `Transform these notes into a mental health journal entry.
+      const prompt=`Transform these notes into a mental health journal entry.
 ${styleToneInstructions(style,mood)}
 Validate feelings first, then offer a gentle, optional reframe if appropriate (no toxic positivity).
 End with (a) one thing I handled well today and (b) one tiny next step.
 Add one short self-compassion sentence as if to a friend.
 Keep it human and grounded. Avoid clichés. No medical or crisis advice.
 
-Notes: "${inputText}"
+Notes: "${notes}"
 
 Write the final entry:`;
 
       try{
-        const result = await callBackend(prompt);
-        output.textContent = result;
-        if (copyBtn) copyBtn.style.display = 'inline-block';
-        if (downloadBtn) downloadBtn.style.display = 'inline-block';
-        if (shareBtn) shareBtn.style.display = 'inline-block';
+        transformBtn.disabled=true; transformBtn.textContent='Creating...';
+        loading.style.display='block'; output.textContent=''; if(copyBtn) copyBtn.style.display='none';
+        if(shareBtn) shareBtn.style.display='none'; if(candidatesWrap) candidatesWrap.style.display='none'; if(candidatesEl) candidatesEl.innerHTML='';
 
-        // If you use quote candidates UI, keep it working:
-        if (candidatesWrap && candidatesEl) {
-          const picks = getQuoteCandidates(result, 3);
-          if (picks.length){
-            candidatesWrap.style.display = 'block';
-            picks.forEach((q,i)=>{
-              const chip = document.createElement('button');
-              chip.className = 'quote-chip';
-              chip.textContent = q;
-              chip.title = 'Click to select';
-              chip.addEventListener('click', ()=>{
-                [...candidatesEl.children].forEach(c=>c.classList.remove('active'));
-                chip.classList.add('active'); selectedQuote = q;
-              });
-              if(i===0){ chip.classList.add('active'); selectedQuote = q; }
-              candidatesEl.appendChild(chip);
+        const result=await callBackend(prompt);
+        output.textContent=result;
+        if(copyBtn) copyBtn.style.display='inline-block';
+        if(shareBtn) shareBtn.style.display='inline-block';
+
+        // quote candidates
+        const picks=getQuoteCandidates(result,3);
+        if(picks.length && candidatesWrap && candidatesEl){
+          candidatesWrap.style.display='block';
+          selectedQuote=picks[0];
+          picks.forEach((q,i)=>{
+            const chip=document.createElement('button');
+            chip.className='quote-chip'; chip.textContent=q; chip.title='Click to select';
+            chip.addEventListener('click',()=>{
+              [...candidatesEl.children].forEach(c=>c.classList.remove('active'));
+              chip.classList.add('active'); selectedQuote=q;
             });
-          }
+            if(i===0) chip.classList.add('active');
+            candidatesEl.appendChild(chip);
+          });
         }
       }catch(err){
-        console.error(err);
-        output.textContent = 'Error: ' + (err.message || 'Could not generate text.');
+        output.textContent='Error: '+(err.message||'Could not generate text.');
       }finally{
-        loading.style.display = 'none';
-        transformBtn.disabled = false;
-        transformBtn.textContent = 'Create my journal entry';
+        loading.style.display='none'; transformBtn.disabled=false; transformBtn.textContent='✨ Craft My Journal Entry';
       }
-    }, 600);
+    });
 
-    transformBtn.addEventListener('click', onTransform);
-    if (inputEl) inputEl.addEventListener('keydown', (e) => { if(e.key === 'Enter' && (e.ctrlKey || e.metaKey)) onTransform(); });
-
-    // Quote selection helpers (kept the same)
-    function getQuoteCandidates(text, k=3){
-      const sents = text.split(/(?<=[.!?])\s+/).map(s=>s.trim()).filter(Boolean);
-      if (!sents.length) return [];
-      const emotive = /grateful|calm|breathe|relief|gentle|learn|hope|enough|grounded|small|step|tender|quiet|light|release|kind/i;
-      const scores = sents.map((s, idx) => {
-        let score = 0;
-        const len = s.length;
-        if (len>=80 && len<=220) score += 3;
-        if (emotive.test(s)) score += 2;
-        if (idx === sents.length-1 || idx === sents.length-2) score += 1;
-        const words = s.toLowerCase().replace(/[^a-z\s]/g,'').split(/\s+/).filter(Boolean);
-        const uniq = new Set(words).size / (words.length||1);
-        score += uniq * 2;
-        return { s, score };
+    // COPY
+    if (copyBtn){
+      copyBtn.addEventListener('click', async ()=>{
+        try{await navigator.clipboard.writeText(output.textContent||'');copyBtn.textContent='✅ Copied!';setTimeout(()=>copyBtn.textContent='📋 Copy',1200);}catch{}
       });
-      return scores.sort((a,b)=>b.score-a).slice(0,k).map(o=>o.s.slice(0,300));
     }
 
-    // ----- (Optional) palettes + share image helpers remain as you had them -----
-    const PALETTES = [
+    // CMD/CTRL+ENTER
+    inputEl.addEventListener('keydown',e=>{ if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)) transformBtn.click(); });
+
+    // QUOTE CANDIDATES
+    function getQuoteCandidates(text,k=3){
+      const sents=text.split(/(?<=[.!?])\s+/).map(s=>s.trim()).filter(Boolean);
+      if(!sents.length) return [];
+      const emotive=/grateful|calm|breathe|relief|gentle|learn|hope|enough|grounded|small|step|tender|quiet|light|release|kind/i;
+      const scores=sents.map((s,idx)=>{
+        let score=0; const len=s.length;
+        if(len>=80&&len<=220) score+=3;
+        if(emotive.test(s)) score+=2;
+        if(idx===sents.length-1||idx===sents.length-2) score+=1;
+        const words=s.toLowerCase().replace(/[^a-z\s]/g,'').split(/\s+/).filter(Boolean);
+        const uniq=new Set(words).size/(words.length||1);
+        score+=uniq*2;
+        return {s,score};
+      });
+      return scores.sort((a,b)=>b.score-a.score).slice(0,k).map(o=>o.s.slice(0,300));
+    }
+
+    // PALETTES (back at top of output panel)
+    const PALETTES=[
       {key:'dawn', name:'Dawn Sand', stops:['#f8f3e7','#e7d8b1'], stripe:'#dcc79b', text:'#1b1f29', badge:'#1b1f29'},
       {key:'mist', name:'Mist', stops:['#e6eef6','#cfd9e6'], stripe:'#c8d2e1', text:'#0b1020', badge:'#0b1020'},
       {key:'blush', name:'Blush', stops:['#ffe3e3','#ffd4c7'], stripe:'#ffd9cf', text:'#1f2937', badge:'#1f2937'},
@@ -469,132 +404,123 @@ Write the final entry:`;
       {key:'porcelain', name:'Porcelain', stops:['#fafafa','#ececec'], stripe:'#eeeeee', text:'#111827', badge:'#111827'},
       {key:'ink', name:'Ink', stops:['#0f172a','#1e293b'], stripe:'#334155', text:'#f1f5f9', badge:'#f1f5f9'}
     ];
-    let activePalette = 'dawn';
-    let selectedQuote = '';
+    let activePalette='dawn', selectedQuote='';
 
-    if (swatchBar) {
-      swatchBar.innerHTML = '';
+    if (swatchBar){
+      swatchBar.innerHTML='';
       PALETTES.forEach(p=>{
-        const b = document.createElement('button');
-        b.className = 'swatch';
-        b.style.width='28px'; b.style.height='28px'; b.style.borderRadius='6px'; b.style.border='1px solid rgba(0,0,0,.15)';
-        b.style.background = `linear-gradient(135deg, ${p.stops[0]}, ${p.stops[1]})`;
-        b.title = p.name;
-        if (p.key === activePalette) b.style.outline='2px solid #fff';
-        b.addEventListener('click', ()=>{
-          activePalette = p.key;
-          [...swatchBar.children].forEach(c=>c.style.outline='none');
-          b.style.outline='2px solid #fff';
+        const b=document.createElement('button');
+        b.className='swatch';
+        b.style.background=`linear-gradient(135deg, ${p.stops[0]}, ${p.stops[1]})`;
+        b.title=p.name;
+        if(p.key===activePalette) b.classList.add('active');
+        b.addEventListener('click',()=>{
+          activePalette=p.key;
+          [...swatchBar.children].forEach(c=>c.classList.remove('active'));
+          b.classList.add('active');
         });
         swatchBar.appendChild(b);
       });
     }
 
-    if (shareBtn && shareModal && sharePreview && quoteEdit) {
+    // SHARE FLOW
+    if (shareBtn && shareModal && sharePreview && quoteEdit){
       shareBtn.addEventListener('click', async ()=>{
-        const text = (output?.textContent || '').trim();
-        if(!text){ alert('Generate an entry first.'); return; }
-        if(!selectedQuote){
-          const picks = getQuoteCandidates(text, 1);
-          selectedQuote = picks[0] || text.slice(0,220);
-        }
-        quoteEdit.value = selectedQuote;
+        const text=(output?.textContent||'').trim();
+        if(!text){alert('Generate an entry first.');return;}
+        if(!selectedQuote){ const picks=getQuoteCandidates(text,1); selectedQuote=picks[0]||text.slice(0,220); }
+        quoteEdit.value=selectedQuote;
         await updatePreviewImage();
         openShareModal();
       });
-
-      if (updatePreviewBtn) updatePreviewBtn.addEventListener('click', updatePreviewImage);
-      if (shareCancel) shareCancel.addEventListener('click', closeShareModal);
-      if (shareCopyQuote) shareCopyQuote.addEventListener('click', async ()=>{
-        try{ await navigator.clipboard.writeText(quoteEdit.value.trim()); shareCopyQuote.textContent='✅ Copied'; setTimeout(()=>shareCopyQuote.textContent='Copy quote',1200);}catch{}
+      if(updatePreviewBtn) updatePreviewBtn.addEventListener('click', updatePreviewImage);
+      if(shareCopyQuote) shareCopyQuote.addEventListener('click', async ()=>{
+        try{await navigator.clipboard.writeText(quoteEdit.value.trim()); shareCopyQuote.textContent='✅ Copied'; setTimeout(()=>shareCopyQuote.textContent='Copy quote',1200);}catch{}
       });
-      if (shareDownload) shareDownload.addEventListener('click', () => {
-        const a = document.createElement('a');
-        a.href = sharePreview.src; a.download = `DayTale-quote-${new Date().toISOString().slice(0,10)}.png`;
+      if(shareDownload) shareDownload.addEventListener('click',()=>{
+        const a=document.createElement('a'); a.href=sharePreview.src; a.download=`DayTale-quote-${new Date().toISOString().slice(0,10)}.png`;
         document.body.appendChild(a); a.click(); a.remove();
       });
-      if (shareDo) shareDo.addEventListener('click', shareViaNative);
+      if(shareDo) shareDo.addEventListener('click', shareViaNative);
+      if(shareCancel) shareCancel.addEventListener('click', closeShareModal);
     }
 
+    function openShareModal(){ shareModal.style.display='block'; shareModal.setAttribute('aria-hidden','false'); }
+    function closeShareModal(){ shareModal.style.display='none'; shareModal.setAttribute('aria-hidden','true'); }
+
     async function updatePreviewImage(){
-      if (!sharePreview || !quoteEdit) return;
-      const dataUrl = await createQuoteImage(quoteEdit.value.trim(), activePalette, true);
-      sharePreview.src = dataUrl;
+      const dataUrl=await createQuoteImage(quoteEdit.value.trim(), activePalette, true);
+      sharePreview.src=dataUrl;
     }
-    function openShareModal(){ if(!shareModal) return; shareModal.style.display='block'; shareModal.setAttribute('aria-hidden','false'); }
-    function closeShareModal(){ if(!shareModal) return; shareModal.style.display='none'; shareModal.setAttribute('aria-hidden','true'); }
 
     async function shareViaNative(){
       try{
-        const resp = await fetch(sharePreview.src);
-        const blob = await resp.blob();
-        const file = new File([blob], 'daytale-quote.png', { type: 'image/png' });
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({ files:[file], title:'DayTale Quote' });
-        } else {
-          const a = document.createElement('a'); a.href = sharePreview.src; a.download = 'daytale-quote.png';
+        const resp=await fetch(sharePreview.src);
+        const blob=await resp.blob();
+        const file=new File([blob],'daytale-quote.png',{type:'image/png'});
+        if(navigator.canShare && navigator.canShare({files:[file]})){
+          await navigator.share({files:[file], title:'DayTale Quote'});
+        }else{
+          const a=document.createElement('a'); a.href=sharePreview.src; a.download='daytale-quote.png';
           document.body.appendChild(a); a.click(); a.remove();
           alert('Sharing not supported here. Image downloaded instead.');
         }
       }catch{ alert('Share failed. Try downloading and posting manually.'); }
     }
 
-    async function createQuoteImage(quote, paletteKey='dawn', includeLogo=true) {
-      const style = (PALETTES.find(x=>x.key===paletteKey) || PALETTES[0]);
-      const W = 1080, H = 1920;
-      const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H;
-      const ctx = canvas.getContext('2d');
+    async function createQuoteImage(quote, paletteKey='dawn', includeLogo=true){
+      const style=(PALETTES.find(x=>x.key===paletteKey)||PALETTES[0]);
+      const W=1080, H=1920;
+      const canvas=document.createElement('canvas'); canvas.width=W; canvas.height=H;
+      const ctx=canvas.getContext('2d');
 
-      const grad = ctx.createLinearGradient(0, 0, W, H);
-      grad.addColorStop(0, style.stops[0]); grad.addColorStop(1, style.stops[1]);
-      ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
+      const grad=ctx.createLinearGradient(0,0,W,H);
+      grad.addColorStop(0,style.stops[0]); grad.addColorStop(1,style.stops[1]);
+      ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
 
-      ctx.globalAlpha = 0.08;
-      for (let i = 0; i < 22; i++) {
-        ctx.fillStyle = i % 2 ? '#ffffff' : style.stripe;
-        ctx.fillRect(-W, i * 80, W * 3, 2);
+      ctx.globalAlpha=0.08;
+      for(let i=0;i<22;i++){ ctx.fillStyle=i%2?'#ffffff':style.stripe; ctx.fillRect(-W,i*80,W*3,2); }
+      ctx.globalAlpha=1;
+
+      const marginX=120, marginY=240;
+
+      const badgeW=340, badgeH=72, badgeR=18;
+      const badgeX=(W-badgeW)/2, badgeY=marginY-(badgeH+12);
+      ctx.fillStyle='rgba(0,0,0,0.12)'; roundRect(ctx,badgeX,badgeY,badgeW,badgeH,badgeR); ctx.fill();
+      ctx.fillStyle=style.badge; ctx.font='700 26px Arimo, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('My Quote of My Day', W/2, badgeY+badgeH/2);
+
+      ctx.fillStyle=style.text; ctx.textAlign='left';
+      let fontSize=64, wrapped;
+      while(fontSize>=40){
+        ctx.font=`800 ${fontSize}px Arimo, sans-serif`;
+        wrapped=wrapText(ctx,quote,W-marginX*2,fontSize*1.3);
+        const blockHeight=wrapped.length*fontSize*1.3;
+        if(blockHeight<=H-marginY*2) break;
+        fontSize-=4;
       }
-      ctx.globalAlpha = 1;
+      const startY=(H-wrapped.length*fontSize*1.3)/2; let y=startY;
+      for(const line of wrapped){ ctx.fillText(line, marginX, y); y+=fontSize*1.3; }
 
-      const marginX = 120, marginY = 240;
+      if(includeLogo){
+        const footerY=H-140, logoSize=72;
+        ctx.fillStyle='rgba(255,255,255,0.9)';
+        roundRect(ctx, marginX, footerY-logoSize, logoSize, logoSize, 16); ctx.fill();
+        const img=await loadImage(BRAND_ICON_URL);
+        ctx.save(); clipRoundRect(ctx, marginX, footerY-logoSize, logoSize, logoSize, 16);
+        ctx.drawImage(img, marginX, footerY-logoSize, logoSize, logoSize); ctx.restore();
 
-      const badgeW = 340, badgeH = 72, badgeR = 18;
-      const badgeX = (W - badgeW) / 2, badgeY = marginY - (badgeH + 12);
-      ctx.fillStyle = 'rgba(0,0,0,0.12)'; roundRect(ctx, badgeX, badgeY, badgeW, badgeH, badgeR); ctx.fill();
-      ctx.fillStyle = style.badge; ctx.font = '700 26px Arimo, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillText('My Quote of My Day', W/2, badgeY + badgeH/2);
-
-      ctx.fillStyle = style.text; ctx.textAlign = 'left';
-      let fontSize = 64; let wrapped;
-      while (fontSize >= 40) {
-        ctx.font = `800 ${fontSize}px Arimo, sans-serif`;
-        wrapped = wrapText(ctx, quote, W - marginX*2, fontSize * 1.3);
-        const blockHeight = wrapped.length * fontSize * 1.3;
-        if (blockHeight <= H - marginY*2) break; fontSize -= 4;
-      }
-      const startY = (H - wrapped.length * fontSize * 1.3) / 2;
-      let y = startY;
-      for (const line of wrapped) { ctx.fillText(line, marginX, y); y += fontSize * 1.3; }
-
-      if (includeLogo){
-        const footerY = H - 140, logoSize = 72;
-        ctx.fillStyle = 'rgba(255,255,255,0.9)';
-        roundRect(ctx, marginX, footerY - logoSize, logoSize, logoSize, 16); ctx.fill();
-        const img = await loadImage(BRAND_ICON_URL);
-        ctx.save(); clipRoundRect(ctx, marginX, footerY - logoSize, logoSize, logoSize, 16);
-        ctx.drawImage(img, marginX, footerY - logoSize, logoSize, logoSize); ctx.restore();
-
-        ctx.textAlign = 'left'; ctx.fillStyle = '#111827';
-        ctx.font = '800 32px "Cal Sans","Syne",sans-serif'; ctx.fillText('DayTale', marginX + logoSize + 18, footerY - 30);
-        ctx.font = '600 20px Arimo, sans-serif'; ctx.fillStyle = 'rgba(17,24,39,.72)'; ctx.fillText('Mental health journaling', marginX + logoSize + 18, footerY);
+        ctx.textAlign='left'; ctx.fillStyle='#111827';
+        ctx.font='800 32px "Cal Sans","Syne",sans-serif'; ctx.fillText('DayTale', marginX+logoSize+18, footerY-30);
+        ctx.font='600 20px Arimo, sans-serif'; ctx.fillStyle='rgba(17,24,39,.72)'; ctx.fillText('Mental health journaling', marginX+logoSize+18, footerY);
       }
 
       return canvas.toDataURL('image/png');
 
-      function roundRect(ctx, x, y, w, h, r){ const rr = typeof r==='number'?{tl:r,tr:r,br:r,bl:r}:r; ctx.beginPath(); ctx.moveTo(x+rr.tl,y); ctx.lineTo(x+w-rr.tr,y); ctx.quadraticCurveTo(x+w,y,x+w,y+rr.tr); ctx.lineTo(x+w,y+h-rr.br); ctx.quadraticCurveTo(x+w,y+h,x+w-rr.br,y+h); ctx.lineTo(x+rr.bl,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-rr.bl); ctx.lineTo(x,y+rr.tl); ctx.quadraticCurveTo(x,y,x+rr.tl,y); ctx.closePath(); }
-      function clipRoundRect(ctx, x, y, w, h, r){ roundRect(ctx,x,y,w,h,r); ctx.clip(); }
-      function wrapText(ctx, text, maxWidth){ const words=text.split(/\s+/); const lines=[]; let line=''; for(const w of words){ const test=line?line+' '+w:w; if(ctx.measureText(test).width<=maxWidth){ line=test; } else { if(line) lines.push(line); line=w; } } if(line) lines.push(line); return lines; }
-      function loadImage(src){ return new Promise((resolve,reject)=>{ const im=new Image(); im.crossOrigin='anonymous'; im.onload=()=>resolve(im); im.onerror=reject; im.src=src; }); }
+      function roundRect(ctx,x,y,w,h,r){const rr=typeof r==='number'?{tl:r,tr:r,br:r,bl:r}:r;ctx.beginPath();ctx.moveTo(x+rr.tl,y);ctx.lineTo(x+w-rr.tr,y);ctx.quadraticCurveTo(x+w,y,x+w,y+rr.tr);ctx.lineTo(x+w,y+h-rr.br);ctx.quadraticCurveTo(x+w,y+h,x+w-rr.br,y+h);ctx.lineTo(x+rr.bl,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-rr.bl);ctx.lineTo(x,y+rr.tl);ctx.quadraticCurveTo(x,y,x+rr.tl,y);ctx.closePath();}
+      function clipRoundRect(ctx,x,y,w,h,r){roundRect(ctx,x,y,w,h,r);ctx.clip();}
+      function wrapText(ctx,text,maxWidth){const words=text.split(/\s+/),lines=[];let line='';for(const w of words){const test=line?line+' '+w:w;if(ctx.measureText(test).width<=maxWidth){line=test;}else{if(line)lines.push(line);line=w;}}if(line)lines.push(line);return lines;}
+      function loadImage(src){return new Promise((resolve,reject)=>{const im=new Image();im.crossOrigin='anonymous';im.onload=()=>resolve(im);im.onerror=reject;im.src=src;});}
     }
   </script>
 </body>
