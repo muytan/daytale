@@ -48,8 +48,8 @@
       background:linear-gradient(135deg, var(--lion), var(--primary));
       -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent
     }
-    /* Restored subtitle you liked */
     .subtitle{color:var(--text-muted);font-size:1.05rem;max-width:720px;margin:0 auto;line-height:1.6}
+
     .workspace{display:grid;grid-template-columns:1fr 1fr;gap:2rem;min-height:70vh}
 
     .panel{
@@ -97,29 +97,88 @@
       font-family:'Arimo', ui-sans-serif, system-ui; font-size:1.02rem; white-space:pre-wrap;
       background:rgba(255,255,255,0.03);border:1px solid var(--border-light);border-radius:12px;min-height:220px
     }
-    .light-mode .output{color:#1b1f29;background:rgba(0,0,0,0.03);border:1px solid var(--border-dark)}
+    .light-mode .output{color:#1f2937;background:rgba(0,0,0,0.03);border:1px solid var(--border-dark)}
 
     .loading{display:none;text-align:center;padding:1.35rem;color:var(--lion);font-style:italic;animation:pulse 1.5s ease-in-out infinite}
     @keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
 
-    /* swatches (back where they were) */
-    .toolbar{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
-    #swatch-bar{display:flex;gap:.4rem;align-items:center}
-    .swatch{width:26px;height:26px;border-radius:6px;border:1px solid rgba(0,0,0,.18);cursor:pointer}
-    .swatch.active{outline:2px solid #fff;outline-offset:2px}
-    .light-mode .swatch.active{outline:2px solid #222}
+    /* Toolbar at top of output: Share + circular swatches */
+    .toolbar{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+    #swatch-bar{display:flex;gap:.5rem;align-items:center;position:relative}
+    .swatch{
+      position:relative;
+      width:28px;height:28px;border-radius:50%;
+      border:1px solid rgba(0,0,0,.18); cursor:pointer; outline:0;
+      transition: box-shadow .2s ease, transform .2s ease;
+    }
+    .swatch:hover{
+      box-shadow:0 0 0 6px rgba(255,255,255,.18), 0 0 12px rgba(0,0,0,.28);
+      transform: translateY(-1px);
+    }
+    .swatch.active{ box-shadow:0 0 0 3px #fff inset, 0 0 0 3px rgba(255,255,255,.35); }
+    .light-mode .swatch.active{ box-shadow:0 0 0 3px #222 inset, 0 0 0 3px rgba(0,0,0,.25); }
 
-    /* tiny bullet list above textarea */
+    /* Hover label (tooltip) */
+    .swatch::after{
+      content:attr(data-name);
+      position:absolute; left:50%; top:115%;
+      transform:translateX(-50%);
+      white-space:nowrap; font-size:.75rem; padding:.25rem .5rem;
+      color:#0b1020; background:#ffffff; border:1px solid #e5e7eb; border-radius:6px;
+      opacity:0; pointer-events:none; transition:opacity .15s ease, transform .15s ease;
+      box-shadow:0 4px 24px rgba(0,0,0,.14);
+    }
+    .swatch:hover::after{ opacity:1; transform:translateX(-50%) translateY(2px); }
+    .light-mode .swatch::after{ color:#111827; }
+
+    /* Tiny bullet list above textarea */
     .fairy-list{list-style:none; margin:.25rem 0 .25rem 0; padding:0;}
     .fairy-list li{display:flex;align-items:flex-start;gap:.5rem;color:#cfcfd8;font-size:.92rem;line-height:1.5}
     .fairy-list .icon{font-size:1rem;line-height:1.2}
     .light-mode .fairy-list li{color:#444}
 
-    /* chips for quote candidates (unchanged) */
+    /* CENTERED SHARE MODAL */
+    .modal-backdrop{
+      position:fixed; inset:0; display:none;
+      align-items:center; justify-content:center;
+      background:rgba(8,10,20,.58);
+      backdrop-filter: blur(6px) saturate(120%);
+      z-index: 9999;
+    }
+    .modal-backdrop.open{ display:flex; }
+    .modal-card{
+      position:relative;
+      width:min(92vw, 820px);
+      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 30px 80px rgba(0,0,0,.45);
+      border-radius:18px; padding:18px;
+      color:#f8fafc;
+    }
+    .light-mode .modal-card{
+      background:rgba(255,255,255,.96);
+      border:1px solid #e5e7eb; color:#111827;
+    }
+    .modal-row{ display:grid; grid-template-columns:1.2fr .8fr; gap:16px; }
+    .modal-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+    .modal-card textarea{
+      width:100%; min-height:96px; border-radius:12px; border:1px solid #e5e7eb;
+      background:#ffffff; color:#111827; padding:.75rem;
+    }
+    .modal-title{font-weight:800; margin-bottom:.35rem; font-family:"Cal Sans",sans-serif}
+    #share-preview{width:100%; height:auto; border-radius:12px; display:block}
+    .close-x{
+      position:absolute; right:12px; top:10px; background:transparent; border:none; color:#fff; font-size:22px; cursor:pointer;
+    }
+    .light-mode .close-x{ color:#111; }
+
     .quote-chip{border:1px solid rgba(198,165,117,.5);background:rgba(198,165,117,.1);color:#f1f5f9;padding:.5rem .6rem;border-radius:999px;margin:.25rem;cursor:pointer}
     .quote-chip.active{background:rgba(198,165,117,.25)}
     .light-mode .quote-chip{color:#1f2937}
 
+    @media (max-width: 820px){
+      .modal-row{ grid-template-columns:1fr; }
+    }
     @media (max-width: 768px){
       .workspace{grid-template-columns:1fr;gap:1.25rem}
       .container{padding:1rem}
@@ -151,7 +210,7 @@
           <button class="btn btn-secondary" id="theme-toggle">☀️ Light</button>
         </div>
 
-        <!-- SHORT bullet list (fairy bullets). Nothing between textarea and button below -->
+        <!-- Tiny bullet list (short) -->
         <ul class="fairy-list">
           <li><span class="icon">🧚</span><span>Write “I felt … when … because …”</span></li>
           <li><span class="icon">🧚</span><span>Notice one body cue (breath, chest, jaw)</span></li>
@@ -183,11 +242,10 @@
 
         <textarea id="input" aria-label="Write a few notes about your day" placeholder="A few notes... tired this morning, anxious before the meeting, walked at lunch, felt lighter after talking with a friend, cooked pasta at night"></textarea>
 
-        <!-- (no text here between textarea and button, per your request) -->
-
+        <!-- (no text here between textarea and button) -->
         <button class="btn btn-primary transform-btn" id="transform">✨ Craft My Journal Entry</button>
 
-        <!-- Privacy line moved below the button -->
+        <!-- Privacy line below the button -->
         <p class="subhint">We don’t store entries. Text is processed to generate your draft, then discarded.</p>
 
         <div class="example-prompts" style="display:flex;flex-direction:column;gap:.5rem;margin-top:.25rem">
@@ -208,7 +266,7 @@
         <div class="panel-header">
           <h3 class="panel-title">Your Journal Entry</h3>
 
-          <!-- Toolbar back where it was: Share + Swatches at the TOP of output panel -->
+          <!-- Toolbar: Share + circular swatches (TOP of output panel) -->
           <div class="toolbar">
             <button class="btn btn-secondary" id="share-btn" style="display:none;">📤 Share</button>
             <div id="swatch-bar" aria-label="Quote image color themes"></div>
@@ -221,27 +279,36 @@
           Your transformed journal entry will appear here.
         </div>
 
-        <!-- Quote candidates (unchanged) -->
+        <!-- Quote candidates -->
         <div id="candidates-wrap" style="display:none;margin-top:1rem;">
           <div id="quote-candidates"></div>
         </div>
       </div>
     </div>
 
-    <!-- Share modal (unchanged structure) -->
-    <div id="share-modal" class="modal" aria-hidden="true" style="display:none;">
+    <!-- CENTERED SHARE MODAL -->
+    <div id="share-backdrop" class="modal-backdrop" aria-hidden="true">
+      <button class="close-x" id="share-close" aria-label="Close">✕</button>
       <div class="modal-card">
-        <img id="share-preview" alt="Share preview" style="max-width:100%;height:auto"/>
-        <textarea id="quote-edit" placeholder="Edit your quote" style="width:100%;min-height:96px;margin-top:8px"></textarea>
-        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem">
-          <button id="update-preview" class="btn btn-secondary">Update preview</button>
-          <button id="share-copyquote" class="btn btn-secondary">Copy quote</button>
-          <button id="share-download" class="btn btn-secondary">Download PNG</button>
-          <button id="share-do" class="btn btn-secondary">Share</button>
-          <button id="share-cancel" class="btn btn-secondary">Close</button>
+        <div class="modal-title">Share preview</div>
+        <div class="modal-row">
+          <div>
+            <img id="share-preview" alt="Share preview"/>
+          </div>
+          <div>
+            <label for="quote-edit" class="control-label" style="display:block;margin-bottom:.25rem">Edit quote</label>
+            <textarea id="quote-edit" placeholder="Edit your quote"></textarea>
+            <div class="modal-actions">
+              <button id="update-preview" class="btn btn-secondary">Update preview</button>
+              <button id="share-copyquote" class="btn btn-secondary">Copy quote</button>
+              <button id="share-download" class="btn btn-secondary">Download PNG</button>
+              <button id="share-do" class="btn btn-secondary">Share</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 
   <script>
@@ -256,9 +323,15 @@
     const examplePrompts=document.querySelectorAll('.example-prompt');
     const candidatesWrap=$('candidates-wrap'), candidatesEl=$('quote-candidates');
 
-    const shareModal=$('share-modal'), sharePreview=$('share-preview'), quoteEdit=$('quote-edit');
-    const updatePreviewBtn=$('update-preview'), shareCopyQuote=$('share-copyquote');
-    const shareDownload=$('share-download'), shareDo=$('share-do'), shareCancel=$('share-cancel');
+    // Modal elements (centered)
+    const shareBackdrop=$('share-backdrop');
+    const shareClose=$('share-close');
+    const sharePreview=$('share-preview');
+    const quoteEdit=$('quote-edit');
+    const updatePreviewBtn=$('update-preview');
+    const shareCopyQuote=$('share-copyquote');
+    const shareDownload=$('share-download');
+    const shareDo=$('share-do');
 
     // THEME
     let isDark=true;
@@ -335,8 +408,11 @@ Write the final entry:`;
 
       try{
         transformBtn.disabled=true; transformBtn.textContent='Creating...';
-        loading.style.display='block'; output.textContent=''; if(copyBtn) copyBtn.style.display='none';
-        if(shareBtn) shareBtn.style.display='none'; if(candidatesWrap) candidatesWrap.style.display='none'; if(candidatesEl) candidatesEl.innerHTML='';
+        loading.style.display='block'; output.textContent='';
+        if(copyBtn) copyBtn.style.display='none';
+        if(shareBtn) shareBtn.style.display='none';
+        if(candidatesWrap) candidatesWrap.style.display='none';
+        if(candidatesEl) candidatesEl.innerHTML='';
 
         const result=await callBackend(prompt);
         output.textContent=result;
@@ -394,7 +470,7 @@ Write the final entry:`;
       return scores.sort((a,b)=>b.score-a.score).slice(0,k).map(o=>o.s.slice(0,300));
     }
 
-    // PALETTES (back at top of output panel)
+    // PALETTES (circular swatches at top of output)
     const PALETTES=[
       {key:'dawn', name:'Dawn Sand', stops:['#f8f3e7','#e7d8b1'], stripe:'#dcc79b', text:'#1b1f29', badge:'#1b1f29'},
       {key:'mist', name:'Mist', stops:['#e6eef6','#cfd9e6'], stripe:'#c8d2e1', text:'#0b1020', badge:'#0b1020'},
@@ -411,8 +487,8 @@ Write the final entry:`;
       PALETTES.forEach(p=>{
         const b=document.createElement('button');
         b.className='swatch';
+        b.setAttribute('data-name', p.name);
         b.style.background=`linear-gradient(135deg, ${p.stops[0]}, ${p.stops[1]})`;
-        b.title=p.name;
         if(p.key===activePalette) b.classList.add('active');
         b.addEventListener('click',()=>{
           activePalette=p.key;
@@ -423,8 +499,8 @@ Write the final entry:`;
       });
     }
 
-    // SHARE FLOW
-    if (shareBtn && shareModal && sharePreview && quoteEdit){
+    // SHARE (centered popup)
+    if (shareBtn){
       shareBtn.addEventListener('click', async ()=>{
         const text=(output?.textContent||'').trim();
         if(!text){alert('Generate an entry first.');return;}
@@ -433,20 +509,27 @@ Write the final entry:`;
         await updatePreviewImage();
         openShareModal();
       });
-      if(updatePreviewBtn) updatePreviewBtn.addEventListener('click', updatePreviewImage);
-      if(shareCopyQuote) shareCopyQuote.addEventListener('click', async ()=>{
-        try{await navigator.clipboard.writeText(quoteEdit.value.trim()); shareCopyQuote.textContent='✅ Copied'; setTimeout(()=>shareCopyQuote.textContent='Copy quote',1200);}catch{}
-      });
-      if(shareDownload) shareDownload.addEventListener('click',()=>{
-        const a=document.createElement('a'); a.href=sharePreview.src; a.download=`DayTale-quote-${new Date().toISOString().slice(0,10)}.png`;
-        document.body.appendChild(a); a.click(); a.remove();
-      });
-      if(shareDo) shareDo.addEventListener('click', shareViaNative);
-      if(shareCancel) shareCancel.addEventListener('click', closeShareModal);
     }
+    if (updatePreviewBtn) updatePreviewBtn.addEventListener('click', updatePreviewImage);
+    if (shareCopyQuote) shareCopyQuote.addEventListener('click', async ()=>{
+      try{await navigator.clipboard.writeText(quoteEdit.value.trim()); shareCopyQuote.textContent='✅ Copied'; setTimeout(()=>shareCopyQuote.textContent='Copy quote',1200);}catch{}
+    });
+    if (shareDownload) shareDownload.addEventListener('click',()=>{
+      const a=document.createElement('a'); a.href=sharePreview.src; a.download=`DayTale-quote-${new Date().toISOString().slice(0,10)}.png`;
+      document.body.appendChild(a); a.click(); a.remove();
+    });
+    if (shareDo) shareDo.addEventListener('click', shareViaNative);
+    if (shareClose) shareClose.addEventListener('click', closeShareModal);
+    if (shareBackdrop) shareBackdrop.addEventListener('click', (e)=>{ if(e.target===shareBackdrop) closeShareModal(); });
 
-    function openShareModal(){ shareModal.style.display='block'; shareModal.setAttribute('aria-hidden','false'); }
-    function closeShareModal(){ shareModal.style.display='none'; shareModal.setAttribute('aria-hidden','true'); }
+    function openShareModal(){
+      shareBackdrop.classList.add('open');
+      shareBackdrop.setAttribute('aria-hidden','false');
+    }
+    function closeShareModal(){
+      shareBackdrop.classList.remove('open');
+      shareBackdrop.setAttribute('aria-hidden','true');
+    }
 
     async function updatePreviewImage(){
       const dataUrl=await createQuoteImage(quoteEdit.value.trim(), activePalette, true);
@@ -517,10 +600,37 @@ Write the final entry:`;
 
       return canvas.toDataURL('image/png');
 
-      function roundRect(ctx,x,y,w,h,r){const rr=typeof r==='number'?{tl:r,tr:r,br:r,bl:r}:r;ctx.beginPath();ctx.moveTo(x+rr.tl,y);ctx.lineTo(x+w-rr.tr,y);ctx.quadraticCurveTo(x+w,y,x+w,y+rr.tr);ctx.lineTo(x+w,y+h-rr.br);ctx.quadraticCurveTo(x+w,y+h,x+w-rr.br,y+h);ctx.lineTo(x+rr.bl,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-rr.bl);ctx.lineTo(x,y+rr.tl);ctx.quadraticCurveTo(x,y,x+rr.tl,y);ctx.closePath();}
-      function clipRoundRect(ctx,x,y,w,h,r){roundRect(ctx,x,y,w,h,r);ctx.clip();}
-      function wrapText(ctx,text,maxWidth){const words=text.split(/\s+/),lines=[];let line='';for(const w of words){const test=line?line+' '+w:w;if(ctx.measureText(test).width<=maxWidth){line=test;}else{if(line)lines.push(line);line=w;}}if(line)lines.push(line);return lines;}
-      function loadImage(src){return new Promise((resolve,reject)=>{const im=new Image();im.crossOrigin='anonymous';im.onload=()=>resolve(im);im.onerror=reject;im.src=src;});}
+      function roundRect(ctx,x,y,w,h,r){
+        const rr=typeof r==='number'?{tl:r,tr:r,br:r,bl:r}:r;
+        ctx.beginPath();
+        ctx.moveTo(x+rr.tl,y);
+        ctx.lineTo(x+w-rr.tr,y);
+        ctx.quadraticCurveTo(x+w,y,x+w,y+rr.tr);
+        ctx.lineTo(x+w,y+h-rr.br);
+        ctx.quadraticCurveTo(x+w,y+h,x+w-rr.br,y+h);
+        ctx.lineTo(x+rr.bl,y+h);
+        ctx.quadraticCurveTo(x,y+h,x,y+h-rr.bl);
+        ctx.lineTo(x,y+rr.tl);
+        ctx.quadraticCurveTo(x,y,x+rr.tl,y);
+        ctx.closePath();
+      }
+      function clipRoundRect(ctx,x,y,w,h,r){ roundRect(ctx,x,y,w,h,r); ctx.clip(); }
+      function wrapText(ctx,text,maxWidth,lineH){
+        const words=text.split(/\s+/), lines=[]; let line='';
+        for(const w of words){
+          const test=line?line+' '+w:w;
+          if(ctx.measureText(test).width<=maxWidth){ line=test; }
+          else { if(line) lines.push(line); line=w; }
+        }
+        if(line) lines.push(line);
+        return lines;
+      }
+      function loadImage(src){
+        return new Promise((resolve,reject)=>{
+          const im=new Image(); im.crossOrigin='anonymous';
+          im.onload=()=>resolve(im); im.onerror=reject; im.src=src;
+        });
+      }
     }
   </script>
 </body>
