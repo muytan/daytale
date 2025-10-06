@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DayTale: AI Journaling</title>
+  <title>DayTale: AI Daily Journaling</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -44,23 +44,11 @@
     .logo-container{display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:.75rem}
     .logo img{width:64px;height:64px;border-radius:16px;display:block;box-shadow:0 10px 30px var(--shadow)}
     .app-title{
-      font-family:"Cal Sans",sans-serif;font-size:3rem;font-weight:600;
+      font-family:"Cal Sans",sans-serif;font-size:3rem;font-weight:700;
       background:linear-gradient(135deg, var(--lion), var(--primary));
       -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent
     }
-
-    /* Rotating subtitle */
-    .subtitle {
-      color:var(--text-muted);
-      font-size:1.05rem;
-      max-width:720px;
-      margin:0 auto;
-      line-height:1.6;
-      opacity:1;
-      transition: opacity .45s ease;
-      min-height: 1.6em; /* keeps height stable during swaps */
-    }
-    .subtitle.fade { opacity:0; }
+    .subtitle{color:var(--text-muted);font-size:1.05rem;max-width:720px;margin:0 auto;line-height:1.6}
 
     .workspace{display:grid;grid-template-columns:1fr 1fr;gap:2rem;min-height:70vh}
 
@@ -77,11 +65,7 @@
 
     .controls{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
     .control-group{display:flex;flex-direction:column;gap:.4rem}
-    .control-label{
-      font-size:.85rem;
-      font-weight:600;color:var(--text-muted);
-      text-transform:uppercase;letter-spacing:.4px
-    }
+    .control-label{font-size:.78rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px}
 
     select{
       background:rgba(255,255,255,0.08);border:1px solid var(--border-light);color:var(--text-light);
@@ -91,23 +75,15 @@
     }
     .light-mode select{color:var(--text-dark);background:rgba(0,0,0,0.04);border:1px solid var(--border-dark)}
 
-    .btn{
-      border:none;padding:.75rem 1.25rem;border-radius:12px;cursor:pointer;font-weight:700;font-size:.92rem;transition:all .22s ease;
-      white-space:nowrap;
-    }
-    .btn-primary{
-      background:linear-gradient(135deg, var(--primary), #6b4e2a);
-      color:#fefefe;box-shadow:0 6px 18px rgba(91,58,31,.45)
-    }
+    .btn{border:none;padding:.75rem 1.25rem;border-radius:12px;cursor:pointer;font-weight:700;font-size:.92rem;transition:all .22s ease;white-space:nowrap}
+    .btn-primary{background:linear-gradient(135deg, var(--primary), #3f2c13);color:#fefefe;box-shadow:0 6px 18px rgba(91,58,31,.45)}
     .btn-secondary{background:rgba(255,255,255,0.08);color:var(--text-light);border:1px solid var(--border-light)}
     .light-mode .btn-secondary{background:rgba(0,0,0,0.05);color:var(--text-dark);border:1px solid var(--border-dark)}
-    .transform-btn:disabled{opacity:.6;pointer-events:none}
 
     textarea{
       flex:1;background:rgba(0,0,0,0.22);border:1px solid var(--border-light);
       border-radius:12px;padding:1.25rem;color:var(--text-light);
-      font-family:'Arimo', ui-sans-serif, system-ui; font-size:1.05rem;
-      resize:none; line-height:1.7; min-height:220px;
+      font-family:'Arimo', ui-sans-serif, system-ui; font-size:1rem; resize:none; line-height:1.7; min-height:220px;
     }
     .light-mode textarea{background:rgba(255,255,255,0.56);color:var(--text-dark);border:1px solid var(--border-dark)}
 
@@ -116,39 +92,31 @@
     .light-mode .hint{color:#444}
     .light-mode .subhint{color:#555}
 
-    .fairy-list{list-style:none; margin:.25rem 0 .25rem 0; padding:0;}
-    .fairy-list li{
-      display:flex;align-items:flex-start;gap:.5rem;color:#cfcfd8;
-      font-size:.92rem;line-height:1.7;
-    }
-    .fairy-list .icon{font-size:1rem;line-height:1.2}
-    .light-mode .fairy-list li{color:#444}
-
     .output{
       flex:1;overflow-y:auto;color:var(--text-light);line-height:1.85;padding:1.25rem;
-      font-family:'Arimo', ui-sans-serif, system-ui; font-size:1.05rem;
-      white-space:pre-wrap;background:rgba(255,255,255,0.03);
-      border:1px solid var(--border-light);border-radius:12px;min-height:220px;
-      box-shadow: inset 0 2px 8px rgba(0,0,0,.08);
+      font-family:'Arimo', ui-sans-serif, system-ui; font-size:1.02rem; white-space:pre-wrap;
+      background:rgba(255,255,255,0.03);border:1px solid var(--border-light);border-radius:12px;min-height:220px
     }
     .light-mode .output{color:var(--text-dark);background:rgba(0,0,0,0.03);border:1px solid var(--border-dark)}
 
     .loading{display:none;text-align:center;padding:1.35rem;color:var(--lion);font-style:italic;animation:pulse 1.5s ease-in-out infinite}
     @keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
 
-    /* Toolbar at top of output: palette (left) + actions (right) */
-    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
+    /* Toolbar at top of output: Share + circular swatches */
+    .toolbar{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
     #swatch-bar{display:flex;gap:.5rem;align-items:center;position:relative}
     .swatch{
-      position:relative;width:28px;height:28px;border-radius:50%;
+      position:relative;
+      width:28px;height:28px;border-radius:50%;
       border:1px solid rgba(0,0,0,.18); cursor:pointer; outline:0;
       transition: box-shadow .2s ease, transform .2s ease;
     }
-    .swatch:hover{box-shadow:0 0 0 6px rgba(255,255,255,.18), 0 0 12px rgba(0,0,0,.28); transform: translateY(-1px);}
+    .swatch:hover{
+      box-shadow:0 0 0 6px rgba(255,255,255,.18), 0 0 12px rgba(0,0,0,.28);
+      transform: translateY(-1px);
+    }
     .swatch.active{ box-shadow:0 0 0 3px #fff inset, 0 0 0 3px rgba(255,255,255,.35); }
     .light-mode .swatch.active{ box-shadow:0 0 0 3px #222 inset, 0 0 0 3px rgba(0,0,0,.25); }
-
-    .toolbar-actions{display:flex;gap:.5rem;align-items:center}
 
     .swatch::after{
       content:attr(data-name);
@@ -161,6 +129,11 @@
     }
     .swatch:hover::after{ opacity:1; transform:translateX(-50%) translateY(2px); }
     .light-mode .swatch::after{ color:#111827; }
+
+    .fairy-list{list-style:none; margin:.25rem 0 .25rem 0; padding:0;}
+    .fairy-list li{display:flex;align-items:flex-start;gap:.5rem;color:#cfcfd8;font-size:.92rem;line-height:1.5}
+    .fairy-list .icon{font-size:1rem;line-height:1.2}
+    .light-mode .fairy-list li{color:#444}
 
     /* CENTERED SHARE MODAL */
     .modal-backdrop{
@@ -176,42 +149,79 @@
       background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
       border:1px solid rgba(255,255,255,.18);
       box-shadow:0 30px 80px rgba(0,0,0,.45);
-      border-radius:18px; padding:18px; color:#f8fafc; position:relative;
+      border-radius:18px; padding:18px;
+      color:#f8fafc; position:relative;
     }
-    .light-mode .modal-card{ background:rgba(255,255,255,.96); border:1px solid #e5e7eb; color:#111827; }
-    .modal-row{ display:grid; grid-template-columns:1.2fr .8fr; gap:16px; }
+    .light-mode .modal-card{
+      background:rgba(255,255,255,.96);
+      border:1px solid #e5e7eb; color:#111827;
+    }
+    .modal-row{
+      display:grid; grid-template-columns:1.2fr .8fr; gap:16px;
+    }
     .modal-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
     .modal-card textarea{
       width:100%; min-height:96px; border-radius:12px; border:1px solid #e5e7eb;
-      background:#ffffff; color:#111827; padding:.75rem;
+      background:#ffffff; color:#111827; padding:.75rem; font-size:1rem;
     }
     .modal-title{font-weight:800; margin-bottom:.35rem; font-family:"Cal Sans",sans-serif}
     #share-preview{width:100%; height:auto; border-radius:12px; display:block}
-
     .close-x{
-      position:absolute; right:8px; top:6px; background:transparent; border:none; color:#fff; font-size:22px; cursor:pointer;
-      padding:12px;
+      position:absolute; right:8px; top:6px; background:transparent; border:none; color:#fff; font-size:22px; cursor:pointer; padding:12px;
     }
     .light-mode .close-x{ color:#111; }
 
-    /* Quote candidates */
-    #quote-candidates{ display:flex; flex-wrap:wrap; gap:.5rem; }
-    .quote-chip{border:1px solid rgba(198,165,117,.5);background:rgba(198,165,117,.1);color:#f1f5f9;padding:.5rem .6rem;border-radius:999px;cursor:pointer}
+    .quote-chip{border:1px solid rgba(198,165,117,.5);background:rgba(198,165,117,.1);color:#f1f5f9;padding:.5rem .6rem;border-radius:999px;margin:.25rem;cursor:pointer}
     .quote-chip.active{background:rgba(198,165,117,.25)}
     .light-mode .quote-chip{color:#1f2937}
 
-    /* Mobile tweaks */
+    /* Always let chips wrap (desktop unaffected) */
+    #quote-candidates{display:flex;flex-wrap:wrap;gap:.5rem}
+
+    /* ------------------------------ */
+    /* MOBILE-ONLY IMPROVEMENTS       */
+    /* ------------------------------ */
     @media (max-width: 768px){
-      .workspace{grid-template-columns:1fr;gap:.75rem}
-      .container{padding:1rem}
-      .app-title{font-size:2.2rem}
-      .controls{flex-direction:column;align-items:stretch}
-      .control-group{width:100%}
-      select{width:100%}
-      textarea{ min-height:280px; }
-      .swatch{ width:40px; height:40px; }
-      .swatch:hover{ transform:none; box-shadow:none; }
-      .example-prompt{ padding:.9rem !important; }
+
+      /* 1) Center everything visually */
+      .header, .panel, .panel-header, .controls, .toolbar { text-align:center; justify-content:center; }
+      .logo-container { justify-content:center; }
+      .panel-header { gap:.75rem; }
+      .controls { width:100%; }
+      .control-group { align-items:center; }
+      .panel-title { width:100%; text-align:center; }
+
+      /* 2) Typography & readability tweaks */
+      textarea { font-size:1.05rem; min-height:280px; }
+      .output { font-size:1.05rem; box-shadow: inset 0 2px 8px rgba(0,0,0,.08); }
+
+      /* 3) Button + CTA behavior */
+      .btn { min-height:44px; }               /* touch target */
+      .transform-btn { position:sticky; bottom:1rem; z-index:5; }
+      .btn:disabled { opacity:.6; pointer-events:none; }
+
+      /* 4) Labels & bullets */
+      .control-label { font-size:.85rem; }
+      .fairy-list li { line-height:1.7; justify-content:center; }
+
+      /* 5) Swatches bigger for touch; disable hover transforms */
+      .swatch { width:40px; height:40px; }
+      .swatch:hover { transform:none; box-shadow:none; }
+      #swatch-bar { justify-content:center; }
+
+      /* 6) Layout spacing */
+      .workspace { grid-template-columns:1fr; gap:.75rem; }
+      .toolbar { gap:.4rem; flex-wrap:wrap; justify-content:center; }
+      .subtitle { text-align:center; }
+
+      /* 7) Modal: stack image & textarea vertically and enlarge */
+      .modal-card { width:95vw; }
+      .modal-row { grid-template-columns:1fr; }
+      #share-preview { width:100%; height:auto; max-height:60vh; object-fit:contain; }
+      .modal-card textarea { font-size:1.05rem; }
+
+      /* 8) Prevent hover-stuck artifacts on touch */
+      .swatch::after { display:none; }
     }
   </style>
 </head>
@@ -224,9 +234,7 @@
         </div>
         <h1 class="app-title">DayTale</h1>
       </div>
-      <p class="subtitle" id="subtitle">
-      Journal Your Day in 3 Words.
-      </p>
+      <p class="subtitle">Journal Your Day in 3 Words.</p>
     </header>
 
     <div class="workspace">
@@ -237,7 +245,7 @@
           <button class="btn btn-secondary" id="theme-toggle">☀️ Light</button>
         </div>
 
-        <!-- Short bullet list -->
+        <!-- Tiny bullet list (short) -->
         <ul class="fairy-list">
           <li><span class="icon">🧚</span><span>Write “I felt … when … because …”</span></li>
           <li><span class="icon">🧚</span><span>Tell us about your day in a few words</span></li>
@@ -291,21 +299,20 @@
         <div class="panel-header">
           <h3 class="panel-title">Your Journal Entry</h3>
 
-          <!-- Toolbar: palette (left) + actions (right) -->
+          <!-- Toolbar: Share + circular swatches (TOP of output panel) -->
           <div class="toolbar">
             <div id="swatch-bar" aria-label="Quote image color themes"></div>
-            <div class="toolbar-actions">
-              <button class="btn btn-secondary" id="share-btn" disabled>📤 Share</button>
-              <button class="btn btn-secondary" id="copy-btn" disabled>📋 Copy</button>
-            </div>
+            <button class="btn btn-secondary" id="share-btn" style="display:none;">📤 Share</button>
+            <button class="btn btn-secondary" id="copy-btn" style="display:none;">📋 Copy</button>
           </div>
         </div>
 
         <div class="loading" id="loading" style="display:none;">Weaving your day into a story... ✨</div>
-        <div class="output" id="output">
+        <div class="output" id="output" tabindex="0">
           Your transformed journal entry will appear here.
         </div>
 
+        <!-- Quote candidates -->
         <div id="candidates-wrap" style="display:none;margin-top:1rem;">
           <div id="quote-candidates"></div>
         </div>
@@ -349,7 +356,7 @@
     const examplePrompts=document.querySelectorAll('.example-prompt');
     const candidatesWrap=$('candidates-wrap'), candidatesEl=$('quote-candidates');
 
-    // Modal elements
+    // Modal
     const shareBackdrop=$('share-backdrop');
     const shareClose=$('share-close');
     const sharePreview=$('share-preview');
@@ -371,38 +378,6 @@
       const saved=localStorage.getItem('daytale-theme');
       if(saved==='light'){document.body.classList.add('light-mode');isDark=false;themeToggle.textContent='🌙 Dark';}
     }
-
-    // ROTATING SUBTITLE
-    const subtitleEl = document.getElementById('subtitle');
-    const subtitleLines = [
-      "Write your entire day in 3 quick words.",
-      "Highlight any sentence. Instantly mint a shareable quote.",
-      "Go from scattered thoughts to a clear, thoughtful page.",
-      "Low-effort input, high-quality, supportive reflection.",
-      "Stop trying to write. Start genuinely reflecting.",
-      "The daily log that actually feels like self-care.",
-      "Your tone, your style but faster",
-      "Get a full, comforting entry before you check social media.",
-      "Turn messy notes into mindful, articulate writing.",
-      "Journal your day. Your thoughts. Now."
-    ];
-    let subIdx = 0;
-    function rotateSubtitle(){
-      if(!subtitleEl) return;
-      // fade out
-      subtitleEl.classList.add('fade');
-      setTimeout(()=>{
-        // swap text
-        subIdx = (subIdx + 1) % subtitleLines.length;
-        subtitleEl.textContent = subtitleLines[subIdx];
-        // fade in
-        requestAnimationFrame(()=> subtitleEl.classList.remove('fade'));
-      }, 450);
-    }
-    // initialize first line exactly as displayed, then start cycle
-    // (if the first line in HTML is different, we set array[0] to it)
-    subtitleLines[0] = subtitleEl.textContent.trim() || subtitleLines[0];
-    setInterval(rotateSubtitle, 3600);
 
     // EXAMPLE PROMPTS
     examplePrompts.forEach(p=>{
@@ -467,22 +442,16 @@ Write the final entry:`;
       try{
         transformBtn.disabled=true; transformBtn.textContent='Creating...';
         loading.style.display='block'; output.textContent='';
-
-        // Keep buttons visible but disabled until we have output
-        copyBtn.disabled = true;
-        shareBtn.disabled = true;
-
+        if(copyBtn) copyBtn.style.display='none';
+        if(shareBtn) shareBtn.style.display='none';
         if(candidatesWrap) candidatesWrap.style.display='none';
         if(candidatesEl) candidatesEl.innerHTML='';
 
         const result=await callBackend(prompt);
         output.textContent=result;
+        if(copyBtn) copyBtn.style.display='inline-block';
+        if(shareBtn) shareBtn.style.display='inline-block';
 
-        // enable actions now that we have text
-        copyBtn.disabled = false;
-        shareBtn.disabled = false;
-
-        // quote candidates
         const picks=getQuoteCandidates(result,3);
         if(picks.length && candidatesWrap && candidatesEl){
           candidatesWrap.style.display='block';
@@ -508,11 +477,7 @@ Write the final entry:`;
     // COPY
     if (copyBtn){
       copyBtn.addEventListener('click', async ()=>{
-        try{
-          await navigator.clipboard.writeText(output.textContent||'');
-          copyBtn.textContent='✅ Copied!';
-          setTimeout(()=>copyBtn.textContent='📋 Copy',1200);
-        }catch{}
+        try{await navigator.clipboard.writeText(output.textContent||'');copyBtn.textContent='✅ Copied!';setTimeout(()=>copyBtn.textContent='📋 Copy',1200);}catch{}
       });
     }
 
@@ -541,7 +506,7 @@ Write the final entry:`;
     const PALETTES=[
       {key:'dawn', name:'Dawn Sand', stops:['#f8f3e7','#e7d8b1'], stripe:'#dcc79b', text:'#1b1f29', badge:'#1b1f29'},
       {key:'mist', name:'Mist', stops:['#e6eef6','#cfd9e6'], stripe:'#c8d2e1', text:'#0b1020', badge:'#0b1020'},
-      {key:'rose', name:'Soft Rose', stops:['#ffe5ec','#ffc2d1'], stripe:'#ffd1dc', text:'#1f2937', badge:'#1f2937'},
+      {key:'blush', name:'Blush', stops:['#ffe3e3','#ffd4c7'], stripe:'#ffd9cf', text:'#1f2937', badge:'#1f2937'},
       {key:'sage', name:'Sage', stops:['#e7f2ea','#cfe5d9'], stripe:'#d7eadf', text:'#16302a', badge:'#16302a'},
       {key:'lavender', name:'Lavender', stops:['#ece8ff','#dfd8ff'], stripe:'#e0d9ff', text:'#1e1b4b', badge:'#1e1b4b'},
       {key:'porcelain', name:'Porcelain', stops:['#fafafa','#ececec'], stripe:'#eeeeee', text:'#111827', badge:'#111827'},
@@ -549,7 +514,6 @@ Write the final entry:`;
     ];
     let activePalette='dawn', selectedQuote='';
 
-    // Render swatches
     if (swatchBar){
       swatchBar.innerHTML='';
       PALETTES.forEach(p=>{
@@ -567,12 +531,19 @@ Write the final entry:`;
       });
     }
 
-    // SHARE MODAL
+    // SHARE
     if (shareBtn){
       shareBtn.addEventListener('click', async ()=>{
-        if (shareBtn.disabled) return;
         const text=(output?.textContent||'').trim();
         if(!text){alert('Generate an entry first.');return;}
+
+        // NEW: if user highlighted a sentence in the output, use that
+        const sel = window.getSelection();
+        if (sel && sel.rangeCount && output.contains(sel.anchorNode)) {
+          const pick = sel.toString().trim();
+          if (pick) selectedQuote = pick;
+        }
+
         if(!selectedQuote){ const picks=getQuoteCandidates(text,1); selectedQuote=picks[0]||text.slice(0,220); }
         quoteEdit.value=selectedQuote;
         await updatePreviewImage();
@@ -621,17 +592,17 @@ Write the final entry:`;
     }
 
     async function createQuoteImage(quote, paletteKey='dawn', includeLogo=true){
-      const PALETTE=(PALETTES.find(x=>x.key===paletteKey)||PALETTES[0]);
+      const style=(PALETTES.find(x=>x.key===paletteKey)||PALETTES[0]);
       const W=1080, H=1920;
       const canvas=document.createElement('canvas'); canvas.width=W; canvas.height=H;
       const ctx=canvas.getContext('2d');
 
       const grad=ctx.createLinearGradient(0,0,W,H);
-      grad.addColorStop(0,PALETTE.stops[0]); grad.addColorStop(1,PALETTE.stops[1]);
+      grad.addColorStop(0,style.stops[0]); grad.addColorStop(1,style.stops[1]);
       ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
 
       ctx.globalAlpha=0.08;
-      for(let i=0;i<22;i++){ ctx.fillStyle=i%2?'#ffffff':PALETTE.stripe; ctx.fillRect(-W,i*80,W*3,2); }
+      for(let i=0;i<22;i++){ ctx.fillStyle=i%2?'#ffffff':style.stripe; ctx.fillRect(-W,i*80,W*3,2); }
       ctx.globalAlpha=1;
 
       const marginX=120, marginY=240;
@@ -639,10 +610,10 @@ Write the final entry:`;
       const badgeW=340, badgeH=72, badgeR=18;
       const badgeX=(W-badgeW)/2, badgeY=marginY-(badgeH+12);
       ctx.fillStyle='rgba(0,0,0,0.12)'; roundRect(ctx,badgeX,badgeY,badgeW,badgeH,badgeR); ctx.fill();
-      ctx.fillStyle=PALETTE.badge; ctx.font='700 26px Arimo, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillStyle=style.badge; ctx.font='700 26px Arimo, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
       ctx.fillText('My Quote of My Day', W/2, badgeY+badgeH/2);
 
-      ctx.fillStyle=PALETTE.text; ctx.textAlign='left';
+      ctx.fillStyle=style.text; ctx.textAlign='left';
       let fontSize=64, wrapped;
       while(fontSize>=40){
         ctx.font=`800 ${fontSize}px Arimo, sans-serif`;
@@ -669,7 +640,6 @@ Write the final entry:`;
 
       return canvas.toDataURL('image/png');
 
-      /* helpers */
       function roundRect(ctx,x,y,w,h,r){
         const rr=typeof r==='number'?{tl:r,tr:r,br:r,bl:r}:r;
         ctx.beginPath();
@@ -685,16 +655,21 @@ Write the final entry:`;
         ctx.closePath();
       }
       function clipRoundRect(ctx,x,y,w,h,r){ roundRect(ctx,x,y,w,h,r); ctx.clip(); }
-      function wrapText(ctx,text,maxWidth,lineHeight){
+      function wrapText(ctx,text,maxWidth,lineH){
         const words=text.split(/\s+/); const lines=[]; let line='';
-        for(const w of words){ const test=line?line+' '+w:w;
+        for(const w of words){
+          const test=line?line+' '+w:w;
           if(ctx.measureText(test).width<=maxWidth){ line=test; }
           else { if(line) lines.push(line); line=w; }
         }
-        if(line) lines.push(line); return lines;
+        if(line) lines.push(line);
+        return lines;
       }
       function loadImage(src){
-        return new Promise((resolve,reject)=>{ const im=new Image(); im.crossOrigin='anonymous'; im.onload=()=>resolve(im); im.onerror=reject; im.src=src; });
+        return new Promise((resolve,reject)=>{
+          const im=new Image(); im.crossOrigin='anonymous';
+          im.onload=()=>resolve(im); im.onerror=reject; im.src=src;
+        });
       }
     }
   </script>
