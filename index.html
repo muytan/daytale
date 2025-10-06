@@ -44,11 +44,23 @@
     .logo-container{display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:.75rem}
     .logo img{width:64px;height:64px;border-radius:16px;display:block;box-shadow:0 10px 30px var(--shadow)}
     .app-title{
-      font-family:"Cal Sans",sans-serif;font-size:3rem;font-weight:600; /* 700 -> 600 */
+      font-family:"Cal Sans",sans-serif;font-size:3rem;font-weight:600;
       background:linear-gradient(135deg, var(--lion), var(--primary));
       -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent
     }
-    .subtitle{color:var(--text-muted);font-size:1.05rem;max-width:720px;margin:0 auto;line-height:1.6}
+
+    /* Rotating subtitle */
+    .subtitle {
+      color:var(--text-muted);
+      font-size:1.05rem;
+      max-width:720px;
+      margin:0 auto;
+      line-height:1.6;
+      opacity:1;
+      transition: opacity .45s ease;
+      min-height: 1.6em; /* keeps height stable during swaps */
+    }
+    .subtitle.fade { opacity:0; }
 
     .workspace{display:grid;grid-template-columns:1fr 1fr;gap:2rem;min-height:70vh}
 
@@ -66,7 +78,7 @@
     .controls{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
     .control-group{display:flex;flex-direction:column;gap:.4rem}
     .control-label{
-      font-size:.85rem; /* .78rem -> .85rem */
+      font-size:.85rem;
       font-weight:600;color:var(--text-muted);
       text-transform:uppercase;letter-spacing:.4px
     }
@@ -81,20 +93,20 @@
 
     .btn{
       border:none;padding:.75rem 1.25rem;border-radius:12px;cursor:pointer;font-weight:700;font-size:.92rem;transition:all .22s ease;
-      white-space:nowrap; /* prevent wrapping */
+      white-space:nowrap;
     }
     .btn-primary{
-      background:linear-gradient(135deg, var(--primary), #6b4e2a); /* lightened */
+      background:linear-gradient(135deg, var(--primary), #6b4e2a);
       color:#fefefe;box-shadow:0 6px 18px rgba(91,58,31,.45)
     }
     .btn-secondary{background:rgba(255,255,255,0.08);color:var(--text-light);border:1px solid var(--border-light)}
     .light-mode .btn-secondary{background:rgba(0,0,0,0.05);color:var(--text-dark);border:1px solid var(--border-dark)}
-    .transform-btn:disabled{opacity:.6;pointer-events:none} /* clearer disabled */
+    .transform-btn:disabled{opacity:.6;pointer-events:none}
 
     textarea{
       flex:1;background:rgba(0,0,0,0.22);border:1px solid var(--border-light);
       border-radius:12px;padding:1.25rem;color:var(--text-light);
-      font-family:'Arimo', ui-sans-serif, system-ui; font-size:1.05rem; /* 1rem -> 1.05rem */
+      font-family:'Arimo', ui-sans-serif, system-ui; font-size:1.05rem;
       resize:none; line-height:1.7; min-height:220px;
     }
     .light-mode textarea{background:rgba(255,255,255,0.56);color:var(--text-dark);border:1px solid var(--border-dark)}
@@ -107,17 +119,17 @@
     .fairy-list{list-style:none; margin:.25rem 0 .25rem 0; padding:0;}
     .fairy-list li{
       display:flex;align-items:flex-start;gap:.5rem;color:#cfcfd8;
-      font-size:.92rem;line-height:1.7; /* 1.5 -> 1.7 */
+      font-size:.92rem;line-height:1.7;
     }
     .fairy-list .icon{font-size:1rem;line-height:1.2}
     .light-mode .fairy-list li{color:#444}
 
     .output{
       flex:1;overflow-y:auto;color:var(--text-light);line-height:1.85;padding:1.25rem;
-      font-family:'Arimo', ui-sans-serif, system-ui; font-size:1.05rem; /* 1rem -> 1.05rem */
+      font-family:'Arimo', ui-sans-serif, system-ui; font-size:1.05rem;
       white-space:pre-wrap;background:rgba(255,255,255,0.03);
       border:1px solid var(--border-light);border-radius:12px;min-height:220px;
-      box-shadow: inset 0 2px 8px rgba(0,0,0,.08); /* subtle inner shadow */
+      box-shadow: inset 0 2px 8px rgba(0,0,0,.08);
     }
     .light-mode .output{color:var(--text-dark);background:rgba(0,0,0,0.03);border:1px solid var(--border-dark)}
 
@@ -178,30 +190,28 @@
 
     .close-x{
       position:absolute; right:8px; top:6px; background:transparent; border:none; color:#fff; font-size:22px; cursor:pointer;
-      padding:12px; /* bigger hit area */
+      padding:12px;
     }
     .light-mode .close-x{ color:#111; }
 
     /* Quote candidates */
-    #quote-candidates{ display:flex; flex-wrap:wrap; gap:.5rem; } /* prevent horizontal scroll */
+    #quote-candidates{ display:flex; flex-wrap:wrap; gap:.5rem; }
     .quote-chip{border:1px solid rgba(198,165,117,.5);background:rgba(198,165,117,.1);color:#f1f5f9;padding:.5rem .6rem;border-radius:999px;cursor:pointer}
     .quote-chip.active{background:rgba(198,165,117,.25)}
     .light-mode .quote-chip{color:#1f2937}
 
-    @keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
-
     /* Mobile tweaks */
     @media (max-width: 768px){
-      .workspace{grid-template-columns:1fr;gap:.75rem} /* 1.25rem -> .75rem */
+      .workspace{grid-template-columns:1fr;gap:.75rem}
       .container{padding:1rem}
       .app-title{font-size:2.2rem}
       .controls{flex-direction:column;align-items:stretch}
       .control-group{width:100%}
       select{width:100%}
-      textarea{ min-height:280px; } /* 220 -> 280 */
-      .swatch{ width:40px; height:40px; } /* larger touch target */
-      .swatch:hover{ transform:none; box-shadow:none; } /* disable hover effect on mobile */
-      .example-prompt{ padding:.9rem !important; } /* .7 -> .9 for thumb */
+      textarea{ min-height:280px; }
+      .swatch{ width:40px; height:40px; }
+      .swatch:hover{ transform:none; box-shadow:none; }
+      .example-prompt{ padding:.9rem !important; }
     }
   </style>
 </head>
@@ -214,7 +224,9 @@
         </div>
         <h1 class="app-title">DayTale</h1>
       </div>
-      <p class="subtitle">Transform your scattered thoughts and daily moments into a grounded, compassionate journal entry.</p>
+      <p class="subtitle" id="subtitle">
+        Transform your scattered thoughts and daily moments into a grounded, compassionate journal entry.
+      </p>
     </header>
 
     <div class="workspace">
@@ -257,7 +269,6 @@
 
         <textarea id="input" aria-label="Write a few notes about your day" placeholder="A few notes... tired this morning, anxious before the meeting, walked at lunch, felt lighter after talking with a friend, cooked pasta at night"></textarea>
 
-        <!-- No text between textarea and button -->
         <button class="btn btn-primary transform-btn" id="transform">✨ Craft My Journal Entry</button>
 
         <p class="subhint">We don’t store entries. Text is processed to generate your draft, then discarded.</p>
@@ -338,7 +349,7 @@
     const examplePrompts=document.querySelectorAll('.example-prompt');
     const candidatesWrap=$('candidates-wrap'), candidatesEl=$('quote-candidates');
 
-    // Modal elements (centered)
+    // Modal elements
     const shareBackdrop=$('share-backdrop');
     const shareClose=$('share-close');
     const sharePreview=$('share-preview');
@@ -360,6 +371,38 @@
       const saved=localStorage.getItem('daytale-theme');
       if(saved==='light'){document.body.classList.add('light-mode');isDark=false;themeToggle.textContent='🌙 Dark';}
     }
+
+    // ROTATING SUBTITLE
+    const subtitleEl = document.getElementById('subtitle');
+    const subtitleLines = [
+      "Write your entire day in 3 quick words.",
+      "Highlight any sentence. Instantly mint a shareable quote.",
+      "Go from scattered thoughts to a clear, thoughtful page.",
+      "Low-effort input, high-quality, supportive reflection.",
+      "Stop trying to write. Start genuinely reflecting.",
+      "The daily log that actually feels like self-care.",
+      "Your tone, your style but faster",
+      "Get a full, comforting entry before you check social media.",
+      "Turn messy notes into mindful, articulate writing.",
+      "Journal your day. Your thoughts. Now."
+    ];
+    let subIdx = 0;
+    function rotateSubtitle(){
+      if(!subtitleEl) return;
+      // fade out
+      subtitleEl.classList.add('fade');
+      setTimeout(()=>{
+        // swap text
+        subIdx = (subIdx + 1) % subtitleLines.length;
+        subtitleEl.textContent = subtitleLines[subIdx];
+        // fade in
+        requestAnimationFrame(()=> subtitleEl.classList.remove('fade'));
+      }, 450);
+    }
+    // initialize first line exactly as displayed, then start cycle
+    // (if the first line in HTML is different, we set array[0] to it)
+    subtitleLines[0] = subtitleEl.textContent.trim() || subtitleLines[0];
+    setInterval(rotateSubtitle, 3600);
 
     // EXAMPLE PROMPTS
     examplePrompts.forEach(p=>{
@@ -494,11 +537,11 @@ Write the final entry:`;
       return scores.sort((a,b)=>b.score-a.score).slice(0,k).map(o=>o.s.slice(0,300));
     }
 
-    // PALETTES: moved Blush -> Rose (softer red)
+    // PALETTES
     const PALETTES=[
       {key:'dawn', name:'Dawn Sand', stops:['#f8f3e7','#e7d8b1'], stripe:'#dcc79b', text:'#1b1f29', badge:'#1b1f29'},
       {key:'mist', name:'Mist', stops:['#e6eef6','#cfd9e6'], stripe:'#c8d2e1', text:'#0b1020', badge:'#0b1020'},
-      {key:'rose', name:'Soft Rose', stops:['#ffe5ec','#ffc2d1'], stripe:'#ffd1dc', text:'#1f2937', badge:'#1f2937'}, /* subtle Gen Z-friendly rose */
+      {key:'rose', name:'Soft Rose', stops:['#ffe5ec','#ffc2d1'], stripe:'#ffd1dc', text:'#1f2937', badge:'#1f2937'},
       {key:'sage', name:'Sage', stops:['#e7f2ea','#cfe5d9'], stripe:'#d7eadf', text:'#16302a', badge:'#16302a'},
       {key:'lavender', name:'Lavender', stops:['#ece8ff','#dfd8ff'], stripe:'#e0d9ff', text:'#1e1b4b', badge:'#1e1b4b'},
       {key:'porcelain', name:'Porcelain', stops:['#fafafa','#ececec'], stripe:'#eeeeee', text:'#111827', badge:'#111827'},
@@ -506,7 +549,7 @@ Write the final entry:`;
     ];
     let activePalette='dawn', selectedQuote='';
 
-    // Render swatches (left) and keep buttons (right)
+    // Render swatches
     if (swatchBar){
       swatchBar.innerHTML='';
       PALETTES.forEach(p=>{
@@ -524,7 +567,7 @@ Write the final entry:`;
       });
     }
 
-    // SHARE (centered popup)
+    // SHARE MODAL
     if (shareBtn){
       shareBtn.addEventListener('click', async ()=>{
         if (shareBtn.disabled) return;
@@ -536,8 +579,6 @@ Write the final entry:`;
         openShareModal();
       });
     }
-
-    // Update preview / Copy / Download / Share
     if (updatePreviewBtn) updatePreviewBtn.addEventListener('click', updatePreviewImage);
     if (shareCopyQuote) shareCopyQuote.addEventListener('click', async ()=>{
       try{await navigator.clipboard.writeText(quoteEdit.value.trim()); shareCopyQuote.textContent='✅ Copied'; setTimeout(()=>shareCopyQuote.textContent='Copy quote',1200);}catch{}
