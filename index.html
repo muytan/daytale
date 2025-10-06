@@ -174,9 +174,21 @@
     .quote-chip{border:1px solid rgba(198,165,117,.5);background:rgba(198,165,117,.1);color:#f1f5f9;padding:.5rem .6rem;border-radius:999px;margin:.25rem;cursor:pointer}
     .quote-chip.active{background:rgba(198,165,117,.25)}
     .light-mode .quote-chip{color:#1f2937}
-
-    /* Always let chips wrap (desktop unaffected) */
     #quote-candidates{display:flex;flex-wrap:wrap;gap:.5rem}
+
+    /* --- Suggestion CTA + Modal (NEW) --- */
+    .suggest-wrap{display:flex;justify-content:center;margin-top:1.5rem}
+    #suggest-btn{background:linear-gradient(135deg, var(--lion), var(--primary)); color:#0b1020}
+    #suggest-backdrop .modal-card{width:min(92vw, 640px)}
+    .suggest-form label{display:block;margin:.5rem 0 .25rem;font-size:.9rem;color:#e5e7eb}
+    .light-mode .suggest-form label{color:#374151}
+    .suggest-form input, .suggest-form textarea{
+      width:100%; border:1px solid #e5e7eb; border-radius:10px; padding:.7rem; font-size:1rem;
+      background:#fff; color:#111827;
+    }
+    .suggest-status{font-size:.9rem;margin-top:.5rem}
+    .suggest-status.ok{color:#10b981}
+    .suggest-status.err{color:#ef4444}
 
     /* ------------------------------ */
     /* MOBILE-ONLY IMPROVEMENTS       */
@@ -196,7 +208,7 @@
       .output { font-size:1.05rem; box-shadow: inset 0 2px 8px rgba(0,0,0,.08); }
 
       /* 3) Button + CTA behavior */
-      .btn { min-height:44px; }               /* touch target */
+      .btn { min-height:44px; }
       .transform-btn { position:sticky; bottom:1rem; z-index:5; }
       .btn:disabled { opacity:.6; pointer-events:none; }
 
@@ -299,7 +311,7 @@
         <div class="panel-header">
           <h3 class="panel-title">Your Journal Entry</h3>
 
-          <!-- Toolbar: Share + circular swatches (TOP of output panel) -->
+          <!-- Toolbar: swatches + Share + Copy -->
           <div class="toolbar">
             <div id="swatch-bar" aria-label="Quote image color themes"></div>
             <button class="btn btn-secondary" id="share-btn" style="display:none;">📤 Share</button>
@@ -317,6 +329,11 @@
           <div id="quote-candidates"></div>
         </div>
       </div>
+    </div>
+
+    <!-- Suggestion button (NEW) -->
+    <div class="suggest-wrap">
+      <button id="suggest-btn" class="btn">Tell me what you think</button>
     </div>
 
     <!-- CENTERED SHARE MODAL -->
@@ -342,6 +359,30 @@
       </div>
     </div>
 
+    <!-- SUGGESTION MODAL (NEW) -->
+    <div id="suggest-backdrop" class="modal-backdrop" aria-hidden="true">
+      <button class="close-x" id="suggest-close" aria-label="Close">✕</button>
+      <div class="modal-card">
+        <div class="modal-title">Tell me your idea ✨</div>
+        <form id="suggest-form" class="suggest-form">
+          <label for="s-name">Name (optional)</label>
+          <input id="s-name" name="name" type="text" placeholder="Your name (optional)"/>
+
+          <label for="s-email">Email (optional)</label>
+          <input id="s-email" name="email" type="email" placeholder="you@example.com (optional)"/>
+
+          <label for="s-message">Your message (required)</label>
+          <textarea id="s-message" name="message" placeholder="Tell me your idea or how to make it better…" required></textarea>
+
+          <div class="modal-actions" style="margin-top:.75rem">
+            <button type="submit" class="btn btn-secondary">Send</button>
+            <button type="button" id="suggest-cancel" class="btn btn-secondary">Cancel</button>
+          </div>
+          <div id="suggest-status" class="suggest-status" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+
   </div>
 
   <script>
@@ -356,7 +397,7 @@
     const examplePrompts=document.querySelectorAll('.example-prompt');
     const candidatesWrap=$('candidates-wrap'), candidatesEl=$('quote-candidates');
 
-    // Modal
+    // Modal: Share
     const shareBackdrop=$('share-backdrop');
     const shareClose=$('share-close');
     const sharePreview=$('share-preview');
@@ -365,6 +406,14 @@
     const shareCopyQuote=$('share-copyquote');
     const shareDownload=$('share-download');
     const shareDo=$('share-do');
+
+    // Modal: Suggest (NEW)
+    const suggestBtn=$('suggest-btn');
+    const suggestBackdrop=$('suggest-backdrop');
+    const suggestClose=$('suggest-close');
+    const suggestCancel=$('suggest-cancel');
+    const suggestForm=$('suggest-form');
+    const suggestStatus=$('suggest-status');
 
     // THEME
     let isDark=true;
@@ -537,7 +586,7 @@ Write the final entry:`;
         const text=(output?.textContent||'').trim();
         if(!text){alert('Generate an entry first.');return;}
 
-        // NEW: if user highlighted a sentence in the output, use that
+        // if user highlighted a sentence in the output, use that
         const sel = window.getSelection();
         if (sel && sel.rangeCount && output.contains(sel.anchorNode)) {
           const pick = sel.toString().trim();
@@ -671,6 +720,37 @@ Write the final entry:`;
           im.onload=()=>resolve(im); im.onerror=reject; im.src=src;
         });
       }
+    }
+
+    // ---- Suggestion modal wiring (NEW) ----
+    function openSuggest(){ suggestBackdrop.classList.add('open'); suggestBackdrop.setAttribute('aria-hidden','false'); }
+    function closeSuggest(){ suggestBackdrop.classList.remove('open'); suggestBackdrop.setAttribute('aria-hidden','true'); }
+    if (suggestBtn) suggestBtn.addEventListener('click', openSuggest);
+    if (suggestClose) suggestClose.addEventListener('click', closeSuggest);
+    if (suggestCancel) suggestCancel.addEventListener('click', closeSuggest);
+    if (suggestBackdrop) suggestBackdrop.addEventListener('click', (e)=>{ if(e.target===suggestBackdrop) closeSuggest(); });
+
+    // AJAX submit to Formspree
+    if (suggestForm){
+      suggestForm.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const message = document.getElementById('s-message').value.trim();
+        if(!message){ suggestStatus.textContent='Please write your idea before sending.'; suggestStatus.className='suggest-status err'; return; }
+        suggestStatus.textContent='Sending…'; suggestStatus.className='suggest-status';
+
+        try{
+          const formData = new FormData(suggestForm);
+          const resp = await fetch('https://formspree.io/f/xblzyelp', { method:'POST', body:formData, headers:{'Accept':'application/json'} });
+          if (resp.ok){
+            suggestStatus.textContent='Thanks! Your idea has been sent.'; suggestStatus.className='suggest-status ok';
+            suggestForm.reset();
+          } else {
+            suggestStatus.textContent='Could not send right now. Please try again later.'; suggestStatus.className='suggest-status err';
+          }
+        }catch(err){
+          suggestStatus.textContent='Network error. Please try again.'; suggestStatus.className='suggest-status err';
+        }
+      });
     }
   </script>
 </body>
