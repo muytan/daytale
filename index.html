@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DayTale: AI Daily Journaling</title>
+  <meta charset="UTF-8"/>
+  <!-- Keep desktop same; add viewport-fit to behave on iOS and eliminate weird initial zoom -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>DayTale - Transform Your Day Into Stories</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -12,51 +13,54 @@
 
   <style>
     :root{
-      --oxford:#050a30;   --kobicha:#5b3a1f;  --lion:#c6a575;
-      --bg-dark: var(--oxford); --bg-card-dark: rgba(5,10,48,0.60);
-      --bg-light:#fefefe; --bg-card-light: rgba(255,255,255,0.85);
-      --primary: var(--kobicha); --primary-2: var(--lion);
+      /* existing palette */
+      --oxford:#050a30; --kobicha:#5b3a1f; --lion:#c6a575;
+      --bg-dark:var(--oxford); --bg-card-dark:rgba(5,10,48,.60);
+      --bg-light:#fefefe; --bg-card-light:rgba(255,255,255,.85);
+      --primary:var(--kobicha); --primary-2:var(--lion);
       --text-dark:#1f2937; --text-light:#f9fafb; --text-muted:#9ca3af;
-      --border-light: rgba(255,255,255,0.14); --border-dark: rgba(0,0,0,0.14);
-      --shadow: rgba(0,0,0,0.28);
+      --border-light:rgba(255,255,255,.14); --border-dark:rgba(0,0,0,.14);
+      --shadow:rgba(0,0,0,.28);
     }
     *{margin:0;padding:0;box-sizing:border-box}
-
+    html,body{height:100%}
     body{
       font-family:'Arimo',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      min-height:100vh;
       background:
-        radial-gradient(circle at 20% 50%, rgba(198,165,117,0.25) 0%, transparent 55%),
-        radial-gradient(circle at 80% 15%, rgba(91,58,31,0.25) 0%, transparent 55%),
+        radial-gradient(circle at 20% 50%, rgba(198,165,117,.25) 0%, transparent 55%),
+        radial-gradient(circle at 80% 15%, rgba(91,58,31,.25) 0%, transparent 55%),
         var(--bg-dark);
-      color:var(--text-light); transition:all .35s ease; overflow-x:hidden;
+      color:var(--text-light);
+      transition:all .35s ease;
+      overflow-x:hidden;
     }
     body.light-mode{
       background:
-        radial-gradient(circle at 18% 48%, rgba(198,165,117,0.12) 0%, transparent 55%),
-        radial-gradient(circle at 82% 18%, rgba(91,58,31,0.12) 0%, transparent 55%),
+        radial-gradient(circle at 18% 48%, rgba(198,165,117,.12) 0%, transparent 55%),
+        radial-gradient(circle at 82% 18%, rgba(91,58,31,.12) 0%, transparent 55%),
         var(--bg-light);
       color:var(--text-dark);
     }
 
     .container{max-width:1200px;margin:0 auto;padding:2rem;display:flex;flex-direction:column;gap:3rem}
-    .header{text-align:center;margin-bottom:1rem}
-    .logo-container{display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:.75rem}
+    .header{text-align:center;margin-bottom:.25rem}
+    .logo-container{display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:.5rem}
     .logo img{width:64px;height:64px;border-radius:16px;display:block;box-shadow:0 10px 30px var(--shadow)}
     .app-title{
-      font-family:"Cal Sans",sans-serif;font-size:3rem;font-weight:700;
-      background:linear-gradient(135deg, var(--lion), var(--primary));
-      -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent
+      font-family:"Cal Sans",sans-serif; font-size:3rem; font-weight:700;
+      background:linear-gradient(135deg,var(--lion),var(--primary));
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
     }
-    .subtitle{color:var(--text-muted);font-size:1.05rem;max-width:720px;margin:0 auto;line-height:1.6}
+    .subtitle{color:var(--text-muted);font-size:1.05rem;max-width:720px;margin:0 auto;line-height:1.6;text-align:center}
 
     .workspace{display:grid;grid-template-columns:1fr 1fr;gap:2rem;min-height:70vh}
 
     .panel{
-      background:var(--bg-card-dark);backdrop-filter:blur(18px);
+      background:var(--bg-card-dark);
+      backdrop-filter:blur(18px);
       border-radius:20px;border:1px solid var(--border-light);
       padding:2rem;display:flex;flex-direction:column;gap:1.25rem;
-      box-shadow:0 20px 60px rgba(0,0,0,.32)
+      box-shadow:0 20px 60px rgba(0,0,0,.32);
     }
     .light-mode .panel{background:var(--bg-card-light);border:1px solid var(--border-dark);box-shadow:0 20px 60px rgba(0,0,0,.12)}
 
@@ -68,24 +72,26 @@
     .control-label{font-size:.78rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px}
 
     select{
-      background:rgba(255,255,255,0.08);border:1px solid var(--border-light);color:var(--text-light);
+      background:rgba(255,255,255,.08);border:1px solid var(--border-light);color:var(--text-light);
       padding:.65rem .9rem;border-radius:12px;cursor:pointer;font-family:inherit;font-size:.92rem;
-      min-width:150px;appearance:none;background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      min-width:150px;appearance:none;
+      background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
       background-position:right .55rem center;background-repeat:no-repeat;background-size:1.35em 1.35em;padding-right:2.2rem;
     }
-    .light-mode select{color:var(--text-dark);background:rgba(0,0,0,0.04);border:1px solid var(--border-dark)}
+    .light-mode select{color:var(--text-dark);background:rgba(0,0,0,.04);border:1px solid var(--border-dark)}
 
-    .btn{border:none;padding:.75rem 1.25rem;border-radius:12px;cursor:pointer;font-weight:700;font-size:.92rem;transition:all .22s ease;white-space:nowrap}
-    .btn-primary{background:linear-gradient(135deg, var(--primary), #3f2c13);color:#fefefe;box-shadow:0 6px 18px rgba(91,58,31,.45)}
-    .btn-secondary{background:rgba(255,255,255,0.08);color:var(--text-light);border:1px solid var(--border-light)}
-    .light-mode .btn-secondary{background:rgba(0,0,0,0.05);color:var(--text-dark);border:1px solid var(--border-dark)}
+    .btn{border:none;padding:.75rem 1.25rem;border-radius:12px;cursor:pointer;font-weight:700;font-size:.92rem;transition:all .22s ease;white-space:nowrap;display:inline-flex;align-items:center;gap:.4rem}
+    .btn-primary{background:linear-gradient(135deg,var(--primary),#3f2c13);color:#fefefe;box-shadow:0 6px 18px rgba(91,58,31,.45)}
+    .btn-secondary{background:rgba(255,255,255,.08);color:var(--text-light);border:1px solid var(--border-light)}
+    .light-mode .btn-secondary{background:rgba(0,0,0,.05);color:var(--text-dark);border:1px solid var(--border-dark)}
+    .transform-btn:disabled{opacity:.6;pointer-events:none}
 
     textarea{
-      flex:1;background:rgba(0,0,0,0.22);border:1px solid var(--border-light);
+      flex:1;background:rgba(0,0,0,.22);border:1px solid var(--border-light);
       border-radius:12px;padding:1.25rem;color:var(--text-light);
       font-family:'Arimo', ui-sans-serif, system-ui; font-size:1rem; resize:none; line-height:1.7; min-height:220px;
     }
-    .light-mode textarea{background:rgba(255,255,255,0.56);color:var(--text-dark);border:1px solid var(--border-dark)}
+    .light-mode textarea{background:rgba(255,255,255,.56);color:var(--text-dark);border:1px solid var(--border-dark)}
 
     .hint{font-size:.9rem;color:#cfcfd8}
     .subhint{font-size:.82rem;color:#b7bac6}
@@ -95,33 +101,30 @@
     .output{
       flex:1;overflow-y:auto;color:var(--text-light);line-height:1.85;padding:1.25rem;
       font-family:'Arimo', ui-sans-serif, system-ui; font-size:1.02rem; white-space:pre-wrap;
-      background:rgba(255,255,255,0.03);border:1px solid var(--border-light);border-radius:12px;min-height:220px
+      background:rgba(255,255,255,.03);border:1px solid var(--border-light);border-radius:12px;min-height:220px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,.08); /* subtle separation */
     }
-    .light-mode .output{color:var(--text-dark);background:rgba(0,0,0,0.03);border:1px solid var(--border-dark)}
+    .light-mode .output{color:var(--text-dark);background:rgba(0,0,0,.03);border:1px solid var(--border-dark)}
 
     .loading{display:none;text-align:center;padding:1.35rem;color:var(--lion);font-style:italic;animation:pulse 1.5s ease-in-out infinite}
     @keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
 
-    /* Toolbar at top of output: Share + circular swatches */
-    .toolbar{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
-    #swatch-bar{display:flex;gap:.5rem;align-items:center;position:relative}
+    /* Toolbar (palette left, actions right) */
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
+    .toolbar-left{display:flex;align-items:center;gap:.5rem}
+    #swatch-bar{display:flex;gap:.5rem;align-items:center}
     .swatch{
-      position:relative;
       width:28px;height:28px;border-radius:50%;
       border:1px solid rgba(0,0,0,.18); cursor:pointer; outline:0;
       transition: box-shadow .2s ease, transform .2s ease;
     }
-    .swatch:hover{
-      box-shadow:0 0 0 6px rgba(255,255,255,.18), 0 0 12px rgba(0,0,0,.28);
-      transform: translateY(-1px);
-    }
+    .swatch:hover{ box-shadow:0 0 0 6px rgba(255,255,255,.18), 0 0 12px rgba(0,0,0,.28); transform: translateY(-1px); }
     .swatch.active{ box-shadow:0 0 0 3px #fff inset, 0 0 0 3px rgba(255,255,255,.35); }
     .light-mode .swatch.active{ box-shadow:0 0 0 3px #222 inset, 0 0 0 3px rgba(0,0,0,.25); }
 
     .swatch::after{
       content:attr(data-name);
-      position:absolute; left:50%; top:115%;
-      transform:translateX(-50%);
+      position:absolute; left:50%; top:115%; transform:translateX(-50%);
       white-space:nowrap; font-size:.75rem; padding:.25rem .5rem;
       color:#0b1020; background:#ffffff; border:1px solid #e5e7eb; border-radius:6px;
       opacity:0; pointer-events:none; transition:opacity .15s ease, transform .15s ease;
@@ -130,110 +133,50 @@
     .swatch:hover::after{ opacity:1; transform:translateX(-50%) translateY(2px); }
     .light-mode .swatch::after{ color:#111827; }
 
-    .fairy-list{list-style:none; margin:.25rem 0 .25rem 0; padding:0;}
-    .fairy-list li{display:flex;align-items:flex-start;gap:.5rem;color:#cfcfd8;font-size:.92rem;line-height:1.5}
-    .fairy-list .icon{font-size:1rem;line-height:1.2}
-    .light-mode .fairy-list li{color:#444}
-
-    /* CENTERED SHARE MODAL */
-    .modal-backdrop{
-      position:fixed; inset:0; display:none;
-      align-items:center; justify-content:center;
-      background:rgba(8,10,20,.58);
-      backdrop-filter: blur(6px) saturate(120%);
-      z-index: 9999;
-    }
-    .modal-backdrop.open{ display:flex; }
-    .modal-card{
-      width:min(92vw, 720px);
-      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
-      border:1px solid rgba(255,255,255,.18);
-      box-shadow:0 30px 80px rgba(0,0,0,.45);
-      border-radius:18px; padding:18px;
-      color:#f8fafc; position:relative;
-    }
-    .light-mode .modal-card{
-      background:rgba(255,255,255,.96);
-      border:1px solid #e5e7eb; color:#111827;
-    }
-    .modal-row{
-      display:grid; grid-template-columns:1.2fr .8fr; gap:16px;
-    }
-    .modal-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
-    .modal-card textarea{
-      width:100%; min-height:96px; border-radius:12px; border:1px solid #e5e7eb;
-      background:#ffffff; color:#111827; padding:.75rem; font-size:1rem;
-    }
-    .modal-title{font-weight:800; margin-bottom:.35rem; font-family:"Cal Sans",sans-serif}
-    #share-preview{width:100%; height:auto; border-radius:12px; display:block}
-    .close-x{
-      position:absolute; right:8px; top:6px; background:transparent; border:none; color:#fff; font-size:22px; cursor:pointer; padding:12px;
-    }
-    .light-mode .close-x{ color:#111; }
-
-    .quote-chip{border:1px solid rgba(198,165,117,.5);background:rgba(198,165,117,.1);color:#f1f5f9;padding:.5rem .6rem;border-radius:999px;margin:.25rem;cursor:pointer}
+    /* Quote chips */
+    #quote-candidates{display:flex;flex-wrap:wrap;gap:.5rem}
+    .quote-chip{border:1px solid rgba(198,165,117,.5);background:rgba(198,165,117,.1);color:#f1f5f9;padding:.5rem .6rem;border-radius:999px;cursor:pointer}
     .quote-chip.active{background:rgba(198,165,117,.25)}
     .light-mode .quote-chip{color:#1f2937}
-    #quote-candidates{display:flex;flex-wrap:wrap;gap:.5rem}
 
-    /* --- Suggestion CTA + Modal (NEW) --- */
-    .suggest-wrap{display:flex;justify-content:center;margin-top:1.5rem}
-    #suggest-btn{background:linear-gradient(135deg, var(--lion), var(--primary)); color:#0b1020}
-    #suggest-backdrop .modal-card{width:min(92vw, 640px)}
-    .suggest-form label{display:block;margin:.5rem 0 .25rem;font-size:.9rem;color:#e5e7eb}
-    .light-mode .suggest-form label{color:#374151}
-    .suggest-form input, .suggest-form textarea{
-      width:100%; border:1px solid #e5e7eb; border-radius:10px; padding:.7rem; font-size:1rem;
-      background:#fff; color:#111827;
-    }
-    .suggest-status{font-size:.9rem;margin-top:.5rem}
-    .suggest-status.ok{color:#10b981}
-    .suggest-status.err{color:#ef4444}
+    /* Share modal (centered) */
+    .modal-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,10,20,.58);backdrop-filter:blur(6px) saturate(120%);z-index:9999}
+    .modal-backdrop.open{display:flex}
+    .modal-card{position:relative;width:min(92vw, 720px);background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.18);box-shadow:0 30px 80px rgba(0,0,0,.45);border-radius:18px;padding:18px;color:#f8fafc}
+    .light-mode .modal-card{background:rgba(255,255,255,.96);border:1px solid #e5e7eb;color:#111827}
+    .modal-title{font-weight:800;margin-bottom:.35rem;font-family:"Cal Sans",sans-serif}
+    .modal-row{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+    #share-preview{width:100%;height:auto;border-radius:12px;display:block}
+    .modal-card textarea{width:100%;min-height:96px;border-radius:12px;border:1px solid #e5e7eb;background:#ffffff;color:#111827;padding:.75rem;font-size:1rem}
+    .modal-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+    .close-x{position:absolute;right:10px;top:8px;background:transparent;border:none;color:#fff;font-size:22px;cursor:pointer;padding:12px}
+    .light-mode .close-x{color:#111}
 
-    /* ------------------------------ */
-    /* MOBILE-ONLY IMPROVEMENTS       */
-    /* ------------------------------ */
+    /* Suggest button area */
+    .suggest-wrap{display:flex;justify-content:center;align-items:center;margin:1.25rem 0}
+    #suggest-btn{color:#fff}
+
+    /* ---------------- MOBILE ONLY FIXES (desktop unchanged) ---------------- */
     @media (max-width: 768px){
-
-      /* 1) Center everything visually */
-      .header, .panel, .panel-header, .controls, .toolbar { text-align:center; justify-content:center; }
-      .logo-container { justify-content:center; }
-      .panel-header { gap:.75rem; }
-      .controls { width:100%; }
-      .control-group { align-items:center; }
-      .panel-title { width:100%; text-align:center; }
-
-      /* 2) Typography & readability tweaks */
-      textarea { font-size:1.05rem; min-height:280px; }
-      .output { font-size:1.05rem; box-shadow: inset 0 2px 8px rgba(0,0,0,.08); }
-
-      /* 3) Button + CTA behavior */
-      .btn { min-height:44px; }
-      .transform-btn { position:sticky; bottom:1rem; z-index:5; }
-      .btn:disabled { opacity:.6; pointer-events:none; }
-
-      /* 4) Labels & bullets */
-      .control-label { font-size:.85rem; }
-      .fairy-list li { line-height:1.7; justify-content:center; }
-
-      /* 5) Swatches bigger for touch; disable hover transforms */
-      .swatch { width:40px; height:40px; }
-      .swatch:hover { transform:none; box-shadow:none; }
-      #swatch-bar { justify-content:center; }
-
-      /* 6) Layout spacing */
-      .workspace { grid-template-columns:1fr; gap:.75rem; }
-      .toolbar { gap:.4rem; flex-wrap:wrap; justify-content:center; }
-      .subtitle { text-align:center; }
-
-      /* 7) Modal: stack image & textarea vertically and enlarge */
-      .modal-card { width:95vw; }
-      .modal-row { grid-template-columns:1fr; }
-      #share-preview { width:100%; height:auto; max-height:60vh; object-fit:contain; }
-      .modal-card textarea { font-size:1.05rem; }
-
-      /* 8) Prevent hover-stuck artifacts on touch */
-      .swatch::after { display:none; }
+      .container{padding:1rem}
+      .header,.subtitle{ text-align:center; margin-left:auto; margin-right:auto; }
+      .app-title{font-size:2.2rem}
+      .workspace{grid-template-columns:1fr;gap:.9rem}
+      .panel{width:min(100%, 640px);margin:0 auto}
+      .panel-header{flex-direction:column;gap:.5rem}
+      .controls{justify-content:center}
+      select, .btn{font-size:16px}               /* stop iOS zoom-on-focus */
+      textarea{font-size:16px; min-height:280px} /* comfier typing; prevents iOS zoom */
+      .toolbar{gap:.4rem}
+      .toolbar-left{width:100%;justify-content:center}
+      #swatch-bar .swatch{width:40px;height:40px} /* bigger tap target */
+      .modal-row{grid-template-columns:1fr}       /* image on top, editor below */
+      .modal-card{width:94vw}
+      .suggest-wrap{margin:1rem 0}
+    }
+    /* Avoid hover “jump” on touch devices */
+    @media (hover:none){
+      .swatch:hover{transform:none;box-shadow:none}
     }
   </style>
 </head>
@@ -241,27 +184,24 @@
   <div class="container">
     <header class="header">
       <div class="logo-container">
-        <div class="logo">
-          <img src="https://i.ibb.co/kVyL1XmY/Gemini-Generated-Image-dvk7kidvk7kidvk7.png" alt="DayTale logo" />
-        </div>
+        <div class="logo"><img src="https://i.ibb.co/kVyL1XmY/Gemini-Generated-Image-dvk7kidvk7kidvk7.png" alt="DayTale logo"/></div>
         <h1 class="app-title">DayTale</h1>
       </div>
-      <p class="subtitle">Journal Your Day in 3 Words.</p>
+      <p class="subtitle" id="subtitle-rotator">Journal Your Day in 3 Words.</p>
     </header>
 
     <div class="workspace">
-      <!-- Left panel -->
+      <!-- LEFT -->
       <div class="panel">
         <div class="panel-header">
           <h3 class="panel-title">Your Raw Day</h3>
           <button class="btn btn-secondary" id="theme-toggle">☀️ Light</button>
         </div>
 
-        <!-- Tiny bullet list (short) -->
-        <ul class="fairy-list">
-          <li><span class="icon">🧚</span><span>Write “I felt … when … because …”</span></li>
-          <li><span class="icon">🧚</span><span>Tell us about your day in a few words</span></li>
-          <li><span class="icon">🧚</span><span>You can write in <strong>any language</strong></span></li>
+        <ul class="fairy-list" style="list-style:none;margin:.25rem 0;padding:0">
+          <li style="display:flex;gap:.5rem;color:#cfcfd8;font-size:.92rem;line-height:1.7"><span>🧚</span><span>Write “I felt … when … because …”</span></li>
+          <li style="display:flex;gap:.5rem;color:#cfcfd8;font-size:.92rem;line-height:1.7"><span>🧚</span><span>Tell us your day in a few words</span></li>
+          <li style="display:flex;gap:.5rem;color:#cfcfd8;font-size:.92rem;line-height:1.7"><span>🧚</span><span>You can write in <strong>any language</strong></span></li>
         </ul>
 
         <div class="controls" style="margin-top:.25rem">
@@ -290,61 +230,57 @@
         <textarea id="input" aria-label="Write a few notes about your day" placeholder="A few notes... tired this morning, anxious before the meeting, walked at lunch, felt lighter after talking with a friend, cooked pasta at night"></textarea>
 
         <button class="btn btn-primary transform-btn" id="transform">✨ Craft My Journal Entry</button>
-
         <p class="subhint">We don’t store entries. Text is processed to generate your draft, then discarded.</p>
 
         <div class="example-prompts" style="display:flex;flex-direction:column;gap:.5rem;margin-top:.25rem">
           <div class="hint">Examples:</div>
-          <div class="example-prompt" style="background:rgba(198,165,117,.12);border:1px solid rgba(198,165,117,.35);border-radius:10px;padding:.7rem;cursor:pointer"
+          <div class="example-prompt" style="background:rgba(198,165,117,.12);border:1px solid rgba(198,165,117,.35);border-radius:10px;padding:.9rem;cursor:pointer"
                data-text="Woke up late and felt tense. Coffee helped a bit. Long meeting drained me. Evening walk with a friend made my chest feel lighter.">
             💭 “Woke up late… long meeting… evening walk…”
           </div>
-          <div class="example-prompt" style="background:rgba(198,165,117,.12);border:1px solid rgba(198,165,117,.35);border-radius:10px;padding:.7rem;cursor:pointer"
+          <div class="example-prompt" style="background:rgba(198,165,117,.12);border:1px solid rgba(198,165,117,.35);border-radius:10px;padding:.9rem;cursor:pointer"
                data-text="Busy day. Proud I finished the draft. Ate alone at lunch and felt lonely. Called my sister and felt understood.">
             💭 “Busy day… proud I finished… felt lonely at lunch… called my sister…”
           </div>
         </div>
       </div>
 
-      <!-- Right panel -->
+      <!-- RIGHT -->
       <div class="panel">
         <div class="panel-header">
           <h3 class="panel-title">Your Journal Entry</h3>
-
-          <!-- Toolbar: swatches + Share + Copy -->
           <div class="toolbar">
-            <div id="swatch-bar" aria-label="Quote image color themes"></div>
-            <button class="btn btn-secondary" id="share-btn" style="display:none;">📤 Share</button>
-            <button class="btn btn-secondary" id="copy-btn" style="display:none;">📋 Copy</button>
+            <div class="toolbar-left">
+              <div id="swatch-bar" aria-label="Quote image color themes"></div>
+            </div>
+            <div class="toolbar-right" style="display:flex;gap:.5rem">
+              <button class="btn btn-secondary" id="share-btn" style="display:none;">📤 Share</button>
+              <button class="btn btn-secondary" id="copy-btn" style="display:none;">📋 Copy</button>
+            </div>
           </div>
         </div>
 
         <div class="loading" id="loading" style="display:none;">Weaving your day into a story... ✨</div>
-        <div class="output" id="output" tabindex="0">
-          Your transformed journal entry will appear here.
-        </div>
+        <div class="output" id="output">Your transformed journal entry will appear here.</div>
 
-        <!-- Quote candidates -->
         <div id="candidates-wrap" style="display:none;margin-top:1rem;">
           <div id="quote-candidates"></div>
         </div>
       </div>
     </div>
 
-    <!-- Suggestion button (NEW) -->
+    <!-- Suggestion Button -->
     <div class="suggest-wrap">
-      <button id="suggest-btn" class="btn">Tell me what you think</button>
+      <button id="suggest-btn" class="btn btn-primary">💡 Tell me what you think</button>
     </div>
 
-    <!-- CENTERED SHARE MODAL -->
+    <!-- Share Modal -->
     <div id="share-backdrop" class="modal-backdrop" aria-hidden="true">
       <button class="close-x" id="share-close" aria-label="Close">✕</button>
       <div class="modal-card">
         <div class="modal-title">Share preview</div>
         <div class="modal-row">
-          <div>
-            <img id="share-preview" alt="Share preview"/>
-          </div>
+          <div><img id="share-preview" alt="Share preview"/></div>
           <div>
             <label for="quote-edit" class="control-label" style="display:block;margin-bottom:.25rem">Edit quote</label>
             <textarea id="quote-edit" placeholder="Edit your quote"></textarea>
@@ -359,124 +295,90 @@
       </div>
     </div>
 
-    <!-- SUGGESTION MODAL (NEW) -->
+    <!-- Suggestion Modal (Formspree) -->
     <div id="suggest-backdrop" class="modal-backdrop" aria-hidden="true">
       <button class="close-x" id="suggest-close" aria-label="Close">✕</button>
       <div class="modal-card">
-        <div class="modal-title">Tell me your idea ✨</div>
-        <form id="suggest-form" class="suggest-form">
-          <label for="s-name">Name (optional)</label>
-          <input id="s-name" name="name" type="text" placeholder="Your name (optional)"/>
-
-          <label for="s-email">Email (optional)</label>
-          <input id="s-email" name="email" type="email" placeholder="you@example.com (optional)"/>
-
-          <label for="s-message">Your message (required)</label>
-          <textarea id="s-message" name="message" placeholder="Tell me your idea or how to make it better…" required></textarea>
-
-          <div class="modal-actions" style="margin-top:.75rem">
-            <button type="submit" class="btn btn-secondary">Send</button>
-            <button type="button" id="suggest-cancel" class="btn btn-secondary">Cancel</button>
+        <div class="modal-title">Tell me your idea 💬</div>
+        <form id="suggest-form" action="https://formspree.io/f/xblzyelp" method="POST">
+          <input type="hidden" name="_subject" value="DayTale feedback"/>
+          <input type="hidden" name="_template" value="table"/>
+          <div style="display:grid;gap:.6rem;margin-top:.25rem">
+            <label>Name (optional)
+              <input type="text" name="name" placeholder="Your name (optional)" style="width:100%;padding:.65rem;border:1px solid #e5e7eb;border-radius:10px"/>
+            </label>
+            <label>Email (optional)
+              <input type="email" name="email" placeholder="you@example.com (optional)" style="width:100%;padding:.65rem;border:1px solid #e5e7eb;border-radius:10px"/>
+            </label>
+            <label>Tell me your idea or how to make it better (required)
+              <textarea name="message" required placeholder="Write your suggestion…" style="width:100%;min-height:120px;padding:.75rem;border:1px solid #e5e7eb;border-radius:10px"></textarea>
+            </label>
           </div>
-          <div id="suggest-status" class="suggest-status" role="status" aria-live="polite"></div>
+          <div class="modal-actions">
+            <button type="submit" class="btn btn-primary">Send</button>
+            <span id="suggest-status" style="font-size:.9rem"></span>
+          </div>
         </form>
       </div>
     </div>
-
   </div>
 
   <script>
-    // CONFIG
-    const BRAND_ICON_URL = 'https://i.ibb.co/kVyL1XmY/Gemini-Generated-Image-dvk7kidvk7kidvk7.png';
+    const BRAND_ICON_URL='https://i.ibb.co/kVyL1XmY/Gemini-Generated-Image-dvk7kidvk7kidvk7.png';
+    const $=id=>document.getElementById(id);
 
-    // ELEMENTS
-    const $ = (id)=>document.getElementById(id);
     const themeToggle=$('theme-toggle'), inputEl=$('input'), styleEl=$('style'), moodEl=$('mood');
     const transformBtn=$('transform'), loading=$('loading'), output=$('output');
     const copyBtn=$('copy-btn'), shareBtn=$('share-btn'), swatchBar=$('swatch-bar');
     const examplePrompts=document.querySelectorAll('.example-prompt');
     const candidatesWrap=$('candidates-wrap'), candidatesEl=$('quote-candidates');
 
-    // Modal: Share
-    const shareBackdrop=$('share-backdrop');
-    const shareClose=$('share-close');
-    const sharePreview=$('share-preview');
-    const quoteEdit=$('quote-edit');
-    const updatePreviewBtn=$('update-preview');
-    const shareCopyQuote=$('share-copyquote');
-    const shareDownload=$('share-download');
-    const shareDo=$('share-do');
+    const shareBackdrop=$('share-backdrop'), shareClose=$('share-close');
+    const sharePreview=$('share-preview'), quoteEdit=$('quote-edit');
+    const updatePreviewBtn=$('update-preview'), shareCopyQuote=$('share-copyquote');
+    const shareDownload=$('share-download'), shareDo=$('share-do');
 
-    // Modal: Suggest (NEW)
-    const suggestBtn=$('suggest-btn');
-    const suggestBackdrop=$('suggest-backdrop');
-    const suggestClose=$('suggest-close');
-    const suggestCancel=$('suggest-cancel');
-    const suggestForm=$('suggest-form');
-    const suggestStatus=$('suggest-status');
+    // Suggest modal
+    const suggestBtn=$('suggest-btn'), suggestBackdrop=$('suggest-backdrop'), suggestClose=$('suggest-close');
+    const suggestForm=$('suggest-form'), suggestStatus=$('suggest-status');
 
-    // THEME
+    // Theme
     let isDark=true;
-    if (themeToggle){
+    if(themeToggle){
       themeToggle.addEventListener('click',()=>{
-        document.body.classList.toggle('light-mode');
-        isDark=!isDark;
+        document.body.classList.toggle('light-mode'); isDark=!isDark;
         themeToggle.textContent=isDark?'☀️ Light':'🌙 Dark';
-        localStorage.setItem('daytale-theme', isDark?'dark':'light');
+        localStorage.setItem('daytale-theme',isDark?'dark':'light');
       });
       const saved=localStorage.getItem('daytale-theme');
       if(saved==='light'){document.body.classList.add('light-mode');isDark=false;themeToggle.textContent='🌙 Dark';}
     }
 
-    // EXAMPLE PROMPTS
+    // Example prompts
     examplePrompts.forEach(p=>{
       p.addEventListener('click',()=>{
-        inputEl.value=p.dataset.text||'';
-        inputEl.focus();
-        localStorage.setItem('daytale-draft', inputEl.value);
+        inputEl.value=p.dataset.text||''; inputEl.focus();
+        localStorage.setItem('daytale-draft',inputEl.value);
       });
     });
 
-    // BACKEND CALL
+    // Backend call (unchanged)
     async function callBackend(promptText){
-      const res=await fetch('/api/generate',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({prompt:promptText})
-      });
+      const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:promptText})});
       if(!res.ok){const msg=await res.text().catch(()=> '');throw new Error(`API ${res.status}: ${msg}`);}
-      const data=await res.json();
-      return (data.text||'').trim();
+      const data=await res.json(); return (data.text||'').trim();
     }
 
-    function styleToneInstructions(style, mood){
-      const styleMap={
-        reflective:"Write a reflective, first-person entry that extracts one learning.",
-        mindful:"Write a calm, present-focused reflection that notices sensations and breath.",
-        therapeutic:"Write an introspective entry that validates feelings and suggests one gentle next step.",
-        narrative:"Tell the day as a short scene with beginning, middle, end.",
-        gratitude:"Surface 3 specific things to appreciate, avoiding generic praise.",
-        snapshot:"Return 5 short bullet points: moments, feelings, one insight.",
-        mantra:"Condense into one evocative line as a personal mantra."
-      };
-      const toneMap={
-        calm:"Keep the tone calm and steady.",
-        compassionate:"Use compassionate, non-judgmental language.",
-        honest:"Be candid without harshness.",
-        hopeful:"Include a thread of hope and progress.",
-        neutral:"Stay neutral and factual.",
-        grounded:"Prefer concrete details over abstractions."
-      };
+    function styleToneInstructions(style,mood){
+      const styleMap={reflective:"Write a reflective, first-person entry that extracts one learning.",mindful:"Write a calm, present-focused reflection that notices sensations and breath.",therapeutic:"Write an introspective entry that validates feelings and suggests one gentle next step.",narrative:"Tell the day as a short scene with beginning, middle, end.",gratitude:"Surface 3 specific things to appreciate, avoiding generic praise.",snapshot:"Return 5 short bullet points: moments, feelings, one insight.",mantra:"Condense into one evocative line as a personal mantra."};
+      const toneMap={calm:"Keep the tone calm and steady.",compassionate:"Use compassionate, non-judgmental language.",honest:"Be candid without harshness.",hopeful:"Include a thread of hope and progress.",neutral:"Stay neutral and factual.",grounded:"Prefer concrete details over abstractions."};
       return `${styleMap[style]||styleMap.reflective} ${toneMap[mood]||toneMap.calm}`;
     }
 
-    // GENERATE
+    // Generate
     transformBtn.addEventListener('click', async ()=>{
-      const notes=(inputEl.value||'').trim();
-      if(!notes){alert('Please write some notes first!');return;}
-      const style=styleEl?.value||'reflective';
-      const mood =moodEl?.value||'calm';
-
+      const notes=(inputEl.value||'').trim(); if(!notes){alert('Please write some notes first!');return;}
+      const style=styleEl?.value||'reflective'; const mood=moodEl?.value||'calm';
       const prompt=`Transform these notes into a mental health journal entry.
 ${styleToneInstructions(style,mood)}
 Validate feelings first, then offer a gentle, optional reframe if appropriate (no toxic positivity).
@@ -498,9 +400,10 @@ Write the final entry:`;
 
         const result=await callBackend(prompt);
         output.textContent=result;
-        if(copyBtn) copyBtn.style.display='inline-block';
-        if(shareBtn) shareBtn.style.display='inline-block';
+        if(copyBtn) copyBtn.style.display='inline-flex';
+        if(shareBtn) shareBtn.style.display='inline-flex';
 
+        // auto-select best quotes
         const picks=getQuoteCandidates(result,3);
         if(picks.length && candidatesWrap && candidatesEl){
           candidatesWrap.style.display='block';
@@ -511,6 +414,8 @@ Write the final entry:`;
             chip.addEventListener('click',()=>{
               [...candidatesEl.children].forEach(c=>c.classList.remove('active'));
               chip.classList.add('active'); selectedQuote=q;
+              // keep selection visible after closing share modal
+              window.getSelection()?.removeAllRanges();
             });
             if(i===0) chip.classList.add('active');
             candidatesEl.appendChild(chip);
@@ -523,17 +428,17 @@ Write the final entry:`;
       }
     });
 
-    // COPY
-    if (copyBtn){
+    // Copy
+    if(copyBtn){
       copyBtn.addEventListener('click', async ()=>{
         try{await navigator.clipboard.writeText(output.textContent||'');copyBtn.textContent='✅ Copied!';setTimeout(()=>copyBtn.textContent='📋 Copy',1200);}catch{}
       });
     }
 
-    // CMD/CTRL+ENTER
+    // Keyboard submit
     inputEl.addEventListener('keydown',e=>{ if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)) transformBtn.click(); });
 
-    // QUOTE CANDIDATES
+    // Quote helpers
     function getQuoteCandidates(text,k=3){
       const sents=text.split(/(?<=[.!?])\s+/).map(s=>s.trim()).filter(Boolean);
       if(!sents.length) return [];
@@ -551,7 +456,7 @@ Write the final entry:`;
       return scores.sort((a,b)=>b.score-a.score).slice(0,k).map(o=>o.s.slice(0,300));
     }
 
-    // PALETTES
+    // Palettes
     const PALETTES=[
       {key:'dawn', name:'Dawn Sand', stops:['#f8f3e7','#e7d8b1'], stripe:'#dcc79b', text:'#1b1f29', badge:'#1b1f29'},
       {key:'mist', name:'Mist', stops:['#e6eef6','#cfd9e6'], stripe:'#c8d2e1', text:'#0b1020', badge:'#0b1020'},
@@ -562,13 +467,12 @@ Write the final entry:`;
       {key:'ink', name:'Ink', stops:['#0f172a','#1e293b'], stripe:'#334155', text:'#f1f5f9', badge:'#f1f5f9'}
     ];
     let activePalette='dawn', selectedQuote='';
-
-    if (swatchBar){
+    if(swatchBar){
       swatchBar.innerHTML='';
       PALETTES.forEach(p=>{
         const b=document.createElement('button');
         b.className='swatch';
-        b.setAttribute('data-name', p.name);
+        b.setAttribute('data-name',p.name);
         b.style.background=`linear-gradient(135deg, ${p.stops[0]}, ${p.stops[1]})`;
         if(p.key===activePalette) b.classList.add('active');
         b.addEventListener('click',()=>{
@@ -580,69 +484,41 @@ Write the final entry:`;
       });
     }
 
-    // SHARE
-    if (shareBtn){
-      shareBtn.addEventListener('click', async ()=>{
-        const text=(output?.textContent||'').trim();
-        if(!text){alert('Generate an entry first.');return;}
+    // Share modal
+    function openShareModal(){shareBackdrop.classList.add('open');shareBackdrop.setAttribute('aria-hidden','false');}
+    function closeShareModal(){shareBackdrop.classList.remove('open');shareBackdrop.setAttribute('aria-hidden','true');}
+    if(shareBtn){ shareBtn.addEventListener('click', async ()=>{
+      const text=(output?.textContent||'').trim();
+      if(!text){alert('Generate an entry first.');return;}
+      if(!selectedQuote){ const picks=getQuoteCandidates(text,1); selectedQuote=picks[0]||text.slice(0,220); }
+      // Keep highlight visible by clearing selection before opening modal
+      window.getSelection()?.removeAllRanges();
+      quoteEdit.value=selectedQuote;
+      await updatePreviewImage();
+      openShareModal();
+    });}
+    if(updatePreviewBtn) updatePreviewBtn.addEventListener('click', updatePreviewImage);
+    if(shareCopyQuote) shareCopyQuote.addEventListener('click', async ()=>{ try{await navigator.clipboard.writeText(quoteEdit.value.trim());shareCopyQuote.textContent='✅ Copied';setTimeout(()=>shareCopyQuote.textContent='Copy quote',1200);}catch{} });
+    if(shareDownload) shareDownload.addEventListener('click',()=>{ const a=document.createElement('a'); a.href=sharePreview.src; a.download=`DayTale-quote-${new Date().toISOString().slice(0,10)}.png`; document.body.appendChild(a); a.click(); a.remove(); });
+    if(shareDo) shareDo.addEventListener('click', shareViaNative);
+    if(shareClose) shareClose.addEventListener('click', closeShareModal);
+    if(shareBackdrop) shareBackdrop.addEventListener('click', e=>{ if(e.target===shareBackdrop) closeShareModal(); });
 
-        // if user highlighted a sentence in the output, use that
-        const sel = window.getSelection();
-        if (sel && sel.rangeCount && output.contains(sel.anchorNode)) {
-          const pick = sel.toString().trim();
-          if (pick) selectedQuote = pick;
-        }
-
-        if(!selectedQuote){ const picks=getQuoteCandidates(text,1); selectedQuote=picks[0]||text.slice(0,220); }
-        quoteEdit.value=selectedQuote;
-        await updatePreviewImage();
-        openShareModal();
-      });
-    }
-    if (updatePreviewBtn) updatePreviewBtn.addEventListener('click', updatePreviewImage);
-    if (shareCopyQuote) shareCopyQuote.addEventListener('click', async ()=>{
-      try{await navigator.clipboard.writeText(quoteEdit.value.trim()); shareCopyQuote.textContent='✅ Copied'; setTimeout(()=>shareCopyQuote.textContent='Copy quote',1200);}catch{}
-    });
-    if (shareDownload) shareDownload.addEventListener('click',()=>{
-      const a=document.createElement('a'); a.href=sharePreview.src; a.download=`DayTale-quote-${new Date().toISOString().slice(0,10)}.png`;
-      document.body.appendChild(a); a.click(); a.remove();
-    });
-    if (shareDo) shareDo.addEventListener('click', shareViaNative);
-    if (shareClose) shareClose.addEventListener('click', closeShareModal);
-    if (shareBackdrop) shareBackdrop.addEventListener('click', (e)=>{ if(e.target===shareBackdrop) closeShareModal(); });
-
-    function openShareModal(){
-      shareBackdrop.classList.add('open');
-      shareBackdrop.setAttribute('aria-hidden','false');
-    }
-    function closeShareModal(){
-      shareBackdrop.classList.remove('open');
-      shareBackdrop.setAttribute('aria-hidden','true');
-    }
-
-    async function updatePreviewImage(){
-      const dataUrl=await createQuoteImage(quoteEdit.value.trim(), activePalette, true);
-      sharePreview.src=dataUrl;
-    }
+    async function updatePreviewImage(){ const dataUrl=await createQuoteImage(quoteEdit.value.trim(), activePalette, true); sharePreview.src=dataUrl; }
 
     async function shareViaNative(){
       try{
         const resp=await fetch(sharePreview.src);
         const blob=await resp.blob();
         const file=new File([blob],'daytale-quote.png',{type:'image/png'});
-        if(navigator.canShare && navigator.canShare({files:[file]})){
-          await navigator.share({files:[file], title:'DayTale Quote'});
-        }else{
-          const a=document.createElement('a'); a.href=sharePreview.src; a.download='daytale-quote.png';
-          document.body.appendChild(a); a.click(); a.remove();
-          alert('Sharing not supported here. Image downloaded instead.');
-        }
+        if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], title:'DayTale Quote'}); }
+        else{ const a=document.createElement('a'); a.href=sharePreview.src; a.download='daytale-quote.png'; document.body.appendChild(a); a.click(); a.remove(); alert('Sharing not supported here. Image downloaded instead.'); }
       }catch{ alert('Share failed. Try downloading and posting manually.'); }
     }
 
-    async function createQuoteImage(quote, paletteKey='dawn', includeLogo=true){
+    async function createQuoteImage(quote,paletteKey='dawn',includeLogo=true){
       const style=(PALETTES.find(x=>x.key===paletteKey)||PALETTES[0]);
-      const W=1080, H=1920;
+      const W=1080,H=1920;
       const canvas=document.createElement('canvas'); canvas.width=W; canvas.height=H;
       const ctx=canvas.getContext('2d');
 
@@ -650,7 +526,7 @@ Write the final entry:`;
       grad.addColorStop(0,style.stops[0]); grad.addColorStop(1,style.stops[1]);
       ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
 
-      ctx.globalAlpha=0.08;
+      ctx.globalAlpha=.08;
       for(let i=0;i<22;i++){ ctx.fillStyle=i%2?'#ffffff':style.stripe; ctx.fillRect(-W,i*80,W*3,2); }
       ctx.globalAlpha=1;
 
@@ -658,7 +534,7 @@ Write the final entry:`;
 
       const badgeW=340, badgeH=72, badgeR=18;
       const badgeX=(W-badgeW)/2, badgeY=marginY-(badgeH+12);
-      ctx.fillStyle='rgba(0,0,0,0.12)'; roundRect(ctx,badgeX,badgeY,badgeW,badgeH,badgeR); ctx.fill();
+      ctx.fillStyle='rgba(0,0,0,.12)'; roundRect(ctx,badgeX,badgeY,badgeW,badgeH,badgeR); ctx.fill();
       ctx.fillStyle=style.badge; ctx.font='700 26px Arimo, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
       ctx.fillText('My Quote of My Day', W/2, badgeY+badgeH/2);
 
@@ -676,8 +552,7 @@ Write the final entry:`;
 
       if(includeLogo){
         const footerY=H-140, logoSize=72;
-        ctx.fillStyle='rgba(255,255,255,0.9)';
-        roundRect(ctx, marginX, footerY-logoSize, logoSize, logoSize, 16); ctx.fill();
+        ctx.fillStyle='rgba(255,255,255,.9)'; roundRect(ctx, marginX, footerY-logoSize, logoSize, logoSize, 16); ctx.fill();
         const img=await loadImage(BRAND_ICON_URL);
         ctx.save(); clipRoundRect(ctx, marginX, footerY-logoSize, logoSize, logoSize, 16);
         ctx.drawImage(img, marginX, footerY-logoSize, logoSize, logoSize); ctx.restore();
@@ -689,67 +564,26 @@ Write the final entry:`;
 
       return canvas.toDataURL('image/png');
 
-      function roundRect(ctx,x,y,w,h,r){
-        const rr=typeof r==='number'?{tl:r,tr:r,br:r,bl:r}:r;
-        ctx.beginPath();
-        ctx.moveTo(x+rr.tl,y);
-        ctx.lineTo(x+w-rr.tr,y);
-        ctx.quadraticCurveTo(x+w,y,x+w,y+rr.tr);
-        ctx.lineTo(x+w,y+h-rr.br);
-        ctx.quadraticCurveTo(x+w,y+h,x+w-rr.br,y+h);
-        ctx.lineTo(x+rr.bl,y+h);
-        ctx.quadraticCurveTo(x,y+h,x,y+h-rr.bl);
-        ctx.lineTo(x,y+rr.tl);
-        ctx.quadraticCurveTo(x,y,x+rr.tl,y);
-        ctx.closePath();
-      }
+      function roundRect(ctx,x,y,w,h,r){const rr=typeof r==='number'?{tl:r,tr:r,br:r,bl:r}:r; ctx.beginPath(); ctx.moveTo(x+rr.tl,y); ctx.lineTo(x+w-rr.tr,y); ctx.quadraticCurveTo(x+w,y,x+w,y+rr.tr); ctx.lineTo(x+w,y+h-rr.br); ctx.quadraticCurveTo(x+w,y+h,x+w-rr.br,y+h); ctx.lineTo(x+rr.bl,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-rr.bl); ctx.lineTo(x,y+rr.tl); ctx.quadraticCurveTo(x,y,x+rr.tl,y); ctx.closePath(); }
       function clipRoundRect(ctx,x,y,w,h,r){ roundRect(ctx,x,y,w,h,r); ctx.clip(); }
-      function wrapText(ctx,text,maxWidth,lineH){
-        const words=text.split(/\s+/); const lines=[]; let line='';
-        for(const w of words){
-          const test=line?line+' '+w:w;
-          if(ctx.measureText(test).width<=maxWidth){ line=test; }
-          else { if(line) lines.push(line); line=w; }
-        }
-        if(line) lines.push(line);
-        return lines;
-      }
-      function loadImage(src){
-        return new Promise((resolve,reject)=>{
-          const im=new Image(); im.crossOrigin='anonymous';
-          im.onload=()=>resolve(im); im.onerror=reject; im.src=src;
-        });
-      }
+      function wrapText(ctx,text,maxWidth,lh){ const words=text.split(/\s+/); const lines=[]; let line=''; for(const w of words){ const test=line?line+' '+w:w; if(ctx.measureText(test).width<=maxWidth){ line=test; }else{ if(line) lines.push(line); line=w; } } if(line) lines.push(line); return lines; }
+      function loadImage(src){ return new Promise((resolve,reject)=>{ const im=new Image(); im.crossOrigin='anonymous'; im.onload=()=>resolve(im); im.onerror=reject; im.src=src; }); }
     }
 
-    // ---- Suggestion modal wiring (NEW) ----
-    function openSuggest(){ suggestBackdrop.classList.add('open'); suggestBackdrop.setAttribute('aria-hidden','false'); }
-    function closeSuggest(){ suggestBackdrop.classList.remove('open'); suggestBackdrop.setAttribute('aria-hidden','true'); }
-    if (suggestBtn) suggestBtn.addEventListener('click', openSuggest);
-    if (suggestClose) suggestClose.addEventListener('click', closeSuggest);
-    if (suggestCancel) suggestCancel.addEventListener('click', closeSuggest);
-    if (suggestBackdrop) suggestBackdrop.addEventListener('click', (e)=>{ if(e.target===suggestBackdrop) closeSuggest(); });
-
-    // AJAX submit to Formspree
-    if (suggestForm){
+    // Suggest modal open/close + simple status
+    if(suggestBtn){ suggestBtn.addEventListener('click',()=>{ $('suggest-backdrop').classList.add('open'); $('suggest-backdrop').setAttribute('aria-hidden','false'); }); }
+    if(suggestClose){ suggestClose.addEventListener('click',()=>{ $('suggest-backdrop').classList.remove('open'); $('suggest-backdrop').setAttribute('aria-hidden','true'); }); }
+    if(suggestBackdrop){ suggestBackdrop.addEventListener('click',e=>{ if(e.target===suggestBackdrop){ suggestBackdrop.classList.remove('open'); suggestBackdrop.setAttribute('aria-hidden','true'); } }); }
+    if(suggestForm){
       suggestForm.addEventListener('submit', async (e)=>{
         e.preventDefault();
-        const message = document.getElementById('s-message').value.trim();
-        if(!message){ suggestStatus.textContent='Please write your idea before sending.'; suggestStatus.className='suggest-status err'; return; }
-        suggestStatus.textContent='Sending…'; suggestStatus.className='suggest-status';
-
+        suggestStatus.textContent='Sending…';
         try{
-          const formData = new FormData(suggestForm);
-          const resp = await fetch('https://formspree.io/f/xblzyelp', { method:'POST', body:formData, headers:{'Accept':'application/json'} });
-          if (resp.ok){
-            suggestStatus.textContent='Thanks! Your idea has been sent.'; suggestStatus.className='suggest-status ok';
-            suggestForm.reset();
-          } else {
-            suggestStatus.textContent='Could not send right now. Please try again later.'; suggestStatus.className='suggest-status err';
-          }
-        }catch(err){
-          suggestStatus.textContent='Network error. Please try again.'; suggestStatus.className='suggest-status err';
-        }
+          const formData=new FormData(suggestForm);
+          const res=await fetch(suggestForm.action,{ method:'POST', body:formData, headers:{ 'Accept':'application/json'} });
+          if(res.ok){ suggestStatus.textContent='✅ Sent. Thank you!'; suggestForm.reset(); }
+          else{ suggestStatus.textContent='⚠️ Could not send. Try again.'; }
+        }catch{ suggestStatus.textContent='⚠️ Network error. Try again.';}
       });
     }
   </script>
