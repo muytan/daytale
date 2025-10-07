@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <!-- Keep desktop same; add viewport-fit to behave on iOS and eliminate weird initial zoom -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <title>DayTale - Transform Your Day Into Stories</title>
+  <title>DayTale: AI Daily Journaling</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -21,6 +21,11 @@
       --text-dark:#1f2937; --text-light:#f9fafb; --text-muted:#9ca3af;
       --border-light:rgba(255,255,255,.14); --border-dark:rgba(0,0,0,.14);
       --shadow:rgba(0,0,0,.28);
+
+      /* accent yellow for “Tell me what you think” button (as requested) */
+      --accent-start:#f7c948; /* soft yellow */
+      --accent-end:#f59e0b;   /* warm amber */
+      --accent-text:#1b1f29;
     }
     *{margin:0;padding:0;box-sizing:border-box}
     html,body{height:100%}
@@ -86,6 +91,13 @@
     .light-mode .btn-secondary{background:rgba(0,0,0,.05);color:var(--text-dark);border:1px solid var(--border-dark)}
     .transform-btn:disabled{opacity:.6;pointer-events:none}
 
+    /* Accent (yellow) for feedback button */
+    .btn-accent{
+      background:linear-gradient(135deg,var(--accent-start),var(--accent-end));
+      color:var(--accent-text);
+      box-shadow:0 6px 18px rgba(245,158,11,.35);
+    }
+
     textarea{
       flex:1;background:rgba(0,0,0,.22);border:1px solid var(--border-light);
       border-radius:12px;padding:1.25rem;color:var(--text-light);
@@ -102,7 +114,7 @@
       flex:1;overflow-y:auto;color:var(--text-light);line-height:1.85;padding:1.25rem;
       font-family:'Arimo', ui-sans-serif, system-ui; font-size:1.02rem; white-space:pre-wrap;
       background:rgba(255,255,255,.03);border:1px solid var(--border-light);border-radius:12px;min-height:220px;
-      box-shadow: inset 0 2px 8px rgba(0,0,0,.08); /* subtle separation */
+      box-shadow: inset 0 2px 8px rgba(0,0,0,.08);
     }
     .light-mode .output{color:var(--text-dark);background:rgba(0,0,0,.03);border:1px solid var(--border-dark)}
 
@@ -114,7 +126,7 @@
     .toolbar-left{display:flex;align-items:center;gap:.5rem}
     #swatch-bar{display:flex;gap:.5rem;align-items:center}
     .swatch{
-      width:28px;height:28px;border-radius:50%;
+      width:28px;height:28px;border-radius:50%; position:relative;
       border:1px solid rgba(0,0,0,.18); cursor:pointer; outline:0;
       transition: box-shadow .2s ease, transform .2s ease;
     }
@@ -133,6 +145,12 @@
     .swatch:hover::after{ opacity:1; transform:translateX(-50%) translateY(2px); }
     .light-mode .swatch::after{ color:#111827; }
 
+    /* Persistent selection highlight inside .output */
+    mark.sel-mark{
+      background: linear-gradient(90deg, rgba(247,201,72,.35), rgba(245,158,11,.35));
+      padding:0 .05em; border-radius:.25em;
+    }
+
     /* Quote chips */
     #quote-candidates{display:flex;flex-wrap:wrap;gap:.5rem}
     .quote-chip{border:1px solid rgba(198,165,117,.5);background:rgba(198,165,117,.1);color:#f1f5f9;padding:.5rem .6rem;border-radius:999px;cursor:pointer}
@@ -142,19 +160,27 @@
     /* Share modal (centered) */
     .modal-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,10,20,.58);backdrop-filter:blur(6px) saturate(120%);z-index:9999}
     .modal-backdrop.open{display:flex}
-    .modal-card{position:relative;width:min(92vw, 720px);background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.18);box-shadow:0 30px 80px rgba(0,0,0,.45);border-radius:18px;padding:18px;color:#f8fafc}
+    .modal-card{
+      position:relative;
+      width:min(92vw, 720px);
+      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 30px 80px rgba(0,0,0,.45);
+      border-radius:18px;padding:18px;color:#f8fafc;
+      display:flex; flex-direction:column; max-height:92vh; /* MOBILE: keep on screen */
+    }
     .light-mode .modal-card{background:rgba(255,255,255,.96);border:1px solid #e5e7eb;color:#111827}
     .modal-title{font-weight:800;margin-bottom:.35rem;font-family:"Cal Sans",sans-serif}
-    .modal-row{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+    .modal-row{display:grid;grid-template-columns:1.2fr .8fr;gap:16px; overflow:auto; flex:1}
     #share-preview{width:100%;height:auto;border-radius:12px;display:block}
     .modal-card textarea{width:100%;min-height:96px;border-radius:12px;border:1px solid #e5e7eb;background:#ffffff;color:#111827;padding:.75rem;font-size:1rem}
-    .modal-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+    .modal-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem; position:sticky; bottom:0; padding-top:.5rem; background:transparent}
     .close-x{position:absolute;right:10px;top:8px;background:transparent;border:none;color:#fff;font-size:22px;cursor:pointer;padding:12px}
     .light-mode .close-x{color:#111}
 
     /* Suggest button area */
     .suggest-wrap{display:flex;justify-content:center;align-items:center;margin:1.25rem 0}
-    #suggest-btn{color:#fff}
+    #suggest-btn{color:var(--accent-text)}
 
     /* ---------------- MOBILE ONLY FIXES (desktop unchanged) ---------------- */
     @media (max-width: 768px){
@@ -171,7 +197,7 @@
       .toolbar-left{width:100%;justify-content:center}
       #swatch-bar .swatch{width:40px;height:40px} /* bigger tap target */
       .modal-row{grid-template-columns:1fr}       /* image on top, editor below */
-      .modal-card{width:94vw}
+      .modal-card{width:96vw; max-height:92vh}
       .suggest-wrap{margin:1rem 0}
     }
     /* Avoid hover “jump” on touch devices */
@@ -198,7 +224,7 @@
           <button class="btn btn-secondary" id="theme-toggle">☀️ Light</button>
         </div>
 
-        <ul class="fairy-list" style="list-style:none;margin:.25rem 0;padding:0">
+        <ul class="fairy-list" style="list-style:none;margin:.25rem 0;padding:0;text-align:left;max-width:720px;margin-inline:auto;">
           <li style="display:flex;gap:.5rem;color:#cfcfd8;font-size:.92rem;line-height:1.7"><span>🧚</span><span>Write “I felt … when … because …”</span></li>
           <li style="display:flex;gap:.5rem;color:#cfcfd8;font-size:.92rem;line-height:1.7"><span>🧚</span><span>Tell us your day in a few words</span></li>
           <li style="display:flex;gap:.5rem;color:#cfcfd8;font-size:.92rem;line-height:1.7"><span>🧚</span><span>You can write in <strong>any language</strong></span></li>
@@ -230,9 +256,9 @@
         <textarea id="input" aria-label="Write a few notes about your day" placeholder="A few notes... tired this morning, anxious before the meeting, walked at lunch, felt lighter after talking with a friend, cooked pasta at night"></textarea>
 
         <button class="btn btn-primary transform-btn" id="transform">✨ Craft My Journal Entry</button>
-        <p class="subhint">We don’t store entries. Text is processed to generate your draft, then discarded.</p>
+        <p class="subhint" style="text-align:center;max-width:720px;margin-inline:auto;">We don’t store entries. Text is processed to generate your draft, then discarded.</p>
 
-        <div class="example-prompts" style="display:flex;flex-direction:column;gap:.5rem;margin-top:.25rem">
+        <div class="example-prompts" style="display:flex;flex-direction:column;gap:.5rem;margin-top:.25rem;max-width:720px;margin-inline:auto;">
           <div class="hint">Examples:</div>
           <div class="example-prompt" style="background:rgba(198,165,117,.12);border:1px solid rgba(198,165,117,.35);border-radius:10px;padding:.9rem;cursor:pointer"
                data-text="Woke up late and felt tense. Coffee helped a bit. Long meeting drained me. Evening walk with a friend made my chest feel lighter.">
@@ -271,7 +297,7 @@
 
     <!-- Suggestion Button -->
     <div class="suggest-wrap">
-      <button id="suggest-btn" class="btn btn-primary">💡 Tell me what you think</button>
+      <button id="suggest-btn" class="btn btn-accent">Tell me what you think</button>
     </div>
 
     <!-- Share Modal -->
@@ -315,7 +341,7 @@
             </label>
           </div>
           <div class="modal-actions">
-            <button type="submit" class="btn btn-primary">Send</button>
+            <button type="submit" class="btn btn-accent">Send</button>
             <span id="suggest-status" style="font-size:.9rem"></span>
           </div>
         </form>
@@ -341,6 +367,22 @@
     // Suggest modal
     const suggestBtn=$('suggest-btn'), suggestBackdrop=$('suggest-backdrop'), suggestClose=$('suggest-close');
     const suggestForm=$('suggest-form'), suggestStatus=$('suggest-status');
+
+    // rotating subtitle lines
+    const SUBLINES=[
+      "Write your entire day in 3 quick words.",
+      "Highlight any sentence. Instantly mint a shareable quote.",
+      "Go from scattered thoughts to a clear, thoughtful page.",
+      "Low-effort input, high-quality, supportive reflection.",
+      "Stop trying to write. Start genuinely reflecting.",
+      "The daily log that actually feels like self-care.",
+      "Your tone, your style — but faster.",
+      "Get a full, comforting entry before you check social media.",
+      "Turn messy notes into mindful, articulate writing.",
+      "Journal your day. Your thoughts. Now."
+    ];
+    const subEl = document.getElementById('subtitle-rotator');
+    let subIdx=0; setInterval(()=>{subIdx=(subIdx+1)%SUBLINES.length; subEl.textContent=SUBLINES[subIdx];}, 3500);
 
     // Theme
     let isDark=true;
@@ -399,7 +441,7 @@ Write the final entry:`;
         if(candidatesEl) candidatesEl.innerHTML='';
 
         const result=await callBackend(prompt);
-        output.textContent=result;
+        output.innerHTML=escapeHtml(result); // allow safe mark wrapping later
         if(copyBtn) copyBtn.style.display='inline-flex';
         if(shareBtn) shareBtn.style.display='inline-flex';
 
@@ -414,7 +456,7 @@ Write the final entry:`;
             chip.addEventListener('click',()=>{
               [...candidatesEl.children].forEach(c=>c.classList.remove('active'));
               chip.classList.add('active'); selectedQuote=q;
-              // keep selection visible after closing share modal
+              // keep any system selection clear to avoid confusion
               window.getSelection()?.removeAllRanges();
             });
             if(i===0) chip.classList.add('active');
@@ -467,6 +509,7 @@ Write the final entry:`;
       {key:'ink', name:'Ink', stops:['#0f172a','#1e293b'], stripe:'#334155', text:'#f1f5f9', badge:'#f1f5f9'}
     ];
     let activePalette='dawn', selectedQuote='';
+
     if(swatchBar){
       swatchBar.innerHTML='';
       PALETTES.forEach(p=>{
@@ -484,25 +527,96 @@ Write the final entry:`;
       });
     }
 
+    // ======= MOBILE SELECTION → SHARE (keep highlight + use selection) =======
+    // Capture selection BEFORE the Share button removes focus (touchstart/mousedown)
+    function getSelectedTextInOutput(){
+      const sel = window.getSelection();
+      if(!sel || sel.rangeCount===0) return '';
+      const range = sel.getRangeAt(0);
+      // Ensure selection is inside the output panel
+      if(!output.contains(range.commonAncestorContainer)) return '';
+      return sel.toString().trim();
+    }
+
+    // Wrap the current selection in a <mark> that persists after the modal opens
+    function persistSelectionHighlight(){
+      const sel = window.getSelection();
+      if(!sel || sel.rangeCount===0) return '';
+      const range = sel.getRangeAt(0);
+      if(!output.contains(range.commonAncestorContainer)) return '';
+      const text = sel.toString().trim();
+      if(!text) return '';
+
+      // Create marker
+      const mark = document.createElement('mark');
+      mark.className = 'sel-mark';
+      try{
+        range.surroundContents(mark);
+        // keep DOM nice: collapse selection to avoid blue system highlight
+        sel.removeAllRanges();
+      }catch(e){
+        // Fallback: if the selection crosses elements, clone and replace
+        const frag = range.cloneContents();
+        mark.appendChild(frag);
+        range.deleteContents();
+        range.insertNode(mark);
+        sel.removeAllRanges();
+      }
+      return text;
+    }
+
+    // On touchstart/mousedown, grab selection and persist a visual highlight
+    if(shareBtn){
+      const preGrab = ()=>{
+        const chosen = getSelectedTextInOutput();
+        if(chosen){
+          selectedQuote = persistSelectionHighlight() || chosen;
+        }
+      };
+      shareBtn.addEventListener('touchstart', preGrab, {passive:true});
+      shareBtn.addEventListener('mousedown', preGrab);
+    }
+
+    function clearPersistedHighlights(){
+      const marks = output.querySelectorAll('mark.sel-mark');
+      marks.forEach(m=>{
+        const parent = m.parentNode;
+        while(m.firstChild) parent.insertBefore(m.firstChild, m);
+        parent.removeChild(m);
+        parent.normalize();
+      });
+    }
+
     // Share modal
     function openShareModal(){shareBackdrop.classList.add('open');shareBackdrop.setAttribute('aria-hidden','false');}
     function closeShareModal(){shareBackdrop.classList.remove('open');shareBackdrop.setAttribute('aria-hidden','true');}
-    if(shareBtn){ shareBtn.addEventListener('click', async ()=>{
-      const text=(output?.textContent||'').trim();
-      if(!text){alert('Generate an entry first.');return;}
-      if(!selectedQuote){ const picks=getQuoteCandidates(text,1); selectedQuote=picks[0]||text.slice(0,220); }
-      // Keep highlight visible by clearing selection before opening modal
-      window.getSelection()?.removeAllRanges();
-      quoteEdit.value=selectedQuote;
-      await updatePreviewImage();
-      openShareModal();
-    });}
+
+    if(shareBtn){ 
+      shareBtn.addEventListener('click', async ()=>{
+        const text=(output?.textContent||'').trim();
+        if(!text){alert('Generate an entry first.');return;}
+        // If user didn’t manually select, fall back to best candidate
+        if(!selectedQuote){
+          const inlineSel = getSelectedTextInOutput();
+          if(inlineSel) { selectedQuote = persistSelectionHighlight() || inlineSel; }
+        }
+        if(!selectedQuote){
+          const picks=getQuoteCandidates(text,1); selectedQuote=picks[0]||text.slice(0,220);
+        }
+        quoteEdit.value=selectedQuote;
+        await updatePreviewImage();
+        openShareModal();
+      });
+    }
     if(updatePreviewBtn) updatePreviewBtn.addEventListener('click', updatePreviewImage);
     if(shareCopyQuote) shareCopyQuote.addEventListener('click', async ()=>{ try{await navigator.clipboard.writeText(quoteEdit.value.trim());shareCopyQuote.textContent='✅ Copied';setTimeout(()=>shareCopyQuote.textContent='Copy quote',1200);}catch{} });
     if(shareDownload) shareDownload.addEventListener('click',()=>{ const a=document.createElement('a'); a.href=sharePreview.src; a.download=`DayTale-quote-${new Date().toISOString().slice(0,10)}.png`; document.body.appendChild(a); a.click(); a.remove(); });
     if(shareDo) shareDo.addEventListener('click', shareViaNative);
-    if(shareClose) shareClose.addEventListener('click', closeShareModal);
-    if(shareBackdrop) shareBackdrop.addEventListener('click', e=>{ if(e.target===shareBackdrop) closeShareModal(); });
+    if(shareClose) shareClose.addEventListener('click', ()=>{
+      // keep the yellow mark visible after closing
+      closeShareModal();
+    });
+    if(shareBackdrop) shareBackdrop.addEventListener('click', e=>{ if(e.target===shareBackdrop){ closeShareModal(); } });
 
     async function updatePreviewImage(){ const dataUrl=await createQuoteImage(quoteEdit.value.trim(), activePalette, true); sharePreview.src=dataUrl; }
 
@@ -566,7 +680,7 @@ Write the final entry:`;
 
       function roundRect(ctx,x,y,w,h,r){const rr=typeof r==='number'?{tl:r,tr:r,br:r,bl:r}:r; ctx.beginPath(); ctx.moveTo(x+rr.tl,y); ctx.lineTo(x+w-rr.tr,y); ctx.quadraticCurveTo(x+w,y,x+w,y+rr.tr); ctx.lineTo(x+w,y+h-rr.br); ctx.quadraticCurveTo(x+w,y+h,x+w-rr.br,y+h); ctx.lineTo(x+rr.bl,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-rr.bl); ctx.lineTo(x,y+rr.tl); ctx.quadraticCurveTo(x,y,x+rr.tl,y); ctx.closePath(); }
       function clipRoundRect(ctx,x,y,w,h,r){ roundRect(ctx,x,y,w,h,r); ctx.clip(); }
-      function wrapText(ctx,text,maxWidth,lh){ const words=text.split(/\s+/); const lines=[]; let line=''; for(const w of words){ const test=line?line+' '+w:w; if(ctx.measureText(test).width<=maxWidth){ line=test; }else{ if(line) lines.push(line); line=w; } } if(line) lines.push(line); return lines; }
+      function wrapText(ctx,text,maxWidth){ const words=text.split(/\s+/); const lines=[]; let line=''; for(const w of words){ const test=line?line+' '+w:w; if(ctx.measureText(test).width<=maxWidth){ line=test; }else{ if(line) lines.push(line); line=w; } } if(line) lines.push(line); return lines; }
       function loadImage(src){ return new Promise((resolve,reject)=>{ const im=new Image(); im.crossOrigin='anonymous'; im.onload=()=>resolve(im); im.onerror=reject; im.src=src; }); }
     }
 
@@ -582,10 +696,13 @@ Write the final entry:`;
           const formData=new FormData(suggestForm);
           const res=await fetch(suggestForm.action,{ method:'POST', body:formData, headers:{ 'Accept':'application/json'} });
           if(res.ok){ suggestStatus.textContent='✅ Sent. Thank you!'; suggestForm.reset(); }
-          else{ suggestStatus.textContent='⚠️ Could not send. Try again.'; }
+          else{ suggestStatus.textContent='⚠️ Could not send. Check Formspree settings.'; }
         }catch{ suggestStatus.textContent='⚠️ Network error. Try again.';}
       });
     }
+
+    // Utils
+    function escapeHtml(s){return s.replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));}
   </script>
 </body>
 </html>
