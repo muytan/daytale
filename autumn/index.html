@@ -12,181 +12,92 @@
 
   <style>
     :root{
-      /* Base colors for this autumn page (unchanged elsewhere) */
-      --bg1:#0E0A08;
-      --bg2:#3D2915;
-      --text:#F5F6F7;
-      --muted:#C9CBD3;
-      --accent1:#f7c948;
-      --accent2:#f59e0b;
-      --brand:#5B3A1F; /* craft button brand color kept consistent if used */
-
-      --border: rgba(255,255,255,.12);
-      --shadow: rgba(0,0,0,.35);
+      --bg1:#0E0A08; --bg2:#3D2915; --text:#F5F6F7; --muted:#C9CBD3;
+      --accent1:#f7c948; --accent2:#f59e0b; --brand:#5B3A1F;
+      --border: rgba(255,255,255,.12); --shadow: rgba(0,0,0,.35);
     }
     *{box-sizing:border-box;margin:0;padding:0}
     body{
       background: radial-gradient(1200px 800px at 20% 15%, #5a3b1b22, transparent 60%), linear-gradient(180deg,var(--bg1),var(--bg2));
-      color:var(--text);
-      font-family:'Arimo',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text); font-family:'Arimo',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
-
     .container{max-width:1200px;margin:0 auto;padding:2rem;display:flex;flex-direction:column;gap:2rem}
     .header{text-align:center}
     .logo-title{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:.5rem}
     .logo-title img{width:52px;height:52px;border-radius:12px;box-shadow:0 10px 30px var(--shadow)}
-    .title{
-      font-family:"Cal Sans", sans-serif;
-      font-weight:700;
-      font-size:2.4rem;
-      letter-spacing:.2px;
-      color:#fff;
-    }
+    .title{font-family:"Cal Sans", sans-serif;font-weight:700;font-size:2.4rem;letter-spacing:.2px;color:#fff}
     .subtitle{color:var(--muted);font-size:1.02rem;line-height:1.6;max-width:820px;margin:0 auto}
 
     .cta-row{display:flex;gap:.75rem;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:.75rem;position:relative}
-    .cta-btn{
-      appearance:none;border:none;cursor:pointer;
-      padding:.9rem 1.2rem;border-radius:12px;font-weight:800;
-      background:linear-gradient(135deg,var(--accent1),var(--accent2));
-      color:#1b1f29; box-shadow:0 10px 28px rgba(245,158,11,.28);
-    }
-    /* tilted “NEW/EXCLUSIVE” badges (kept) */
-    .pill{
-      padding:.35rem .6rem;border-radius:999px;font-size:.78rem;font-weight:800;
-      color:#1b1f29; background:linear-gradient(135deg,#ffddb0,#ffa63a);
-      transform:rotate(-6deg);
-      filter:saturate(110%) contrast(102%);
-      box-shadow:0 10px 28px rgba(255,166,58,.25);
-    }
-    .pill.right{
-      background:linear-gradient(135deg,#ffd2c9,#ff8aa6);
-      transform:rotate(6deg);
-      box-shadow:0 10px 28px rgba(255,138,166,.22);
-    }
+    .cta-btn{appearance:none;border:none;cursor:pointer;padding:.9rem 1.2rem;border-radius:12px;font-weight:800;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#1b1f29;box-shadow:0 10px 28px rgba(245,158,11,.28)}
+    .pill{padding:.35rem .6rem;border-radius:999px;font-size:.78rem;font-weight:800;color:#1b1f29;background:linear-gradient(135deg,#ffddb0,#ffa63a);transform:rotate(-6deg);filter:saturate(110%) contrast(102%);box-shadow:0 10px 28px rgba(255,166,58,.25)}
+    .pill.right{background:linear-gradient(135deg,#ffd2c9,#ff8aa6);transform:rotate(6deg);box-shadow:0 10px 28px rgba(255,138,166,.22)}
 
-    .workspace{
-      display:grid;grid-template-columns:1.05fr 0.95fr;gap:1.25rem;align-items:start
-    }
-    .panel{
-      background:rgba(255,255,255,.05);
-      border:1px solid var(--border);
-      border-radius:16px; padding:1rem 1.1rem;
-      box-shadow:0 18px 60px var(--shadow);
-    }
-
-    /* Left: palettes + example quotes + inline preview */
+    .workspace{display:grid;grid-template-columns:1.05fr 0.95fr;gap:1.25rem;align-items:start}
+    .panel{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:16px;padding:1rem 1.1rem;box-shadow:0 18px 60px var(--shadow)}
     .left-stack{display:flex;flex-direction:column;gap:.9rem}
     .section-title{font-weight:700;font-size:1rem;color:#ffddb0;letter-spacing:.3px}
 
     .swatches{display:flex;gap:.5rem;flex-wrap:wrap}
-    .swatch{
-      width:32px;height:32px;border-radius:50%;
-      border:1px solid rgba(0,0,0,.2);
-      cursor:pointer; position:relative; transition:transform .15s ease, box-shadow .15s ease;
-      box-shadow:0 4px 14px rgba(0,0,0,.22) inset, 0 6px 18px rgba(0,0,0,.18);
-    }
-    .swatch:hover{transform:translateY(-1px)}
-    .swatch.active{box-shadow:0 0 0 3px #fff inset, 0 0 0 3px rgba(255,255,255,.32)}
-    .swatch::after{
-      content:attr(aria-label);
-      position:absolute; left:50%; top:120%; transform:translateX(-50%);
-      font-size:.75rem; color:#0b1020; background:#fff; border:1px solid #e5e7eb;
-      border-radius:6px; padding:.2rem .45rem; white-space:nowrap; opacity:0; pointer-events:none;
-      transition:opacity .15s ease, transform .15s ease;
-      box-shadow:0 8px 22px rgba(0,0,0,.15);
-    }
-    .swatch:hover::after{opacity:1; transform:translateX(-50%) translateY(2px)}
+    .swatch{width:32px;height:32px;border-radius:50%;border:1px solid rgba(0,0,0,.2);cursor:pointer;position:relative;transition:transform .15s ease, box-shadow .15s ease;box-shadow:0 4px 14px rgba(0,0,0,.22) inset, 0 6px 18px rgba(0,0,0,.18)}
+    .swatch:hover{transform:translateY(-1px)} .swatch.active{box-shadow:0 0 0 3px #fff inset, 0 0 0 3px rgba(255,255,255,.32)}
+    .swatch::after{content:attr(aria-label);position:absolute;left:50%;top:120%;transform:translateX(-50%);font-size:.75rem;color:#0b1020;background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:.2rem .45rem;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s ease, transform .15s ease;box-shadow:0 8px 22px rgba(0,0,0,.15)}
+    .swatch:hover::after{opacity:1;transform:translateX(-50%) translateY(2px)}
 
     .quote-list{display:grid;gap:.5rem}
-    .quote-item{
-      padding:.7rem .8rem;border-radius:10px;border:1px solid rgba(255,255,255,.14);
-      background:rgba(255,255,255,.05); cursor:pointer; transition: box-shadow .15s ease, border-color .15s ease;
-    }
-    .quote-item:hover{box-shadow:0 8px 26px rgba(0,0,0,.25)}
-    .quote-item.active{border-color:#f7c948; box-shadow:0 0 0 2px #f7c94855 inset}
+    .quote-item{padding:.7rem .8rem;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);cursor:pointer;transition: box-shadow .15s ease, border-color .15s ease}
+    .quote-item:hover{box-shadow:0 8px 26px rgba(0,0,0,.25)} .quote-item.active{border-color:#f7c948;box-shadow:0 0 0 2px #f7c94855 inset}
 
     .preview-wrap{display:flex;flex-direction:column;gap:.5rem}
-    .preview-canvas{
-      width:260px; height:auto; border-radius:12px; border:1px solid rgba(255,255,255,.14);
-      background:#000; display:block;
-    }
+    .preview-canvas{width:260px;height:auto;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:#000;display:block}
     .actions{display:flex;gap:.5rem;flex-wrap:wrap}
     .btn{appearance:none;border:none;border-radius:12px;padding:.65rem .9rem;font-weight:700;cursor:pointer}
-    .btn-sec{background:rgba(255,255,255,.08);color:#f5f6f7;border:1px solid rgba(255,255,255,.14)}
-    .btn-sec:hover{filter:brightness(1.1)}
+    .btn-sec{background:rgba(255,255,255,.08);color:#f5f6f7;border:1px solid rgba(255,255,255,.14)} .btn-sec:hover{filter:brightness(1.1)}
 
-    /* Right: prompts + editor */
-    .prompt-grid{display:grid;gap:.55rem}
-    .prompt{
-      padding:.65rem .75rem;border-radius:10px;border:1px solid rgba(255,255,255,.14);
-      background:rgba(255,255,255,.05); cursor:pointer;
-      transition: box-shadow .15s ease, border-color .15s ease;
-    }
-    .prompt:hover{box-shadow:0 8px 26px rgba(0,0,0,.25)}
-    .prompt.active{border-color:#f7c948; box-shadow:0 0 0 2px #f7c94855 inset}
+    .prompt-grid{display:grid;gap:.8rem}
+    .prompt{padding:.75rem .85rem;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);cursor:pointer;transition: box-shadow .15s ease, border-color .15s ease}
+    .prompt:hover{box-shadow:0 8px 26px rgba(0,0,0,.25)} .prompt.active{border-color:#f7c948;box-shadow:0 0 0 2px #f7c94855 inset}
 
-    .editor{
-      margin-top:.6rem;
-      display:flex; flex-direction:column; gap:.5rem;
-    }
-    .editor textarea{
-      width:100%; min-height:160px; resize:vertical;
-      background:rgba(0,0,0,.22); color:#fff; border:1px solid rgba(255,255,255,.14);
-      border-radius:12px; padding:1rem; font-family:'Arimo',sans-serif; font-size:1rem; line-height:1.7;
-    }
-    .editor .go-link{
-      display:inline-flex; align-items:center; gap:.4rem; font-weight:800; color:#ffd494; text-decoration:none;
-      padding:.5rem .65rem; border-radius:10px; border:1px dashed rgba(255,212,148,.45);
-    }
+    .editor{margin-top:.8rem;display:flex;flex-direction:column;gap:.6rem}
+    .editor textarea{width:100%;min-height:160px;resize:vertical;background:rgba(0,0,0,.22);color:#fff;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:1rem;font-family:'Arimo',sans-serif;font-size:1rem;line-height:1.7}
+    .editor .go-link{display:inline-flex;align-items:center;gap:.4rem;font-weight:800;color:#ffd494;text-decoration:none;padding:.5rem .65rem;border-radius:10px;border:1px dashed rgba(255,212,148,.45)}
     .editor .go-link:hover{background:rgba(255,212,148,.08)}
 
-    /* Mobile */
     @media (max-width: 780px){
       .workspace{grid-template-columns:1fr;gap:1rem}
       .title{font-size:2rem}
-      .preview-canvas{width:100%; max-width:320px; margin-inline:auto}
+      .preview-canvas{width:100%;max-width:320px;margin-inline:auto}
       .cta-row{gap:.5rem}
     }
   </style>
 </head>
 <body>
   <main class="container">
-    <!-- Header -->
     <header class="header">
       <div class="logo-title">
         <img src="https://i.ibb.co/kVyL1XmY/Gemini-Generated-Image-dvk7kidvk7kidvk7.png" alt="DayTale"/>
         <h1 class="title">Autumn Journal Ideas for October 2025</h1>
       </div>
-      <p class="subtitle" id="rot-sub">
-        Autumn journaling ideas for cozy reflection.
-      </p>
-
+      <p class="subtitle" id="rot-sub">Autumn journaling ideas for cozy reflection.</p>
       <div class="cta-row">
         <span class="pill">NEW</span>
-        <button id="email-cta" class="cta-btn" data-eo-form-toggle-id="ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8">
-          Get fall aesthetic journal ideas
-        </button>
+        <button id="email-cta" class="cta-btn" data-eo-form-toggle-id="ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8">Get fall aesthetic journal ideas</button>
         <span class="pill right">EXCLUSIVE</span>
       </div>
     </header>
 
-    <!-- Workspace -->
     <section class="workspace">
-      <!-- LEFT: palettes + quote examples + inline preview -->
       <aside class="panel">
         <div class="left-stack">
           <div>
             <div class="section-title">Select a color palette</div>
-            <div id="swatches" class="swatches"><!-- buttons injected --></div>
+            <div id="swatches" class="swatches"></div>
           </div>
-
           <div>
             <div class="section-title">Tap a quote to preview</div>
             <div id="quotes" class="quote-list"></div>
           </div>
-
           <div class="preview-wrap">
             <canvas id="preview" class="preview-canvas" width="540" height="960" aria-label="Quote preview"></canvas>
             <div class="actions">
@@ -197,11 +108,9 @@
         </div>
       </aside>
 
-      <!-- RIGHT: prompts + editor -->
       <section class="panel">
         <div class="section-title">Prompts to reflect</div>
         <div id="prompts" class="prompt-grid"></div>
-
         <div class="editor">
           <textarea id="editor" placeholder="Write your autumn reflection here..."></textarea>
           <a class="go-link" href="https://daytale.vercel.app" target="_blank" rel="noopener">I want to write my autumn journal →</a>
@@ -210,12 +119,12 @@
     </section>
   </main>
 
-  <!-- EmailOctopus embed (modal pops when button is clicked) -->
+  <!-- EmailOctopus embed -->
   <script async src="https://eomail5.com/form/ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8.js"
           data-form="ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8"></script>
 
   <script>
-    // ---------- Rotating subtitle (autumn-focused, SEO-ish) ----------
+    // Rotating subtitle
     const SUBS = [
       "Autumn journaling ideas for cozy reflection.",
       "Daily fall prompts to capture your thoughts.",
@@ -224,269 +133,157 @@
       "Cozy fall journal inspiration to start writing."
     ];
     const rotEl = document.getElementById('rot-sub');
-    let si = 0;
-    setInterval(()=>{
-      si = (si+1) % SUBS.length;
-      rotEl.textContent = SUBS[si];
-    }, 3200);
+    let si = 0; setInterval(()=>{ si=(si+1)%SUBS.length; rotEl.textContent=SUBS[si]; }, 3200);
 
-    // ---------- Email popup trigger ----------
-    document.getElementById('email-cta').addEventListener('click', (e)=>{
+    // Email popup trigger: popup only (no new tab fallback)
+    document.getElementById('email-cta').addEventListener('click',(e)=>{
       e.preventDefault();
       const id = e.currentTarget.getAttribute('data-eo-form-toggle-id');
-      // EmailOctopus sets a global function to toggle the modal
       if (window.EmailOctopus && typeof window.EmailOctopus.displayPopup === 'function') {
         window.EmailOctopus.displayPopup(id);
-      } else {
-        // Fallback: navigate to hosted form (rare)
-        window.open('https://eomail5.com/form/'+id, '_blank');
       }
+      // else do nothing; we don't open a new page
     });
 
-    // ---------- Autumn palettes WITH PNG BACKGROUNDS (only change #1) ----------
+    // Palettes with PNG backgrounds
     const PALETTES = [
-      { key:'dawn',     name:'Fall Orange',   stops:['#FCE7C8','#F4B36A'], stripe:'#E7A45A', text:'#1b1f29', badge:'#1b1f29',
-        bg:'/assets/backgrounds/fall-orange.png' },
-      { key:'mist',     name:'Rain & Wind',   stops:['#D7E6F7','#BFD3EA'], stripe:'#B6CBE3', text:'#0b1020', badge:'#0b1020',
-        bg:'/assets/backgrounds/rain-wind-blue.png' },
-      { key:'ink',      name:'Thunder Dark',  stops:['#0F172A','#1E293B'], stripe:'#334155', text:'#F1F5F9', badge:'#F1F5F9',
-        bg:'/assets/backgrounds/thunder-dark.png' },
-      { key:'halloween',name:'Halloween',     stops:['#FFCF9C','#FF8C42'], stripe:'#F07B2E', text:'#1b1f29', badge:'#1b1f29',
-        bg:'/assets/backgrounds/halloween-orange.png' },
+      { key:'dawn',     name:'Fall Orange',   stops:['#FCE7C8','#F4B36A'], stripe:'#E7A45A', text:'#1b1f29', badge:'#1b1f29', bg:'/assets/backgrounds/fall-orange.png' },
+      { key:'mist',     name:'Rain & Wind',   stops:['#D7E6F7','#BFD3EA'], stripe:'#B6CBE3', text:'#0b1020', badge:'#0b1020', bg:'/assets/backgrounds/rain-wind-blue.png' },
+      { key:'ink',      name:'Thunder Dark',  stops:['#0F172A','#1E293B'], stripe:'#334155', text:'#F1F5F9', badge:'#F1F5F9', bg:'/assets/backgrounds/thunder-dark.png' },
+      { key:'halloween',name:'Halloween',     stops:['#FFCF9C','#FF8C42'], stripe:'#F07B2E', text:'#FFFFFF', badge:'#FFFFFF', bg:'/assets/backgrounds/halloween-orange.png' }
     ];
-    let activePalette = 'dawn';
+    let activePalette='dawn';
 
-    // Build swatches (keep circular, gradient look; names on hover)
-    const swatchWrap = document.getElementById('swatches');
+    // Swatches
+    const swatchWrap=document.getElementById('swatches');
     PALETTES.forEach(p=>{
-      const b = document.createElement('button');
-      b.className = 'swatch';
-      b.style.background = `linear-gradient(135deg, ${p.stops[0]}, ${p.stops[1]})`;
-      b.setAttribute('aria-label', p.name);
-      if (p.key === activePalette) b.classList.add('active');
-      b.addEventListener('click', ()=>{
-        activePalette = p.key;
-        [...swatchWrap.children].forEach(x=>x.classList.remove('active'));
-        b.classList.add('active');
-        drawPreview();
-      });
+      const b=document.createElement('button');
+      b.className='swatch';
+      b.style.background=`linear-gradient(135deg, ${p.stops[0]}, ${p.stops[1]})`;
+      b.setAttribute('aria-label',p.name);
+      if(p.key===activePalette) b.classList.add('active');
+      b.addEventListener('click',()=>{ activePalette=p.key; [...swatchWrap.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); drawPreview(); });
       swatchWrap.appendChild(b);
     });
 
-    // ---------- Example quotes (left) ----------
-    const QUOTES = [
+    // Quotes
+    const QUOTES=[
       "Some days are soft like sweaters; today asked me to slow down and listen.",
       "I measured progress in breaths and small kindnesses to myself.",
       "I don’t need to be the sun; a candle is enough to warm this room.",
       "The wind rearranged my plans, but not my intention to care for myself.",
       "I am learning to gather quiet moments like leaves in a jar."
     ];
-    const quoteWrap = document.getElementById('quotes');
-    let selectedQuote = QUOTES[0];
+    const quoteWrap=document.getElementById('quotes');
+    let selectedQuote=QUOTES[0];
     QUOTES.forEach(q=>{
-      const div = document.createElement('div');
-      div.className = 'quote-item';
-      div.textContent = q;
-      if (q === selectedQuote) div.classList.add('active');
-      div.addEventListener('click', ()=>{
-        selectedQuote = q;
-        [...quoteWrap.children].forEach(x=>x.classList.remove('active'));
-        div.classList.add('active');
-        drawPreview();
-      });
+      const div=document.createElement('div');
+      div.className='quote-item'; div.textContent=q;
+      if(q===selectedQuote) div.classList.add('active');
+      div.addEventListener('click',()=>{ selectedQuote=q; [...quoteWrap.children].forEach(x=>x.classList.remove('active')); div.classList.add('active'); drawPreview(); });
       quoteWrap.appendChild(div);
     });
 
-    // ---------- Prompts (right) ----------
-    const PROMPTS = [
+    // Prompts
+    const PROMPTS=[
       "What small moment of warmth did you notice today?",
       "Which routine feels cozier in autumn, and why?",
       "Where did you feel tension in your body, and how did you respond?",
       "What did the weather mirror about your mood today?",
       "Write a note of kindness to your future self this month."
     ];
-    const promptsEl = document.getElementById('prompts');
-    const editor = document.getElementById('editor');
+    const promptsEl=document.getElementById('prompts'), editor=document.getElementById('editor');
     PROMPTS.forEach(p=>{
-      const d = document.createElement('div');
-      d.className = 'prompt';
-      d.textContent = p;
-      d.addEventListener('click', ()=>{
-        // selection highlight
-        [...promptsEl.children].forEach(x=>x.classList.remove('active'));
-        d.classList.add('active');
-        // fill editor with the prompt so user can type under it
-        if (!editor.value || editor.value.trim().length === 0) {
-          editor.value = p + "\n\n";
-          editor.focus();
-        }
-      });
+      const d=document.createElement('div'); d.className='prompt'; d.textContent=p;
+      d.addEventListener('click',()=>{ [...promptsEl.children].forEach(x=>x.classList.remove('active')); d.classList.add('active'); if(!editor.value.trim()) { editor.value=p+"\n\n"; editor.focus(); } });
       promptsEl.appendChild(d);
     });
 
-    // ---------- Inline Preview (canvas) ----------
-    const canvas = document.getElementById('preview');
-    const ctx = canvas.getContext('2d');
+    // Canvas preview
+    const canvas=document.getElementById('preview'); const ctx=canvas.getContext('2d');
+    function loadImage(src){ return new Promise((res,rej)=>{ const im=new Image(); im.crossOrigin='anonymous'; im.onload=()=>res(im); im.onerror=rej; im.src=src; }); }
+    function wrapText(ctx,text,maxWidth){ const words=text.split(/\s+/); const lines=[]; let line=''; for(const w of words){ const test=line?line+' '+w:w; if(ctx.measureText(test).width<=maxWidth){ line=test; } else { if(line) lines.push(line); line=w; } } if(line) lines.push(line); return lines; }
+    function roundRect(ctx,x,y,w,h,r){ const rr=typeof r==='number'?{tl:r,tr:r,br:r,bl:r}:r; ctx.beginPath(); ctx.moveTo(x+rr.tl,y); ctx.lineTo(x+w-rr.tr,y); ctx.quadraticCurveTo(x+w,y,x+w,y+rr.tr); ctx.lineTo(x+w,y+h-rr.br); ctx.quadraticCurveTo(x+w,y+h,x+w-rr.br,y+h); ctx.lineTo(x+rr.bl,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-rr.bl); ctx.lineTo(x,y+rr.tl); ctx.quadraticCurveTo(x,y,x+rr.tl,y); ctx.closePath(); }
 
-    // UTIL: load image (cors-safe)
-    function loadImage(src){
-      return new Promise((resolve,reject)=>{
-        const im = new Image();
-        im.crossOrigin = 'anonymous';
-        im.onload = ()=>resolve(im);
-        im.onerror = reject;
-        im.src = src;
-      });
-    }
-    function wrapText(ctx, text, maxWidth){
-      const words = text.split(/\s+/);
-      const lines = [];
-      let line = '';
-      for(const w of words){
-        const test = line ? line + ' ' + w : w;
-        if (ctx.measureText(test).width <= maxWidth) line = test;
-        else { if (line) lines.push(line); line = w; }
+    async function createQuoteImage(quote,paletteKey='dawn',includeLogo=true){
+      const style=(PALETTES.find(x=>x.key===paletteKey)||PALETTES[0]);
+      const W=1080,H=1920; const c=document.createElement('canvas'); c.width=W; c.height=H; const cx=c.getContext('2d');
+
+      // Background PNG cover
+      if(style.bg){ const bg=await loadImage(style.bg); const s=Math.max(W/bg.width,H/bg.height); const dw=bg.width*s, dh=bg.height*s; const dx=(W-dw)/2, dy=(H-dh)/2; cx.drawImage(bg,dx,dy,dw,dh); }
+      else{ const grad=cx.createLinearGradient(0,0,W,H); grad.addColorStop(0,style.stops[0]); grad.addColorStop(1,style.stops[1]); cx.fillStyle=grad; cx.fillRect(0,0,W,H); }
+
+      // Soft stripes
+      cx.globalAlpha=.08; for(let i=0;i<22;i++){ cx.fillStyle=i%2?'#ffffff':style.stripe; cx.fillRect(-W,i*80,W*3,2); } cx.globalAlpha=1;
+
+      const marginX=120, marginY=240;
+
+      // Badge
+      const badgeW=340,badgeH=72,badgeR=18; const badgeX=(W-badgeW)/2,badgeY=marginY-(badgeH+12);
+      cx.fillStyle='rgba(0,0,0,0.12)'; roundRect(cx,badgeX,badgeY,badgeW,badgeH,badgeR); cx.fill();
+      cx.fillStyle= (paletteKey==='halloween') ? '#FFFFFF' : style.badge;
+      cx.font='700 26px Arimo, sans-serif'; cx.textAlign='center'; cx.textBaseline='middle';
+      cx.fillText('My Quote of My Day', W/2, badgeY+badgeH/2);
+
+      // Quote text: Halloween = centered + white; others keep palette text
+      const isHalloween = paletteKey==='halloween';
+      const quoteColor = isHalloween ? '#FFFFFF' : style.text;
+      cx.fillStyle = quoteColor;
+      cx.textAlign = isHalloween ? 'center' : 'left';
+
+      let fontSize=64, wrapped;
+      while(fontSize>=40){
+        cx.font=`800 ${fontSize}px Arimo, sans-serif`;
+        wrapped=wrapText(cx,quote,W-marginX*2);
+        const blockH=wrapped.length*fontSize*1.3;
+        if(blockH<=H-marginY*2) break;
+        fontSize-=4;
       }
-      if (line) lines.push(line);
-      return lines;
-    }
-    function roundRect(ctx,x,y,w,h,r){
-      const rr = typeof r==='number' ? {tl:r,tr:r,br:r,bl:r} : r;
-      ctx.beginPath();
-      ctx.moveTo(x+rr.tl,y);
-      ctx.lineTo(x+w-rr.tr,y);
-      ctx.quadraticCurveTo(x+w,y,x+w,y+rr.tr);
-      ctx.lineTo(x+w,y+h-rr.br);
-      ctx.quadraticCurveTo(x+w,y+h,x+w-rr.br,y+h);
-      ctx.lineTo(x+rr.bl,y+h);
-      ctx.quadraticCurveTo(x,y+h,x,y+h-rr.bl);
-      ctx.lineTo(x,y+rr.tl);
-      ctx.quadraticCurveTo(x,y,x+rr.tl,y);
-      ctx.closePath();
-    }
+      const startY=(H-wrapped.length*fontSize*1.3)/2; let y=startY;
+      const textX = isHalloween ? W/2 : marginX;
+      wrapped.forEach(line=>{ cx.fillText(line,textX,y); y+=fontSize*1.3; });
 
-    // ---------- PNG-aware generator (only change #2) ----------
-    async function createQuoteImage(quote, paletteKey='dawn', includeLogo=true){
-      const style = (PALETTES.find(x=>x.key===paletteKey) || PALETTES[0]);
+      // Watermark: always white with black stroke for readability
+      if(includeLogo){
+        const footerY=H-140, logoSize=72;
+        cx.fillStyle='rgba(255,255,255,0.9)'; roundRect(cx, marginX, footerY-logoSize, logoSize, logoSize, 16); cx.fill();
+        const icon=await loadImage('https://i.ibb.co/b5wFgZ11/icon-dark.png');
+        cx.save(); roundRect(cx, marginX, footerY-logoSize, logoSize, logoSize, 16); cx.clip(); cx.drawImage(icon, marginX, footerY-logoSize, logoSize, logoSize); cx.restore();
 
-      // Canvas size matches IG Story ratio: 1080x1920 (preview canvas is 540x960)
-      const W = 1080, H = 1920;
-      const c = document.createElement('canvas'); c.width = W; c.height = H;
-      const cx = c.getContext('2d');
-
-      // Background: PNG cover if available; else gradient fallback
-      if (style.bg){
-        const bg = await loadImage(style.bg);
-        const s = Math.max(W / bg.width, H / bg.height);  // cover
-        const dw = bg.width * s, dh = bg.height * s;
-        const dx = (W - dw) / 2, dy = (H - dh) / 2;
-        cx.drawImage(bg, dx, dy, dw, dh);
-      } else {
-        const grad = cx.createLinearGradient(0, 0, W, H);
-        grad.addColorStop(0, style.stops[0]);
-        grad.addColorStop(1, style.stops[1]);
-        cx.fillStyle = grad;
-        cx.fillRect(0, 0, W, H);
-      }
-
-      // Optional light texture stripes (kept subtle)
-      cx.globalAlpha = 0.08;
-      for (let i = 0; i < 22; i++) {
-        cx.fillStyle = i % 2 ? '#ffffff' : style.stripe;
-        cx.fillRect(-W, i * 80, W * 3, 2);
-      }
-      cx.globalAlpha = 1;
-
-      const marginX = 120, marginY = 240;
-
-      // Header badge
-      const badgeW = 340, badgeH = 72, badgeR = 18;
-      const badgeX = (W - badgeW) / 2, badgeY = marginY - (badgeH + 12);
-      cx.fillStyle = 'rgba(0,0,0,0.12)';
-      roundRect(cx, badgeX, badgeY, badgeW, badgeH, badgeR); cx.fill();
-      cx.fillStyle = style.badge;
-      cx.font = '700 26px Arimo, sans-serif';
-      cx.textAlign = 'center'; cx.textBaseline = 'middle';
-      cx.fillText('My Quote of My Day', W/2, badgeY + badgeH/2);
-
-      // Quote text
-      cx.fillStyle = style.text;
-      cx.textAlign = 'left';
-      let fontSize = 64, wrapped;
-      while (fontSize >= 40) {
-        cx.font = `800 ${fontSize}px Arimo, sans-serif`;
-        wrapped = wrapText(cx, quote, W - marginX*2);
-        const blockH = wrapped.length * fontSize * 1.3;
-        if (blockH <= H - marginY*2) break;
-        fontSize -= 4;
-      }
-      const startY = (H - wrapped.length * fontSize * 1.3) / 2;
-      let y = startY;
-      wrapped.forEach(line=>{
-        cx.fillText(line, marginX, y);
-        y += fontSize * 1.3;
-      });
-
-      // Watermark (brand)
-      if (includeLogo){
-        const footerY = H - 140, logoSize = 72;
-        cx.fillStyle = 'rgba(255,255,255,0.9)';
-        roundRect(cx, marginX, footerY - logoSize, logoSize, logoSize, 16); cx.fill();
-        const icon = await loadImage('https://i.ibb.co/b5wFgZ11/icon-dark.png');
-        cx.save();
-        roundRect(cx, marginX, footerY - logoSize, logoSize, logoSize, 16); cx.clip();
-        cx.drawImage(icon, marginX, footerY - logoSize, logoSize, logoSize);
-        cx.restore();
-
-        cx.textAlign = 'left';
-        cx.fillStyle = '#111827';
-        cx.font = '800 32px "Cal Sans", sans-serif';
-        cx.fillText('DayTale', marginX + logoSize + 18, footerY - 30);
-        cx.font = '600 20px Arimo, sans-serif';
-        cx.fillStyle = 'rgba(17,24,39,.72)';
-        cx.fillText('Autumn journaling', marginX + logoSize + 18, footerY);
+        const textX0 = marginX+logoSize+18;
+        cx.textAlign='left';
+        // DayTale
+        cx.font='800 32px "Cal Sans", sans-serif';
+        cx.lineWidth=4; cx.strokeStyle='rgba(0,0,0,0.85)'; cx.strokeText('DayTale', textX0, footerY-30);
+        cx.fillStyle='#FFFFFF'; cx.fillText('DayTale', textX0, footerY-30);
+        // Subline
+        cx.font='600 20px Arimo, sans-serif';
+        cx.lineWidth=3; cx.strokeStyle='rgba(0,0,0,0.75)'; cx.strokeText('Autumn journaling', textX0, footerY);
+        cx.fillStyle='#FFFFFF'; cx.fillText('Autumn journaling', textX0, footerY);
       }
 
       return c.toDataURL('image/png');
     }
 
-    // Draw preview into the on-page canvas (keep inline, no modal)
     async function drawPreview(){
-      const dataUrl = await createQuoteImage(selectedQuote, activePalette, true);
-      // downscale into visible preview canvas
-      const img = new Image();
-      img.onload = ()=>{
-        ctx.clearRect(0,0,canvas.width, canvas.height);
-        // fit 1080x1920 -> 540x960 exactly (same ratio)
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      };
-      img.src = dataUrl;
+      const dataUrl=await createQuoteImage(selectedQuote,activePalette,true);
+      const img=new Image();
+      img.onload=()=>{ ctx.clearRect(0,0,canvas.width,canvas.height); ctx.drawImage(img,0,0,canvas.width,canvas.height); };
+      img.src=dataUrl;
     }
-
-    // Initial render
     drawPreview();
 
-    // Download / Share
-    document.getElementById('downloadBtn').addEventListener('click', async ()=>{
-      const dataUrl = await createQuoteImage(selectedQuote, activePalette, true);
-      const a = document.createElement('a');
-      a.href = dataUrl; a.download = `DayTale-quote-${new Date().toISOString().slice(0,10)}.png`;
-      document.body.appendChild(a); a.click(); a.remove();
+    document.getElementById('downloadBtn').addEventListener('click',async()=>{
+      const dataUrl=await createQuoteImage(selectedQuote,activePalette,true);
+      const a=document.createElement('a'); a.href=dataUrl; a.download=`DayTale-quote-${new Date().toISOString().slice(0,10)}.png`; document.body.appendChild(a); a.click(); a.remove();
     });
-    document.getElementById('shareBtn').addEventListener('click', async ()=>{
-      const dataUrl = await createQuoteImage(selectedQuote, activePalette, true);
+    document.getElementById('shareBtn').addEventListener('click',async()=>{
+      const dataUrl=await createQuoteImage(selectedQuote,activePalette,true);
       try{
-        const resp = await fetch(dataUrl);
-        const blob = await resp.blob();
-        const file = new File([blob], 'daytale-quote.png', { type:'image/png' });
-        if (navigator.canShare && navigator.canShare({ files:[file] })) {
-          await navigator.share({ files:[file], title:'DayTale Quote' });
-        } else {
-          const a = document.createElement('a');
-          a.href = dataUrl; a.download = 'daytale-quote.png';
-          document.body.appendChild(a); a.click(); a.remove();
-          alert('Sharing not supported here. Image downloaded instead.');
-        }
+        const resp=await fetch(dataUrl); const blob=await resp.blob();
+        const file=new File([blob],'daytale-quote.png',{type:'image/png'});
+        if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], title:'DayTale Quote'}); }
+        else{ const a=document.createElement('a'); a.href=dataUrl; a.download='daytale-quote.png'; document.body.appendChild(a); a.click(); a.remove(); alert('Sharing not supported here. Image downloaded instead.'); }
       }catch{ alert('Share failed. Try downloading and posting manually.'); }
     });
   </script>
