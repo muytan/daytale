@@ -432,7 +432,7 @@
         const footerY = H - 140, logoSize = 72;
         cx.fillStyle = 'rgba(255,255,255,0.9)';
         roundRect(cx, marginX, footerY - logoSize, logoSize, logoSize, 16); cx.fill();
-        const icon = await loadImage('https://i.ibb.co/kVyL1XmY/Gemini-Generated-Image-dvk7kidvk7kidvk7.png');
+        const icon = await loadImage('https://i.ibb.co/b5wFgZ11/icon-dark.png');
         cx.save();
         roundRect(cx, marginX, footerY - logoSize, logoSize, logoSize, 16); cx.clip();
         cx.drawImage(icon, marginX, footerY - logoSize, logoSize, logoSize);
@@ -444,7 +444,7 @@
         cx.fillText('DayTale', marginX + logoSize + 18, footerY - 30);
         cx.font = '600 20px Arimo, sans-serif';
         cx.fillStyle = 'rgba(17,24,39,.72)';
-        cx.fillText('Mental health journaling', marginX + logoSize + 18, footerY);
+        cx.fillText('Autumn journaling', marginX + logoSize + 18, footerY);
       }
 
       return c.toDataURL('image/png');
