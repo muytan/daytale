@@ -1,291 +1,379 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <title>Autumn Journal Ideas for October 2025</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Autumn Journal Ideas for October 2025</title>
 
-  <!-- Fonts (Cal Sans for title; Arimo everywhere else) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Cal+Sans&display=swap" rel="stylesheet"/>
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Cal+Sans&display=swap" rel="stylesheet"/>
 
-  <style>
-    :root{
-      --bg1:#0E0A08; --bg2:#3D2915; --text:#F5F6F7; --muted:#C9CBD3;
-      --accent1:#f7c948; --accent2:#f59e0b; --brand:#5B3A1F;
-      --border: rgba(255,255,255,.12); --shadow: rgba(0,0,0,.35);
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      background: radial-gradient(1200px 800px at 20% 15%, #5a3b1b22, transparent 60%), linear-gradient(180deg,var(--bg1),var(--bg2));
-      color:var(--text); font-family:'Arimo',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
-    .container{max-width:1200px;margin:0 auto;padding:2rem;display:flex;flex-direction:column;gap:2rem}
-    .header{text-align:center}
-    .logo-title{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:.5rem}
-    .logo-title img{width:52px;height:52px;border-radius:12px;box-shadow:0 10px 30px var(--shadow)}
-    .title{font-family:"Cal Sans", sans-serif;font-weight:700;font-size:2.4rem;letter-spacing:.2px;color:#fff}
-    .subtitle{color:var(--muted);font-size:1.02rem;line-height:1.6;max-width:820px;margin:0 auto}
+<style>
+  :root{
+    --oxford:#050a30; --kobicha:#5b3a1f; --lion:#c6a575;
+    --bg-dark:#0E0A08;
+    --bg-card-dark:rgba(14,10,8,.75);
+    --bg-light:#fefefe; --bg-card-light:rgba(255,255,255,.9);
+    --primary:var(--kobicha); --primary-2:var(--lion);
+    --text-dark:#1f2937; --text-light:#f9fafb; --text-muted:#b7bac6;
+    --border-light:rgba(255,255,255,.16); --border-dark:rgba(0,0,0,.14);
+    --shadow:rgba(0,0,0,.28);
+    --accent-start:#f7c948; --accent-end:#f59e0b; --accent-text:#1b1f29;
+    --box:#3D2915;
+  }
 
-    .cta-row{display:flex;gap:.75rem;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:.75rem;position:relative}
-    .cta-btn{appearance:none;border:none;cursor:pointer;padding:.9rem 1.2rem;border-radius:12px;font-weight:800;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#1b1f29;box-shadow:0 10px 28px rgba(245,158,11,.28)}
-    .pill{padding:.35rem .6rem;border-radius:999px;font-size:.78rem;font-weight:800;color:#1b1f29;background:linear-gradient(135deg,#ffddb0,#ffa63a);transform:rotate(-6deg);filter:saturate(110%) contrast(102%);box-shadow:0 10px 28px rgba(255,166,58,.25)}
-    .pill.right{background:linear-gradient(135deg,#ffd2c9,#ff8aa6);transform:rotate(6deg);box-shadow:0 10px 28px rgba(255,138,166,.22)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
 
-    .workspace{display:grid;grid-template-columns:1.05fr 0.95fr;gap:1.25rem;align-items:start}
-    .panel{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:16px;padding:1rem 1.1rem;box-shadow:0 18px 60px var(--shadow)}
-    .left-stack{display:flex;flex-direction:column;gap:.9rem}
-    .section-title{font-weight:700;font-size:1rem;color:#ffddb0;letter-spacing:.3px}
+  body{
+    font-family:'Arimo',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(198,165,117,.24) 0%, transparent 55%),
+      radial-gradient(circle at 78% 18%, rgba(91,58,31,.22) 0%, transparent 52%),
+      var(--bg-dark);
+    background-attachment: fixed, fixed, scroll;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-size: 1200px 1200px, 1200px 1200px, auto;
+    color:var(--text-light);
+    overflow-x:hidden;
+  }
 
-    .swatches{display:flex;gap:.5rem;flex-wrap:wrap}
-    .swatch{width:32px;height:32px;border-radius:50%;border:1px solid rgba(0,0,0,.2);cursor:pointer;position:relative;transition:transform .15s ease, box-shadow .15s ease;box-shadow:0 4px 14px rgba(0,0,0,.22) inset, 0 6px 18px rgba(0,0,0,.18)}
-    .swatch:hover{transform:translateY(-1px)} .swatch.active{box-shadow:0 0 0 3px #fff inset, 0 0 0 3px rgba(255,255,255,.32)}
-    .swatch::after{content:attr(aria-label);position:absolute;left:50%;top:120%;transform:translateX(-50%);font-size:.75rem;color:#0b1020;background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:.2rem .45rem;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s ease, transform .15s ease;box-shadow:0 8px 22px rgba(0,0,0,.15)}
-    .swatch:hover::after{opacity:1;transform:translateX(-50%) translateY(2px)}
+  .container{max-width:1200px;margin:0 auto;padding:2rem;display:flex;flex-direction:column;gap:2rem}
+  .header{text-align:center}
+  .logo-row{display:flex;align-items:center;justify-content:center;gap:.8rem}
+  .logo{width:56px;height:56px;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.35)}
+  .logo img{width:100%;height:100%;object-fit:cover}
+  h1.title{
+    font-family:"Cal Sans",sans-serif;
+    font-weight:700; font-size:2.4rem; line-height:1.1;
+    background:linear-gradient(135deg,#e9d5b5,#9b6b3e);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  p.subtitle{max-width:820px;margin:.35rem auto 0;color:var(--text-muted);text-align:center; transition:opacity .35s ease, transform .35s ease}
+  .subtitle.rot-hide{opacity:0; transform:translateY(4px)}
 
-    .quote-list{display:grid;gap:.5rem}
-    .quote-item{padding:.7rem .8rem;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);cursor:pointer;transition: box-shadow .15s ease, border-color .15s ease}
-    .quote-item:hover{box-shadow:0 8px 26px rgba(0,0,0,.25)} .quote-item.active{border-color:#f7c948;box-shadow:0 0 0 2px #f7c94855 inset}
+  .cta-wrap{display:flex;justify-content:center;gap:.75rem;align-items:center;margin-top:1rem}
+  .btn{border:none;padding:.8rem 1.2rem;border-radius:12px;cursor:pointer;font-weight:700;font-size:.95rem;display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap;transition:transform .15s ease, box-shadow .15s ease}
+  .btn:active{transform:translateY(1px)}
+  .btn-accent{background:linear-gradient(135deg,var(--accent-start),var(--accent-end));color:var(--accent-text);box-shadow:0 8px 22px rgba(245,158,11,.35)}
+  .cta-note{color:rgba(255,255,255,.85);font-size:.9rem}
 
-    .preview-wrap{display:flex;flex-direction:column;gap:.5rem}
-    .preview-canvas{width:260px;height:auto;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:#000;display:block}
-    .actions{display:flex;gap:.5rem;flex-wrap:wrap}
-    .btn{appearance:none;border:none;border-radius:12px;padding:.65rem .9rem;font-weight:700;cursor:pointer}
-    .btn-sec{background:rgba(255,255,255,.08);color:#f5f6f7;border:1px solid rgba(255,255,255,.14)} .btn-sec:hover{filter:brightness(1.1)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:.75rem}
 
-    .prompt-grid{display:grid;gap:.8rem}
-    .prompt{padding:.75rem .85rem;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);cursor:pointer;transition: box-shadow .15s ease, border-color .15s ease}
-    .prompt:hover{box-shadow:0 8px 26px rgba(0,0,0,.25)} .prompt.active{border-color:#f7c948;box-shadow:0 0 0 2px #f7c94855 inset}
+  .panel{
+    background:var(--bg-card-dark);
+    border:1px solid var(--border-light);
+    border-radius:18px;padding:1.25rem;
+    box-shadow:0 18px 48px rgba(0,0,0,.32);
+  }
+  .panel h2{font-size:1rem;letter-spacing:.2px;color:#e9d5b5;margin-bottom:.6rem}
 
-    .editor{margin-top:.8rem;display:flex;flex-direction:column;gap:.6rem}
-    .editor textarea{width:100%;min-height:160px;resize:vertical;background:rgba(0,0,0,.22);color:#fff;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:1rem;font-family:'Arimo',sans-serif;font-size:1rem;line-height:1.7}
-    .editor .go-link{display:inline-flex;align-items:center;gap:.4rem;font-weight:800;color:#ffd494;text-decoration:none;padding:.5rem .65rem;border-radius:10px;border:1px dashed rgba(255,212,148,.45)}
-    .editor .go-link:hover{background:rgba(255,212,148,.08)}
+  .swatches{display:flex;flex-wrap:wrap;gap:.55rem;margin-bottom:.75rem}
+  .swatch{width:32px;height:32px;border-radius:50%;border:1px solid rgba(0,0,0,.18);cursor:pointer;position:relative;outline:none;transition:box-shadow .2s ease, transform .2s ease}
+  .swatch.active{box-shadow:0 0 0 3px #fff inset, 0 0 0 3px rgba(255,255,255,.35)}
+  .swatch::after{
+    content:attr(data-name); position:absolute; left:50%; top:118%; transform:translateX(-50%);
+    font-size:.72rem; white-space:nowrap; color:#111827; background:#fff; border:1px solid #e5e7eb; border-radius:6px; padding:.18rem .4rem;
+    box-shadow:0 6px 18px rgba(0,0,0,.2); opacity:0; pointer-events:none; transition:opacity .15s ease, transform .15s ease
+  }
+  .swatch:hover::after{opacity:1; transform:translateX(-50%) translateY(2px)}
 
-    @media (max-width: 780px){
-      .workspace{grid-template-columns:1fr;gap:1rem}
-      .title{font-size:2rem}
-      .preview-canvas{width:100%;max-width:320px;margin-inline:auto}
-      .cta-row{gap:.5rem}
-    }
-  </style>
+  .examples{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.75rem}
+  .example{background:rgba(198,165,117,.1);border:1px solid rgba(198,165,117,.35);border-radius:10px;padding:.75rem;cursor:pointer}
+  .example:hover{background:rgba(198,165,117,.16)}
+  .row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+  .input-inline{flex:1;min-width:200px;background:rgba(0,0,0,.22);border:1px solid var(--border-light);border-radius:12px;padding:.8rem;color:#f9fafb}
+  .btn-secondary{background:rgba(255,255,255,.08);color:#f9fafb;border:1px solid var(--border-light)}
+
+  .preview{background:rgba(0,0,0,.22);border:1px solid var(--border-light);border-radius:14px; padding:.75rem;}
+  .preview img{width:100%;height:auto;border-radius:10px;display:block}
+
+  .right .panel-inner{display:flex;flex-direction:column;gap:.75rem}
+  .prompts{display:flex;flex-direction:column;gap:.5rem}
+  .prompt{background:rgba(0,0,0,.18);border:1px solid var(--border-light);border-radius:10px;padding:.7rem;cursor:pointer}
+  .prompts, .prompt, .prompt *{color:var(--text-light)}
+  .light-mode .prompt{background:rgba(0,0,0,.04);color:var(--text-dark);border:1px solid var(--border-dark)}
+
+  .editor{display:flex;flex-direction:column;gap:.5rem;margin-top:.25rem}
+  .editor textarea{min-height:160px;background:rgba(0,0,0,.22);border:1px solid var(--border-light);border-radius:12px;padding:1rem;color:#f9fafb}
+  .editor .helper{font-size:.9rem;color:#cfcfd8}
+  .link-row{display:flex;justify-content:flex-end}
+  .link-row a{color:#e9d5b5;text-decoration:none;border:1px solid rgba(233,213,181,.45);padding:.6rem .9rem;border-radius:10px}
+  .link-row a:hover{background:rgba(233,213,181,.12)}
+
+  /* CONTENT SECTION */
+  .content{max-width:980px;margin:1rem auto 2.5rem;display:flex;flex-direction:column;gap:1.25rem}
+  .content h3{font-family:"Cal Sans",sans-serif;font-weight:700;font-size:1.35rem;color:#e9d5b5}
+  .content p{color:#e7e7ea;line-height:1.8}
+  .quote-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+  .q{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:.85rem;color:#f9fafb}
+  @media (max-width: 768px){ .quote-grid{grid-template-columns:1fr} }
+
+  /* MOBILE tweaks only; desktop unchanged */
+  @media (max-width: 768px){
+    .container{padding:1.1rem}
+    .logo-row{gap:.6rem}
+    h1.title{font-size:1.9rem}
+    p.subtitle{padding:0 .25rem}
+    .grid{grid-template-columns:1fr;gap:1rem}
+    .panel{padding:1rem}
+    .swatch{width:40px;height:40px}
+    .row{gap:.5rem}
+    .btn, .input-inline{font-size:16px}
+    .editor textarea{font-size:16px; min-height:200px}
+  }
+</style>
 </head>
 <body>
-  <main class="container">
+  <div class="container">
     <header class="header">
-      <div class="logo-title">
-        <img src="https://i.ibb.co/kVyL1XmY/Gemini-Generated-Image-dvk7kidvk7kidvk7.png" alt="DayTale"/>
+      <div class="logo-row">
+        <div class="logo">
+          <img src="https://i.ibb.co/b5wFgZ11/icon-dark.png" alt="DayTale icon"/>
+        </div>
         <h1 class="title">Autumn Journal Ideas for October 2025</h1>
       </div>
-      <p class="subtitle" id="rot-sub">Autumn journaling ideas for cozy reflection.</p>
-      <div class="cta-row">
-        <span class="pill">NEW</span>
-        <button id="email-cta" class="cta-btn" data-eo-form-toggle-id="ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8">Get fall aesthetic journal ideas</button>
-        <span class="pill right">EXCLUSIVE</span>
+      <p class="subtitle" id="sub-rot">Autumn journaling ideas for cozy reflection.</p>
+
+      <div class="cta-wrap">
+        <a href="#" class="btn btn-accent" id="email-cta" data-eo-form-toggle-id="ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8">
+          Get fall aesthetic journal ideas
+        </a>
+        <!-- now STATIC (no second rotator) -->
+        <span class="cta-note">New prompts each week for October.</span>
       </div>
     </header>
 
-    <section class="workspace">
-      <aside class="panel">
-        <div class="left-stack">
-          <div>
-            <div class="section-title">Select a color palette</div>
-            <div id="swatches" class="swatches"></div>
+    <main class="grid">
+      <!-- LEFT: examples + palette + preview -->
+      <section class="panel left">
+        <h2>Quote palettes & preview</h2>
+
+        <div class="swatches" id="swatches">
+          <button class="swatch active" data-key="fall" data-name="Falling Leaves" style="background:linear-gradient(135deg,#D26A2E,#F2B166)"></button>
+          <button class="swatch" data-key="rain" data-name="Rainy Window" style="background:linear-gradient(135deg,#cfe6ff,#87b4e6)"></button>
+          <button class="swatch" data-key="storm" data-name="Storm Night" style="background:linear-gradient(135deg,#0f172a,#24324a)"></button>
+          <button class="swatch" data-key="halloween" data-name="Halloween Glow" style="background:linear-gradient(135deg,#2a1204,#ff6a00)"></button>
+        </div>
+
+        <div class="examples" id="examples">
+          <div class="example" data-quote="I am learning to slow down and let the season teach me how to change.">
+            “I am learning to slow down and let the season teach me how to change.”
           </div>
-          <div>
-            <div class="section-title">Tap a quote to preview</div>
-            <div id="quotes" class="quote-list"></div>
+          <div class="example" data-quote="I do not have to rush. Today counts because I am here in it.">
+            “I do not have to rush. Today counts because I am here in it.”
           </div>
-          <div class="preview-wrap">
-            <canvas id="preview" class="preview-canvas" width="540" height="960" aria-label="Quote preview"></canvas>
-            <div class="actions">
-              <button id="downloadBtn" class="btn btn-sec">Download PNG</button>
-              <button id="shareBtn" class="btn btn-sec">Share</button>
-            </div>
+          <div class="example" data-quote="I can be both a work in progress and a warm place to land.">
+            “I can be both a work in progress and a warm place to land.”
           </div>
         </div>
-      </aside>
 
-      <section class="panel">
-        <div class="section-title">Prompts to reflect</div>
-        <div id="prompts" class="prompt-grid"></div>
-        <div class="editor">
-          <textarea id="editor" placeholder="Write your autumn reflection here..."></textarea>
-          <a class="go-link" href="https://daytale.vercel.app" target="_blank" rel="noopener">I want to write my autumn journal →</a>
+        <div class="row">
+          <input id="quote-input" class="input-inline" type="text" placeholder="Or write your own quote…"/>
+          <button id="preview-btn" class="btn btn-secondary">Preview</button>
+          <button id="download-btn" class="btn btn-secondary">Download</button>
+        </div>
+
+        <div class="preview" style="margin-top:.75rem">
+          <img id="preview-img" alt="Quote preview"/>
         </div>
       </section>
-    </section>
-  </main>
 
-  <!-- EmailOctopus embed -->
-  <script async src="https://eomail5.com/form/ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8.js"
-          data-form="ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8"></script>
+      <!-- RIGHT: prompts + editor -->
+      <section class="panel right">
+        <h2>Prompts</h2>
+        <div class="panel-inner">
+          <div class="prompts" id="prompts">
+            <div class="prompt" data-text="Describe one small moment today that felt like autumn.">Describe one small moment today that felt like autumn.</div>
+            <div class="prompt" data-text="What are you releasing this season and what are you inviting in?">What are you releasing this season and what are you inviting in?</div>
+            <div class="prompt" data-text="Write a note to your future self about how you want this October to feel.">Write a note to your future self about how you want this October to feel.</div>
+            <div class="prompt" data-text="When the weather shifts, what routines help you feel grounded?">When the weather shifts, what routines help you feel grounded?</div>
+          </div>
+
+          <div class="editor">
+            <textarea id="editor-box" placeholder="Click a prompt to drop it here, then start writing…"></textarea>
+            <div class="link-row">
+              <a href="https://daytale.vercel.app" target="_self" rel="noopener">I want to write my autumn journal →</a>
+            </div>
+            <div class="helper">Tip: highlight any sentence in your entry on the main page to mint a shareable quote.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- CONTENT / SEO SECTION (quotes, not prompts) -->
+    <section class="content" id="content-seo">
+      <h3>Autumn journal ideas</h3>
+      <p>Use these short lines as shareable quotes or starters for your daily fall journaling. Save a favorite, then write a few sentences about what it means today.</p>
+      <div class="quote-grid">
+        <div class="q">“I am allowed to move slowly and still be going somewhere.”</div>
+        <div class="q">“Today I let one leaf fall and keep one warm thing close.”</div>
+        <div class="q">“My pace is softer, my focus is deeper.”</div>
+        <div class="q">“I can change gently and still be me.”</div>
+      </div>
+
+      <h3>Rain journaling quotes</h3>
+      <p>On rainy days, write about sound, breath, and the quiet space you make for yourself.</p>
+      <div class="quote-grid">
+        <div class="q">“I am the quiet between the raindrops.”</div>
+        <div class="q">“I breathe like windows fogging and clearing.”</div>
+        <div class="q">“Storm outside, small calm inside.”</div>
+        <div class="q">“I don’t rush the rain or my thoughts.”</div>
+      </div>
+
+      <h3>Storm night quotes</h3>
+      <p>When life feels loud, anchor to one steady thing and name it on the page.</p>
+      <div class="quote-grid">
+        <div class="q">“I am thunder’s pause, not its noise.”</div>
+        <div class="q">“I hold a steady light while the sky changes.”</div>
+        <div class="q">“I can be both brave and careful.”</div>
+        <div class="q">“The storm leaves, my grounding stays.”</div>
+      </div>
+
+      <h3>Halloween journaling quotes</h3>
+      <p>Play with mystery, shadow, and the parts of you that want to be seen.</p>
+      <div class="quote-grid">
+        <div class="q">“I am kinder to the parts of me that hide.”</div>
+        <div class="q">“Tonight I meet my shadows with a candle, not a sword.”</div>
+        <div class="q">“I honor what feels tender and true.”</div>
+        <div class="q">“Even in the dark, I pick what to carry forward.”</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- EmailOctopus modal embed -->
+  <script async src="https://eomail5.com/form/ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8.js" data-form="ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8"></script>
 
   <script>
-    // Rotating subtitle
-    const SUBS = [
+    // Header subtitle rotator (only one)
+    const subLines=[
       "Autumn journaling ideas for cozy reflection.",
       "Daily fall prompts to capture your thoughts.",
       "Find peace through October journaling.",
       "Write your autumn story, one note at a time.",
       "Cozy fall journal inspiration to start writing."
     ];
-    const rotEl = document.getElementById('rot-sub');
-    let si = 0; setInterval(()=>{ si=(si+1)%SUBS.length; rotEl.textContent=SUBS[si]; }, 3200);
+    const subEl=document.getElementById('sub-rot'); let si=0;
+    setInterval(()=>{
+      subEl.classList.add('rot-hide');
+      setTimeout(()=>{
+        si=(si+1)%subLines.length;
+        subEl.textContent=subLines[si];
+        subEl.classList.remove('rot-hide');
+      },200);
+    },3200);
 
-    // Email popup trigger: popup only (no new tab fallback)
-    document.getElementById('email-cta').addEventListener('click',(e)=>{
+    // EmailOctopus: modal only
+    document.getElementById('email-cta')?.addEventListener('click',(e)=>{
       e.preventDefault();
-      const id = e.currentTarget.getAttribute('data-eo-form-toggle-id');
-      if (window.EmailOctopus && typeof window.EmailOctopus.displayPopup === 'function') {
-        window.EmailOctopus.displayPopup(id);
-      }
-      // else do nothing; we don't open a new page
+      // opens via data-eo-form-toggle-id
     });
 
-    // Palettes with PNG backgrounds
-    const PALETTES = [
-      { key:'dawn',     name:'Fall Orange',   stops:['#FCE7C8','#F4B36A'], stripe:'#E7A45A', text:'#1b1f29', badge:'#1b1f29', bg:'/assets/backgrounds/fall-orange.png' },
-      { key:'mist',     name:'Rain & Wind',   stops:['#D7E6F7','#BFD3EA'], stripe:'#B6CBE3', text:'#0b1020', badge:'#0b1020', bg:'/assets/backgrounds/rain-wind-blue.png' },
-      { key:'ink',      name:'Thunder Dark',  stops:['#0F172A','#1E293B'], stripe:'#334155', text:'#F1F5F9', badge:'#F1F5F9', bg:'/assets/backgrounds/thunder-dark.png' },
-      { key:'halloween',name:'Halloween',     stops:['#FFCF9C','#FF8C42'], stripe:'#F07B2E', text:'#FFFFFF', badge:'#FFFFFF', bg:'/assets/backgrounds/halloween-orange.png' }
-    ];
-    let activePalette='dawn';
+    // PNG quote preview
+    const BG_MAP={ fall:"assets/fall.png", rain:"assets/rain.png", storm:"assets/storm.png", halloween:"assets/halloween.png" };
+    let activeKey='fall';
 
-    // Swatches
-    const swatchWrap=document.getElementById('swatches');
-    PALETTES.forEach(p=>{
-      const b=document.createElement('button');
-      b.className='swatch';
-      b.style.background=`linear-gradient(135deg, ${p.stops[0]}, ${p.stops[1]})`;
-      b.setAttribute('aria-label',p.name);
-      if(p.key===activePalette) b.classList.add('active');
-      b.addEventListener('click',()=>{ activePalette=p.key; [...swatchWrap.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); drawPreview(); });
-      swatchWrap.appendChild(b);
+    const swatches=document.getElementById('swatches');
+    swatches.querySelectorAll('.swatch').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        swatches.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
+        btn.classList.add('active');
+        activeKey=btn.getAttribute('data-key');
+        renderPreview();
+      });
     });
 
-    // Quotes
-    const QUOTES=[
-      "Some days are soft like sweaters; today asked me to slow down and listen.",
-      "I measured progress in breaths and small kindnesses to myself.",
-      "I don’t need to be the sun; a candle is enough to warm this room.",
-      "The wind rearranged my plans, but not my intention to care for myself.",
-      "I am learning to gather quiet moments like leaves in a jar."
-    ];
-    const quoteWrap=document.getElementById('quotes');
-    let selectedQuote=QUOTES[0];
-    QUOTES.forEach(q=>{
-      const div=document.createElement('div');
-      div.className='quote-item'; div.textContent=q;
-      if(q===selectedQuote) div.classList.add('active');
-      div.addEventListener('click',()=>{ selectedQuote=q; [...quoteWrap.children].forEach(x=>x.classList.remove('active')); div.classList.add('active'); drawPreview(); });
-      quoteWrap.appendChild(div);
+    document.querySelectorAll('.example').forEach(ex=>{
+      ex.addEventListener('click',()=>{
+        const q=ex.getAttribute('data-quote')||ex.textContent.trim();
+        document.getElementById('quote-input').value=q;
+        renderPreview();
+      });
     });
 
-    // Prompts
-    const PROMPTS=[
-      "What small moment of warmth did you notice today?",
-      "Which routine feels cozier in autumn, and why?",
-      "Where did you feel tension in your body, and how did you respond?",
-      "What did the weather mirror about your mood today?",
-      "Write a note of kindness to your future self this month."
-    ];
-    const promptsEl=document.getElementById('prompts'), editor=document.getElementById('editor');
-    PROMPTS.forEach(p=>{
-      const d=document.createElement('div'); d.className='prompt'; d.textContent=p;
-      d.addEventListener('click',()=>{ [...promptsEl.children].forEach(x=>x.classList.remove('active')); d.classList.add('active'); if(!editor.value.trim()) { editor.value=p+"\n\n"; editor.focus(); } });
-      promptsEl.appendChild(d);
+    document.querySelectorAll('.prompt').forEach(p=>{
+      p.addEventListener('click',()=>{
+        const t=p.getAttribute('data-text')||p.textContent.trim();
+        const ed=document.getElementById('editor-box');
+        ed.value=t+"\n\n"+ed.value;
+        ed.focus();
+      });
     });
 
-    // Canvas preview
-    const canvas=document.getElementById('preview'); const ctx=canvas.getContext('2d');
-    function loadImage(src){ return new Promise((res,rej)=>{ const im=new Image(); im.crossOrigin='anonymous'; im.onload=()=>res(im); im.onerror=rej; im.src=src; }); }
-    function wrapText(ctx,text,maxWidth){ const words=text.split(/\s+/); const lines=[]; let line=''; for(const w of words){ const test=line?line+' '+w:w; if(ctx.measureText(test).width<=maxWidth){ line=test; } else { if(line) lines.push(line); line=w; } } if(line) lines.push(line); return lines; }
-    function roundRect(ctx,x,y,w,h,r){ const rr=typeof r==='number'?{tl:r,tr:r,br:r,bl:r}:r; ctx.beginPath(); ctx.moveTo(x+rr.tl,y); ctx.lineTo(x+w-rr.tr,y); ctx.quadraticCurveTo(x+w,y,x+w,y+rr.tr); ctx.lineTo(x+w,y+h-rr.br); ctx.quadraticCurveTo(x+w,y+h,x+w-rr.br,y+h); ctx.lineTo(x+rr.bl,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-rr.bl); ctx.lineTo(x,y+rr.tl); ctx.quadraticCurveTo(x,y,x+rr.tl,y); ctx.closePath(); }
+    document.getElementById('preview-btn').addEventListener('click', renderPreview);
 
-    async function createQuoteImage(quote,paletteKey='dawn',includeLogo=true){
-      const style=(PALETTES.find(x=>x.key===paletteKey)||PALETTES[0]);
-      const W=1080,H=1920; const c=document.createElement('canvas'); c.width=W; c.height=H; const cx=c.getContext('2d');
+    async function renderPreview(){
+      const text=(document.getElementById('quote-input').value||"").trim();
+      const imgEl=document.getElementById('preview-img');
+      if(!text){ imgEl.src=""; return; }
 
-      // Background PNG cover
-      if(style.bg){ const bg=await loadImage(style.bg); const s=Math.max(W/bg.width,H/bg.height); const dw=bg.width*s, dh=bg.height*s; const dx=(W-dw)/2, dy=(H-dh)/2; cx.drawImage(bg,dx,dy,dw,dh); }
-      else{ const grad=cx.createLinearGradient(0,0,W,H); grad.addColorStop(0,style.stops[0]); grad.addColorStop(1,style.stops[1]); cx.fillStyle=grad; cx.fillRect(0,0,W,H); }
+      const url=BG_MAP[activeKey];
+      const img=await loadImage(url);
 
-      // Soft stripes
-      cx.globalAlpha=.08; for(let i=0;i<22;i++){ cx.fillStyle=i%2?'#ffffff':style.stripe; cx.fillRect(-W,i*80,W*3,2); } cx.globalAlpha=1;
+      const W=1080,H=1920;
+      const canvas=document.createElement('canvas'); canvas.width=W; canvas.height=H;
+      const ctx=canvas.getContext('2d');
 
-      const marginX=120, marginY=240;
+      ctx.drawImage(img,0,0,W,H);
+      ctx.fillStyle='rgba(0,0,0,.22)'; ctx.fillRect(0,0,W,H);
 
-      // Badge
-      const badgeW=340,badgeH=72,badgeR=18; const badgeX=(W-badgeW)/2,badgeY=marginY-(badgeH+12);
-      cx.fillStyle='rgba(0,0,0,0.12)'; roundRect(cx,badgeX,badgeY,badgeW,badgeH,badgeR); cx.fill();
-      cx.fillStyle= (paletteKey==='halloween') ? '#FFFFFF' : style.badge;
-      cx.font='700 26px Arimo, sans-serif'; cx.textAlign='center'; cx.textBaseline='middle';
-      cx.fillText('My Quote of My Day', W/2, badgeY+badgeH/2);
+      const isHalloween = activeKey==='halloween';
+      const quoteColor  = isHalloween ? '#ffffff' : '#111827';
+      const waterColor  = isHalloween ? '#ffffff' : '#111827';
+      const waterShadow = isHalloween ? 'black' : 'rgba(255,255,255,.65)';
 
-      // Quote text: Halloween = centered + white; others keep palette text
-      const isHalloween = paletteKey==='halloween';
-      const quoteColor = isHalloween ? '#FFFFFF' : style.text;
-      cx.fillStyle = quoteColor;
-      cx.textAlign = isHalloween ? 'center' : 'left';
-
-      let fontSize=64, wrapped;
-      while(fontSize>=40){
-        cx.font=`800 ${fontSize}px Arimo, sans-serif`;
-        wrapped=wrapText(cx,quote,W-marginX*2);
-        const blockH=wrapped.length*fontSize*1.3;
-        if(blockH<=H-marginY*2) break;
+      const marginX=120; let fontSize=64;
+      ctx.textAlign='left'; ctx.textBaseline='top';
+      while(fontSize>=38){
+        ctx.font=`800 ${fontSize}px Arimo, sans-serif`;
+        const lines=wrap(ctx,text,W-marginX*2);
+        const blockH=lines.length*fontSize*1.25;
+        if(blockH <= H-760) break;
         fontSize-=4;
       }
-      const startY=(H-wrapped.length*fontSize*1.3)/2; let y=startY;
-      const textX = isHalloween ? W/2 : marginX;
-      wrapped.forEach(line=>{ cx.fillText(line,textX,y); y+=fontSize*1.3; });
+      const lines=wrap(ctx,text,W-marginX*2);
+      let y=((H-760)-lines.length*fontSize*1.25)/2 + 200;
 
-      // Watermark: always white with black stroke for readability
-      if(includeLogo){
-        const footerY=H-140, logoSize=72;
-        cx.fillStyle='rgba(255,255,255,0.9)'; roundRect(cx, marginX, footerY-logoSize, logoSize, logoSize, 16); cx.fill();
-        const icon=await loadImage('https://i.ibb.co/b5wFgZ11/icon-dark.png');
-        cx.save(); roundRect(cx, marginX, footerY-logoSize, logoSize, logoSize, 16); cx.clip(); cx.drawImage(icon, marginX, footerY-logoSize, logoSize, logoSize); cx.restore();
+      ctx.fillStyle=quoteColor;
+      for(const ln of lines){ ctx.fillText(ln, marginX, y); y+=fontSize*1.25; }
 
-        const textX0 = marginX+logoSize+18;
-        cx.textAlign='left';
-        // DayTale
-        cx.font='800 32px "Cal Sans", sans-serif';
-        cx.lineWidth=4; cx.strokeStyle='rgba(0,0,0,0.85)'; cx.strokeText('DayTale', textX0, footerY-30);
-        cx.fillStyle='#FFFFFF'; cx.fillText('DayTale', textX0, footerY-30);
-        // Subline
-        cx.font='600 20px Arimo, sans-serif';
-        cx.lineWidth=3; cx.strokeStyle='rgba(0,0,0,0.75)'; cx.strokeText('Autumn journaling', textX0, footerY);
-        cx.fillStyle='#FFFFFF'; cx.fillText('Autumn journaling', textX0, footerY);
+      ctx.font='800 32px "Cal Sans", sans-serif';
+      ctx.textAlign='left';
+      ctx.fillStyle=waterColor;
+      ctx.shadowColor=waterShadow;
+      ctx.shadowBlur=isHalloween?6:0;
+      ctx.fillText('DayTale', marginX, H-180);
+      ctx.shadowBlur=0;
+
+      imgEl.src=canvas.toDataURL('image/png');
+    }
+
+    document.getElementById('download-btn').addEventListener('click', async ()=>{
+      if(!document.getElementById('preview-img').src){ await renderPreview(); }
+      const a=document.createElement('a');
+      a.href=document.getElementById('preview-img').src;
+      a.download=`DayTale-Autumn-Quote-${new Date().toISOString().slice(0,10)}.png`;
+      document.body.appendChild(a); a.click(); a.remove();
+    });
+
+    function wrap(ctx, text, maxW){
+      const words=text.split(/\s+/); const lines=[]; let line='';
+      for(const w of words){
+        const test=line?line+' '+w:w;
+        if(ctx.measureText(test).width<=maxW){ line=test; }
+        else{ if(line) lines.push(line); line=w; }
       }
-
-      return c.toDataURL('image/png');
+      if(line) lines.push(line);
+      return lines;
+    }
+    function loadImage(src){
+      return new Promise((res,rej)=>{ const im=new Image(); im.crossOrigin='anonymous'; im.onload=()=>res(im); im.onerror=rej; im.src=src; });
     }
 
-    async function drawPreview(){
-      const dataUrl=await createQuoteImage(selectedQuote,activePalette,true);
-      const img=new Image();
-      img.onload=()=>{ ctx.clearRect(0,0,canvas.width,canvas.height); ctx.drawImage(img,0,0,canvas.width,canvas.height); };
-      img.src=dataUrl;
-    }
-    drawPreview();
-
-    document.getElementById('downloadBtn').addEventListener('click',async()=>{
-      const dataUrl=await createQuoteImage(selectedQuote,activePalette,true);
-      const a=document.createElement('a'); a.href=dataUrl; a.download=`DayTale-quote-${new Date().toISOString().slice(0,10)}.png`; document.body.appendChild(a); a.click(); a.remove();
-    });
-    document.getElementById('shareBtn').addEventListener('click',async()=>{
-      const dataUrl=await createQuoteImage(selectedQuote,activePalette,true);
-      try{
-        const resp=await fetch(dataUrl); const blob=await resp.blob();
-        const file=new File([blob],'daytale-quote.png',{type:'image/png'});
-        if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], title:'DayTale Quote'}); }
-        else{ const a=document.createElement('a'); a.href=dataUrl; a.download='daytale-quote.png'; document.body.appendChild(a); a.click(); a.remove(); alert('Sharing not supported here. Image downloaded instead.'); }
-      }catch{ alert('Share failed. Try downloading and posting manually.'); }
-    });
+    // initial
+    renderPreview();
   </script>
 </body>
 </html>
