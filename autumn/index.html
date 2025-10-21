@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Autumn Journal Ideas for October 2025</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Cal+Sans&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --bg:#0E0A08;
+      --card:#3D2915;
+      --text:#F5F3F0;
+      --muted:#C9B8A3;
+      --border:rgba(255,255,255,.14);
+
+      --primary:#5B3A1F;
+      --primary-2:#6b4e2a;
+
+      --email-a:#f7c948;
+      --email-b:#f59e0b;
+
+      --ring: rgba(255,255,255,.35);
+      --gold:#f7c948;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      background: radial-gradient(1200px 800px at 10% 5%, rgba(91,58,31,.15) 0%, transparent 55%), var(--bg);
+      color: var(--text);
+      font-family: "Arimo", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    }
+    .container{max-width:1200px;margin:0 auto;padding:24px;display:flex;flex-direction:column;gap:24px}
+
+    header{text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+    .brand{display:flex;align-items:center;gap:12px;justify-content:center}
+    .brand img{width:48px;height:48px;border-radius:10px;display:block}
+    .title{
+      font-family:"Cal Sans",sans-serif;
+      font-weight:700;
+      font-size:clamp(28px,4.3vw,40px);
+      letter-spacing:.2px; line-height:1.15;
+      background:linear-gradient(135deg,#E7C39A,#9B6B3B);
+      -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    }
+
+    /* Rotating subtitle */
+    .subtitle{color:var(--muted);min-height:24px;font-size:15.5px;position:relative;overflow:hidden;height:26px}
+    .subtitle-line{position:absolute;left:0;right:0;opacity:0;transform:translateY(6px);transition:opacity .35s ease,transform .35s ease}
+    .subtitle-line.active{opacity:1;transform:translateY(0)}
+
+    /* CTA under header + badges */
+    .cta-wrap{position:relative;width:100%;display:flex;justify-content:center}
+    .cta-row{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;position:relative;z-index:2}
+    .btn{border:none;border-radius:12px;padding:.8rem 1.2rem;cursor:pointer;font-weight:700;font-size:.95rem;display:inline-flex;align-items:center;gap:.45rem;white-space:nowrap}
+    .btn-email{
+      color:#1b1f29;background:linear-gradient(135deg,var(--email-a),var(--email-b));
+      box-shadow:0 10px 22px rgba(245,158,11,.25);
+      position:relative;overflow:hidden;
+    }
+    .btn-email::after{content:"";position:absolute;inset:-30%;background:conic-gradient(from 0deg,rgba(255,255,255,.0),rgba(255,255,255,.22),rgba(255,255,255,.0));animation:spin 4.8s linear infinite;mix-blend-mode:overlay;filter:blur(12px)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Tilted glass badges */
+    .glass-badge{
+      position:absolute; top:-18px;
+      backdrop-filter: blur(8px) saturate(140%);
+      background: linear-gradient(180deg, rgba(255,148,41,.22), rgba(255,148,41,.08));
+      border:1px solid rgba(255,255,255,.18);
+      color:#FFEBC7; font-weight:800; letter-spacing:.3px;
+      padding:.35rem .6rem; border-radius:10px; transform:rotate(-6deg);
+      box-shadow:0 18px 42px rgba(0,0,0,.35);
+    }
+    .glass-badge.right{right:17%; transform:rotate(7deg)}
+    .glass-badge.left{left:17%}
+
+    /* Grid and panels (unchanged) */
+    .grid{display:grid;gap:18px;grid-template-columns:1fr 1fr}
+    .panel{
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.04));
+      border:1px solid var(--border);
+      border-radius:18px;padding:18px;box-shadow:0 24px 60px rgba(0,0,0,.35)
+    }
+    .panel h3{font-weight:700;font-size:1rem;color:#E9D9C4;margin-bottom:.6rem}
+
+    /* LEFT */
+    .palettes{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin:.2rem 0 10px}
+    .swatch{width:28px;height:28px;border-radius:50%;border:1px solid rgba(0,0,0,.18);cursor:pointer;position:relative;transition:box-shadow .2s ease,transform .2s ease;outline:0}
+    .swatch.active{box-shadow:0 0 0 3px #fff inset,0 0 0 3px var(--ring)}
+    .swatch:hover{transform:translateY(-1px)}
+    .swatch::after{
+      content:attr(data-name);position:absolute;left:50%;top:115%;transform:translateX(-50%);
+      background:#fff;color:#111827;border:1px solid #e5e7eb;border-radius:6px;
+      font-size:.72rem;padding:.2rem .45rem;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s ease,transform .15s ease;box-shadow:0 10px 24px rgba(0,0,0,.18)
+    }
+    .swatch:hover::after{opacity:1;transform:translateX(-50%) translateY(2px)}
+
+    .examples{display:grid;gap:8px;margin:.3rem 0 10px}
+    .example-quote{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
+      color:#EFE8DE;padding:.6rem .75rem;border-radius:12px;cursor:pointer;
+      transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
+    }
+    .example-quote:hover{background:rgba(255,255,255,.08)}
+    /* GOLD selection animation for quotes */
+    .example-quote.is-selected{
+      border-color: rgba(247,201,72,.65);
+      box-shadow: 0 0 0 2px rgba(247,201,72,.35), 0 10px 28px rgba(247,201,72,.18);
+      transform: translateY(-1px);
+    }
+
+    .custom-row{display:flex;gap:8px;align-items:center;margin:6px 0}
+    .input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:.65rem .8rem;color:var(--text);font-family:"Arimo",ui-sans-serif,system-ui;font-size:.95rem}
+    .btn-generate{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff}
+
+    .preview-box{margin-top:8px;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px}
+    .preview-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .preview-actions{display:flex;gap:8px}
+    .preview-actions .btn{padding:.5rem .8rem;font-size:.9rem}
+    .preview-cnv-wrap{width:260px;max-width:100%;aspect-ratio:9/16;background:#111;border-radius:10px;overflow:hidden}
+    .preview-cnv-wrap canvas{width:100%;height:100%}
+
+    /* RIGHT */
+    .right-wrap{display:flex;flex-direction:column;gap:14px}
+    .prompt-pills{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px;margin-bottom:12px}
+    .prompt-chip{
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      color:#F0E7DC;padding:.6rem .75rem;border-radius:12px;cursor:pointer;
+      transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
+    }
+    /* GOLD selection animation for prompts */
+    .prompt-chip.is-selected{
+      border-color: rgba(247,201,72,.65);
+      box-shadow: 0 0 0 2px rgba(247,201,72,.35), 0 10px 28px rgba(247,201,72,.18);
+      transform: translateY(-1px);
+    }
+
+    .answer-box{width:100%;min-height:280px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:14px;color:var(--text);font-family:"Arimo",ui-sans-serif,system-ui;font-size:1rem;line-height:1.7}
+    .backlink{display:inline-flex;align-items:center;gap:.4rem;color:#EAD9C2;text-decoration:none;font-weight:700}
+    .backlink:hover{opacity:.9}
+
+    @media (max-width: 860px){
+      .grid{grid-template-columns:1fr;gap:14px}
+      .panel{padding:14px}
+      .preview-actions{justify-content:center}
+      .preview-cnv-wrap{width:220px}
+      .glass-badge.left{left:6%}
+      .glass-badge.right{right:6%}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <img src="https://i.ibb.co/kVyL1XmY/Gemini-Generated-Image-dvk7kidvk7kidvk7.png" alt="DayTale icon"/>
+        <h1 class="title">Autumn Journal Ideas for October 2025</h1>
+      </div>
+
+      <!-- Rotating subtitle (updated lines) -->
+      <div class="subtitle" id="subrot">
+        <span class="subtitle-line active">Autumn journaling ideas for cozy reflection.</span>
+        <span class="subtitle-line">Daily fall prompts to capture your thoughts.</span>
+        <span class="subtitle-line">Find peace through October journaling.</span>
+        <span class="subtitle-line">Write your autumn story, one note at a time.</span>
+        <span class="subtitle-line">Cozy fall journal inspiration to start writing.</span>
+      </div>
+
+      <!-- CTA with tilted glass badges -->
+      <div class="cta-wrap">
+        <span class="glass-badge left">NEW!</span>
+        <span class="glass-badge right">Exclusive!</span>
+        <div class="cta-row">
+          <button id="email-cta" class="btn btn-email">Get fall aesthetic journal ideas</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- LEFT: palette → examples → custom → small preview -->
+      <section class="panel">
+        <h3>Quote palette</h3>
+        <div class="palettes" id="swatches"></div>
+
+        <h3>Example quotes</h3>
+        <div class="examples" id="examples">
+          <div class="example-quote">I am allowed to slow down and still be moving forward.</div>
+          <div class="example-quote">Small rituals keep me steady when the season shifts.</div>
+          <div class="example-quote">I can hold both what I miss and what I’m growing into.</div>
+          <div class="example-quote">Today’s quiet is not emptiness; it’s room to breathe.</div>
+          <div class="example-quote">Progress can be gentle and still count.</div>
+        </div>
+
+        <div class="custom-row">
+          <input id="custom-quote" class="input" placeholder="Type your quote and click Generate"/>
+          <button id="btn-generate" class="btn btn-generate">Generate</button>
+        </div>
+
+        <div class="preview-box">
+          <div class="preview-head">
+            <div style="font-weight:700;color:#EAD9C2">Share preview</div>
+            <div class="preview-actions">
+              <button id="btn-download" class="btn btn-generate">Download</button>
+              <button id="btn-share" class="btn btn-generate">Share</button>
+            </div>
+          </div>
+          <div class="preview-cnv-wrap">
+            <canvas id="preview" width="1080" height="1920"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: prompts and editor -->
+      <section class="panel">
+        <h3>Prompts to start writing</h3>
+        <div class="prompt-pills" id="right-pills">
+          <div class="prompt-chip">Describe the one moment today that felt most “autumn.” Why?</div>
+          <div class="prompt-chip">What changed around you this week, and what changed within you?</div>
+          <div class="prompt-chip">Write a note to “future you” about something warm you want to remember.</div>
+          <div class="prompt-chip">What routine could make your evenings calmer for the next 7 days?</div>
+          <div class="prompt-chip">Name a small comfort you can repeat tomorrow. Why does it help?</div>
+        </div>
+
+        <textarea id="editor" class="answer-box" placeholder="Start typing here..."></textarea>
+        <a class="backlink" href="https://daytale.vercel.app/" target="_blank" rel="noopener">I want to write my autumn journal →</a>
+      </section>
+    </div>
+  </div>
+
+  <!-- EmailOctopus embed -->
+  <script async src="https://eomail5.com/form/ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8.js"
+          data-form="ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8"></script>
+  <!-- Official toggle link (hidden) we click programmatically -->
+  <a id="eo-toggle" data-eo-form-toggle-id="ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8" href="#" style="display:none">Open</a>
+
+  <script>
+    // Rotating subtitle
+    (function rotator(){
+      const lines=[...document.querySelectorAll('#subrot .subtitle-line')];
+      let i=0; setInterval(()=>{ lines[i].classList.remove('active'); i=(i+1)%lines.length; lines[i].classList.add('active'); }, 3200);
+    })();
+
+    // Email popup trigger via official toggle link
+    document.getElementById('email-cta').addEventListener('click', (e)=>{
+      e.preventDefault();
+      const t=document.getElementById('eo-toggle');
+      t && t.click();
+    });
+
+    // Palettes
+    const PALETTES = [
+      { key:'maple',   name:'Maple Ember',    stops:['#4B2E1F','#8C4B2E'], stripe:'#A0623B', text:'#F8F5F2', badge:'#F8F5F2' },
+      { key:'rain',    name:'Rainy Morning',  stops:['#0F1B24','#2C4456'], stripe:'#3E5A6B', text:'#E8F0F7', badge:'#E8F0F7' },
+      { key:'harvest', name:'Harvest Gold',   stops:['#3A2A12','#7A5A1E'], stripe:'#9B7930', text:'#FFF7E6', badge:'#FFF7E6' },
+      { key:'cider',   name:'Cider Blush',    stops:['#3A2521','#6B3E35'], stripe:'#8A5448', text:'#FCEDEA', badge:'#FCEDEA' },
+      { key:'pumpkin', name:'Pumpkin Night',  stops:['#1A1412','#3B2319'], stripe:'#6B301C', text:'#FFE9D6', badge:'#FFE9D6' },
+    ];
+    let activePalette='maple', currentQuote='Small rituals keep me steady when the season shifts.';
+
+    // Render swatches
+    const swatches = document.getElementById('swatches');
+    PALETTES.forEach(p=>{
+      const b=document.createElement('button');
+      b.className='swatch'; b.setAttribute('aria-label',p.name); b.setAttribute('data-name',p.name);
+      b.style.background=`linear-gradient(135deg, ${p.stops[0]}, ${p.stops[1]})`;
+      if(p.key===activePalette) b.classList.add('active');
+      b.addEventListener('click',()=>{
+        activePalette=p.key;
+        [...swatches.children].forEach(c=>c.classList.remove('active'));
+        b.classList.add('active');
+        drawQuote();
+      });
+      swatches.appendChild(b);
+    });
+
+    // Example quotes with selection animation
+    const examplesEl=document.getElementById('examples');
+    examplesEl.addEventListener('click', (e)=>{
+      const el=e.target.closest('.example-quote'); if(!el) return;
+      currentQuote=el.textContent.trim();
+      [...examplesEl.children].forEach(c=>c.classList.remove('is-selected'));
+      el.classList.add('is-selected');
+      drawQuote();
+    });
+
+    // Custom quote
+    document.getElementById('btn-generate').addEventListener('click', ()=>{
+      const t = document.getElementById('custom-quote').value.trim();
+      if(t){ currentQuote = t; [...examplesEl.children].forEach(c=>c.classList.remove('is-selected')); drawQuote(); }
+    });
+
+    // Right prompts → editor + selection animation
+    const editor = document.getElementById('editor');
+    const pills = document.getElementById('right-pills');
+    pills.addEventListener('click', (e)=>{
+      const el=e.target.closest('.prompt-chip'); if(!el) return;
+      editor.value = el.textContent.trim(); editor.focus();
+      [...pills.children].forEach(c=>c.classList.remove('is-selected'));
+      el.classList.add('is-selected');
+    });
+
+    // Canvas preview
+    const canvas=document.getElementById('preview'); const ctx=canvas.getContext('2d');
+    const ICON_URL='https://i.ibb.co/kVyL1XmY/Gemini-Generated-Image-dvk7kidvk7kidvk7.png';
+
+    async function drawQuote(){
+      const style = PALETTES.find(x=>x.key===activePalette) || PALETTES[0];
+      const W=canvas.width, H=canvas.height;
+
+      // background
+      const g=ctx.createLinearGradient(0,0,W,H);
+      g.addColorStop(0,style.stops[0]); g.addColorStop(1,style.stops[1]);
+      ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+
+      // stripes
+      ctx.globalAlpha=.08;
+      for(let i=0;i<22;i++){ ctx.fillStyle=i%2 ? '#ffffff' : style.stripe; ctx.fillRect(-W,i*80,W*3,2); }
+      ctx.globalAlpha=1;
+
+      const marginX=120, marginY=240;
+
+      // badge
+      const badgeW=360,badgeH=72,badgeR=18;
+      const badgeX=(W-badgeW)/2, badgeY=marginY-(badgeH+12);
+      roundRect(ctx,badgeX,badgeY,badgeW,badgeH,badgeR); ctx.fillStyle='rgba(0,0,0,.16)'; ctx.fill();
+      ctx.fillStyle=style.badge; ctx.font='700 26px Arimo, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('My Quote of My Day', W/2, badgeY+badgeH/2);
+
+      // quote
+      ctx.fillStyle=style.text; ctx.textAlign='left';
+      let fs=64, wrapped;
+      while(fs>=40){
+        ctx.font=`800 ${fs}px Arimo, sans-serif`;
+        wrapped = wrapText(ctx, currentQuote, W-marginX*2, fs*1.3);
+        const blockH = wrapped.length * fs * 1.3;
+        if(blockH <= H - marginY*2) break;
+        fs -= 4;
+      }
+      const startY = (H - wrapped.length*fs*1.3)/2; let y=startY;
+      wrapped.forEach(line=>{ ctx.fillText(line, marginX, y); y+=fs*1.3; });
+
+      // footer brand
+      const footerY=H-140, logoSize=72;
+      ctx.fillStyle='rgba(255,255,255,.9)'; roundRect(ctx, marginX, footerY-logoSize, logoSize, logoSize, 16); ctx.fill();
+      const logo=await loadImage(ICON_URL);
+      ctx.save(); clipRoundRect(ctx, marginX, footerY-logoSize, logoSize, logoSize, 16); ctx.drawImage(logo, marginX, footerY-logoSize, logoSize, logoSize); ctx.restore();
+      ctx.textAlign='left'; ctx.fillStyle='#111827';
+      ctx.font='800 32px "Cal Sans", sans-serif'; ctx.fillText('DayTale', marginX+logoSize+18, footerY-30);
+      ctx.font='600 20px Arimo, sans-serif'; ctx.fillStyle='rgba(17,24,39,.72)'; ctx.fillText('Mental health journaling', marginX+logoSize+18, footerY);
+    }
+
+    function roundRect(ctx,x,y,w,h,r){const rr=typeof r==='number'?{tl:r,tr:r,br:r,bl:r}:r; ctx.beginPath(); ctx.moveTo(x+rr.tl,y); ctx.lineTo(x+w-rr.tr,y); ctx.quadraticCurveTo(x+w,y,x+w,y+rr.tr); ctx.lineTo(x+w,y+h-rr.br); ctx.quadraticCurveTo(x+w,y+h,x+w-rr.br,y+h); ctx.lineTo(x+rr.bl,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-rr.bl); ctx.lineTo(x,y+rr.tl); ctx.quadraticCurveTo(x,y,x+rr.tl,y); ctx.closePath(); }
+    function clipRoundRect(ctx,x,y,w,h,r){ roundRect(ctx,x,y,w,h,r); ctx.clip(); }
+    function wrapText(ctx,text,maxWidth){ const words=text.split(/\s+/); const lines=[]; let line=''; for(const w of words){ const test=line?line+' '+w:w; if(ctx.measureText(test).width<=maxWidth){ line=test; } else { if(line) lines.push(line); line=w; } } if(line) lines.push(line); return lines; }
+    function loadImage(src){ return new Promise((resolve,reject)=>{ const im=new Image(); im.crossOrigin='anonymous'; im.onload=()=>resolve(im); im.onerror=reject; im.src=src; }); }
+
+    // initial draw
+    drawQuote();
+
+    // Download / Share
+    document.getElementById('btn-download').addEventListener('click', ()=>{
+      const a=document.createElement('a');
+      a.href=canvas.toDataURL('image/png');
+      a.download=`DayTale-Autumn-Quote-${new Date().toISOString().slice(0,10)}.png`;
+      document.body.appendChild(a); a.click(); a.remove();
+    });
+    document.getElementById('btn-share').addEventListener('click', async ()=>{
+      try{
+        const blob = await new Promise(res=>canvas.toBlob(res,'image/png'));
+        const file = new File([blob],'daytale-autumn-quote.png',{type:'image/png'});
+        if(navigator.canShare && navigator.canShare({files:[file]})){
+          await navigator.share({files:[file], title:'DayTale Quote'});
+        }else{
+          const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='daytale-autumn-quote.png';
+          document.body.appendChild(a); a.click(); a.remove();
+          alert('Sharing not supported here. Image downloaded instead.');
+        }
+      }catch(e){ alert('Share failed. Try downloading and posting manually.'); }
+    });
+  </script>
+</body>
+</html>
