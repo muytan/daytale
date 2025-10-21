@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <!-- Keep desktop same; add viewport-fit to behave on iOS and eliminate weird initial zoom -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>DayTale: AI Daily Journaling</title>
 
@@ -13,7 +12,6 @@
 
   <style>
     :root{
-      /* existing palette */
       --oxford:#050a30; --kobicha:#5b3a1f; --lion:#c6a575;
       --bg-dark:var(--oxford); --bg-card-dark:rgba(5,10,48,.60);
       --bg-light:#fefefe; --bg-card-light:rgba(255,255,255,.85);
@@ -22,9 +20,9 @@
       --border-light:rgba(255,255,255,.14); --border-dark:rgba(0,0,0,.14);
       --shadow:rgba(0,0,0,.28);
 
-      /* accent yellow for “Tell me what you think” button (as requested) */
-      --accent-start:#f7c948; /* soft yellow */
-      --accent-end:#f59e0b;   /* warm amber */
+      /* accent for newsletter + feedback buttons */
+      --accent-start:#f7c948;
+      --accent-end:#f59e0b;
       --accent-text:#1b1f29;
     }
     *{margin:0;padding:0;box-sizing:border-box}
@@ -91,7 +89,6 @@
     .light-mode .btn-secondary{background:rgba(0,0,0,.05);color:var(--text-dark);border:1px solid var(--border-dark)}
     .transform-btn:disabled{opacity:.6;pointer-events:none}
 
-    /* Accent (yellow) for feedback button */
     .btn-accent{
       background:linear-gradient(135deg,var(--accent-start),var(--accent-end));
       color:var(--accent-text);
@@ -121,7 +118,6 @@
     .loading{display:none;text-align:center;padding:1.35rem;color:var(--lion);font-style:italic;animation:pulse 1.5s ease-in-out infinite}
     @keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
 
-    /* Toolbar (palette left, actions right) */
     .toolbar{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
     .toolbar-left{display:flex;align-items:center;gap:.5rem}
     #swatch-bar{display:flex;gap:.5rem;align-items:center}
@@ -133,7 +129,6 @@
     .swatch:hover{ box-shadow:0 0 0 6px rgba(255,255,255,.18), 0 0 12px rgba(0,0,0,.28); transform: translateY(-1px); }
     .swatch.active{ box-shadow:0 0 0 3px #fff inset, 0 0 0 3px rgba(255,255,255,.35); }
     .light-mode .swatch.active{ box-shadow:0 0 0 3px #222 inset, 0 0 0 3px rgba(0,0,0,.25); }
-
     .swatch::after{
       content:attr(data-name);
       position:absolute; left:50%; top:115%; transform:translateX(-50%);
@@ -145,19 +140,16 @@
     .swatch:hover::after{ opacity:1; transform:translateX(-50%) translateY(2px); }
     .light-mode .swatch::after{ color:#111827; }
 
-    /* Persistent selection highlight inside .output */
     mark.sel-mark{
       background: linear-gradient(90deg, rgba(247,201,72,.35), rgba(245,158,11,.35));
       padding:0 .05em; border-radius:.25em;
     }
 
-    /* Quote chips */
     #quote-candidates{display:flex;flex-wrap:wrap;gap:.5rem}
     .quote-chip{border:1px solid rgba(198,165,117,.5);background:rgba(198,165,117,.1);color:#f1f5f9;padding:.5rem .6rem;border-radius:999px;cursor:pointer}
     .quote-chip.active{background:rgba(198,165,117,.25)}
     .light-mode .quote-chip{color:#1f2937}
 
-    /* Share modal (centered) */
     .modal-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,10,20,.58);backdrop-filter:blur(6px) saturate(120%);z-index:9999}
     .modal-backdrop.open{display:flex}
     .modal-card{
@@ -167,7 +159,7 @@
       border:1px solid rgba(255,255,255,.18);
       box-shadow:0 30px 80px rgba(0,0,0,.45);
       border-radius:18px;padding:18px;color:#f8fafc;
-      display:flex; flex-direction:column; max-height:92vh; /* MOBILE: keep on screen */
+      display:flex; flex-direction:column; max-height:92vh;
     }
     .light-mode .modal-card{background:rgba(255,255,255,.96);border:1px solid #e5e7eb;color:#111827}
     .modal-title{font-weight:800;margin-bottom:.35rem;font-family:"Cal Sans",sans-serif}
@@ -178,11 +170,25 @@
     .close-x{position:absolute;right:10px;top:8px;background:transparent;border:none;color:#fff;font-size:22px;cursor:pointer;padding:12px}
     .light-mode .close-x{color:#111}
 
-    /* Suggest button area */
     .suggest-wrap{display:flex;justify-content:center;align-items:center;margin:1.25rem 0}
-    #suggest-btn{color:var(--accent-text)}
 
-    /* ---------------- MOBILE ONLY FIXES (desktop unchanged) ---------------- */
+    /* Rotating CTA button text */
+    .rotating-cta .rot-text{
+      display:inline-block;
+      transition:opacity .35s ease, transform .35s ease;
+    }
+    .rotating-cta .rot-hide{
+      opacity:0; transform:translateY(4px);
+    }
+
+    /* Subtitle fade/slide animation */
+    .subtitle.rot{
+      transition:opacity .45s ease, transform .45s ease;
+      will-change: opacity, transform;
+    }
+    .subtitle.rot-hide{ opacity:0; transform: translateY(6px); }
+
+    /* ---------------- MOBILE ONLY ---------------- */
     @media (max-width: 768px){
       .container{padding:1rem}
       .header,.subtitle{ text-align:center; margin-left:auto; margin-right:auto; }
@@ -191,16 +197,15 @@
       .panel{width:min(100%, 640px);margin:0 auto}
       .panel-header{flex-direction:column;gap:.5rem}
       .controls{justify-content:center}
-      select, .btn{font-size:16px}               /* stop iOS zoom-on-focus */
-      textarea{font-size:16px; min-height:280px} /* comfier typing; prevents iOS zoom */
+      select, .btn{font-size:16px}
+      textarea{font-size:16px; min-height:280px}
       .toolbar{gap:.4rem}
       .toolbar-left{width:100%;justify-content:center}
-      #swatch-bar .swatch{width:40px;height:40px} /* bigger tap target */
-      .modal-row{grid-template-columns:1fr}       /* image on top, editor below */
+      #swatch-bar .swatch{width:40px;height:40px}
+      .modal-row{grid-template-columns:1fr}
       .modal-card{width:96vw; max-height:92vh}
       .suggest-wrap{margin:1rem 0}
     }
-    /* Avoid hover “jump” on touch devices */
     @media (hover:none){
       .swatch:hover{transform:none;box-shadow:none}
     }
@@ -213,7 +218,7 @@
         <div class="logo"><img src="https://i.ibb.co/kVyL1XmY/Gemini-Generated-Image-dvk7kidvk7kidvk7.png" alt="DayTale logo"/></div>
         <h1 class="app-title">DayTale</h1>
       </div>
-      <p class="subtitle" id="subtitle-rotator">Journal Your Day in 3 Words.</p>
+      <p class="subtitle rot" id="subtitle-rotator">Journal Your Day in 3 Words.</p>
     </header>
 
     <div class="workspace">
@@ -256,7 +261,19 @@
         <textarea id="input" aria-label="Write a few notes about your day" placeholder="A few notes... tired this morning, anxious before the meeting, walked at lunch, felt lighter after talking with a friend, cooked pasta at night"></textarea>
 
         <button class="btn btn-primary transform-btn" id="transform">✨ Craft My Journal Entry</button>
-        <p class="subhint" style="text-align:center;max-width:720px;margin-inline:auto;">We don’t store entries. Text is processed to generate your draft, then discarded.</p>
+
+        <!-- Rotating newsletter CTA (replaces privacy line) -->
+        <div style="display:flex;justify-content:center;margin-top:.75rem">
+          <a
+            href="#"
+            id="newsletter-btn"
+            class="btn btn-accent rotating-cta"
+            data-eo-form-toggle-id="ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8"
+            aria-label="Open newsletter signup"
+          >
+            <span class="rot-text" id="newsletter-btn-text">Feeling lost on what to write?</span>
+          </a>
+        </div>
 
         <div class="example-prompts" style="display:flex;flex-direction:column;gap:.5rem;margin-top:.25rem;max-width:720px;margin-inline:auto;">
           <div class="hint">Examples:</div>
@@ -295,7 +312,7 @@
       </div>
     </div>
 
-    <!-- Suggestion Button -->
+    <!-- Suggestion Button (unchanged functionality) -->
     <div class="suggest-wrap">
       <button id="suggest-btn" class="btn btn-accent">Tell me what you think</button>
     </div>
@@ -349,6 +366,9 @@
     </div>
   </div>
 
+  <!-- EmailOctopus embed: keeps modal behavior on link click -->
+  <script async src="https://eomail5.com/form/ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8.js" data-form="ee699dbe-aaa4-11f0-b2ac-a3c2d00faab8"></script>
+
   <script>
     const BRAND_ICON_URL='https://i.ibb.co/kVyL1XmY/Gemini-Generated-Image-dvk7kidvk7kidvk7.png';
     const $=id=>document.getElementById(id);
@@ -364,11 +384,10 @@
     const updatePreviewBtn=$('update-preview'), shareCopyQuote=$('share-copyquote');
     const shareDownload=$('share-download'), shareDo=$('share-do');
 
-    // Suggest modal
     const suggestBtn=$('suggest-btn'), suggestBackdrop=$('suggest-backdrop'), suggestClose=$('suggest-close');
     const suggestForm=$('suggest-form'), suggestStatus=$('suggest-status');
 
-    // rotating subtitle lines
+    /* ---------------- Subtitle rotator with soft animation ---------------- */
     const SUBLINES=[
       "Write your entire day in 3 quick words.",
       "Highlight any sentence. Instantly mint a shareable quote.",
@@ -382,9 +401,37 @@
       "Journal your day. Your thoughts. Now."
     ];
     const subEl = document.getElementById('subtitle-rotator');
-    let subIdx=0; setInterval(()=>{subIdx=(subIdx+1)%SUBLINES.length; subEl.textContent=SUBLINES[subIdx];}, 3500);
+    let subIdx=0;
+    setInterval(()=>{
+      subEl.classList.add('rot-hide');
+      setTimeout(()=>{
+        subIdx=(subIdx+1)%SUBLINES.length;
+        subEl.textContent=SUBLINES[subIdx];
+        subEl.classList.remove('rot-hide');
+      }, 220);
+    }, 3500);
 
-    // Theme
+    /* ---------------- Newsletter rotating CTA text ---------------- */
+    const CTA_LINES = [
+      "Feeling lost on what to write?",
+      "Can't find the right words?",
+      "Need a gentle prompt to start?",
+      "Let us help you begin.",
+      "Your day just needs a small push."
+    ];
+    const ctaBtn = document.getElementById('newsletter-btn');
+    const ctaSpan = document.getElementById('newsletter-btn-text');
+    let ctaIdx = 0;
+    setInterval(()=>{
+      ctaSpan.classList.add('rot-hide');
+      setTimeout(()=>{
+        ctaIdx = (ctaIdx + 1) % CTA_LINES.length;
+        ctaSpan.textContent = CTA_LINES[ctaIdx];
+        ctaSpan.classList.remove('rot-hide');
+      }, 220);
+    }, 3200);
+
+    // THEME
     let isDark=true;
     if(themeToggle){
       themeToggle.addEventListener('click',()=>{
@@ -397,7 +444,7 @@
     }
 
     // Example prompts
-    examplePrompts.forEach(p=>{
+    document.querySelectorAll('.example-prompt').forEach(p=>{
       p.addEventListener('click',()=>{
         inputEl.value=p.dataset.text||''; inputEl.focus();
         localStorage.setItem('daytale-draft',inputEl.value);
@@ -441,11 +488,10 @@ Write the final entry:`;
         if(candidatesEl) candidatesEl.innerHTML='';
 
         const result=await callBackend(prompt);
-        output.innerHTML=escapeHtml(result); // allow safe mark wrapping later
+        output.innerHTML=escapeHtml(result);
         if(copyBtn) copyBtn.style.display='inline-flex';
         if(shareBtn) shareBtn.style.display='inline-flex';
 
-        // auto-select best quotes
         const picks=getQuoteCandidates(result,3);
         if(picks.length && candidatesWrap && candidatesEl){
           candidatesWrap.style.display='block';
@@ -456,7 +502,6 @@ Write the final entry:`;
             chip.addEventListener('click',()=>{
               [...candidatesEl.children].forEach(c=>c.classList.remove('active'));
               chip.classList.add('active'); selectedQuote=q;
-              // keep any system selection clear to avoid confusion
               window.getSelection()?.removeAllRanges();
             });
             if(i===0) chip.classList.add('active');
@@ -527,18 +572,14 @@ Write the final entry:`;
       });
     }
 
-    // ======= MOBILE SELECTION → SHARE (keep highlight + use selection) =======
-    // Capture selection BEFORE the Share button removes focus (touchstart/mousedown)
+    // Selection persistence + share modal (unchanged logic)
     function getSelectedTextInOutput(){
       const sel = window.getSelection();
       if(!sel || sel.rangeCount===0) return '';
       const range = sel.getRangeAt(0);
-      // Ensure selection is inside the output panel
       if(!output.contains(range.commonAncestorContainer)) return '';
       return sel.toString().trim();
     }
-
-    // Wrap the current selection in a <mark> that persists after the modal opens
     function persistSelectionHighlight(){
       const sel = window.getSelection();
       if(!sel || sel.rangeCount===0) return '';
@@ -546,16 +587,12 @@ Write the final entry:`;
       if(!output.contains(range.commonAncestorContainer)) return '';
       const text = sel.toString().trim();
       if(!text) return '';
-
-      // Create marker
       const mark = document.createElement('mark');
       mark.className = 'sel-mark';
       try{
         range.surroundContents(mark);
-        // keep DOM nice: collapse selection to avoid blue system highlight
         sel.removeAllRanges();
       }catch(e){
-        // Fallback: if the selection crosses elements, clone and replace
         const frag = range.cloneContents();
         mark.appendChild(frag);
         range.deleteContents();
@@ -564,38 +601,20 @@ Write the final entry:`;
       }
       return text;
     }
-
-    // On touchstart/mousedown, grab selection and persist a visual highlight
     if(shareBtn){
       const preGrab = ()=>{
         const chosen = getSelectedTextInOutput();
-        if(chosen){
-          selectedQuote = persistSelectionHighlight() || chosen;
-        }
+        if(chosen){ selectedQuote = persistSelectionHighlight() || chosen; }
       };
       shareBtn.addEventListener('touchstart', preGrab, {passive:true});
       shareBtn.addEventListener('mousedown', preGrab);
     }
-
-    function clearPersistedHighlights(){
-      const marks = output.querySelectorAll('mark.sel-mark');
-      marks.forEach(m=>{
-        const parent = m.parentNode;
-        while(m.firstChild) parent.insertBefore(m.firstChild, m);
-        parent.removeChild(m);
-        parent.normalize();
-      });
-    }
-
-    // Share modal
     function openShareModal(){shareBackdrop.classList.add('open');shareBackdrop.setAttribute('aria-hidden','false');}
     function closeShareModal(){shareBackdrop.classList.remove('open');shareBackdrop.setAttribute('aria-hidden','true');}
-
     if(shareBtn){ 
       shareBtn.addEventListener('click', async ()=>{
         const text=(output?.textContent||'').trim();
         if(!text){alert('Generate an entry first.');return;}
-        // If user didn’t manually select, fall back to best candidate
         if(!selectedQuote){
           const inlineSel = getSelectedTextInOutput();
           if(inlineSel) { selectedQuote = persistSelectionHighlight() || inlineSel; }
@@ -612,14 +631,9 @@ Write the final entry:`;
     if(shareCopyQuote) shareCopyQuote.addEventListener('click', async ()=>{ try{await navigator.clipboard.writeText(quoteEdit.value.trim());shareCopyQuote.textContent='✅ Copied';setTimeout(()=>shareCopyQuote.textContent='Copy quote',1200);}catch{} });
     if(shareDownload) shareDownload.addEventListener('click',()=>{ const a=document.createElement('a'); a.href=sharePreview.src; a.download=`DayTale-quote-${new Date().toISOString().slice(0,10)}.png`; document.body.appendChild(a); a.click(); a.remove(); });
     if(shareDo) shareDo.addEventListener('click', shareViaNative);
-    if(shareClose) shareClose.addEventListener('click', ()=>{
-      // keep the yellow mark visible after closing
-      closeShareModal();
-    });
+    if(shareClose) shareClose.addEventListener('click', ()=>{ closeShareModal(); });
     if(shareBackdrop) shareBackdrop.addEventListener('click', e=>{ if(e.target===shareBackdrop){ closeShareModal(); } });
-
     async function updatePreviewImage(){ const dataUrl=await createQuoteImage(quoteEdit.value.trim(), activePalette, true); sharePreview.src=dataUrl; }
-
     async function shareViaNative(){
       try{
         const resp=await fetch(sharePreview.src);
@@ -629,7 +643,6 @@ Write the final entry:`;
         else{ const a=document.createElement('a'); a.href=sharePreview.src; a.download='daytale-quote.png'; document.body.appendChild(a); a.click(); a.remove(); alert('Sharing not supported here. Image downloaded instead.'); }
       }catch{ alert('Share failed. Try downloading and posting manually.'); }
     }
-
     async function createQuoteImage(quote,paletteKey='dawn',includeLogo=true){
       const style=(PALETTES.find(x=>x.key===paletteKey)||PALETTES[0]);
       const W=1080,H=1920;
@@ -701,7 +714,6 @@ Write the final entry:`;
       });
     }
 
-    // Utils
     function escapeHtml(s){return s.replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));}
   </script>
 </body>
