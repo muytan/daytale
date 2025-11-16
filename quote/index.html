@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>FREE DAILY QUOTE GENERATOR</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Cal+Sans&family=Syne:wght@400..800&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --oxford:#050a30; --kobicha:#5b3a1f; --lion:#c6a575;
+      --bg-dark:var(--oxford); --bg-card-dark:rgba(5,10,48,.60);
+      --bg-light:#fefefe; --bg-card-light:rgba(255,255,255,.85);
+      --primary:var(--kobicha); --primary-2:var(--lion);
+      --text-dark:#1f2937; --text-light:#f9fafb; --text-muted:#9ca3af;
+      --border-light:rgba(255,255,255,.14); --border-dark:rgba(0,0,0,.14);
+      --shadow:rgba(0,0,0,.28);
+
+      /* accent for buttons */
+      --accent-start:#f7c948;
+      --accent-end:#f59e0b;
+      --accent-text:#1b1f29;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family:'Arimo',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(198,165,117,.25) 0%, transparent 55%),
+        radial-gradient(circle at 80% 15%, rgba(91,58,31,.25) 0%, transparent 55%),
+        var(--bg-dark);
+      color:var(--text-light);
+      transition:all .35s ease;
+      overflow-x:hidden;
+    }
+    body.light-mode{
+      background:
+        radial-gradient(circle at 18% 48%, rgba(198,165,117,.12) 0%, transparent 55%),
+        radial-gradient(circle at 82% 18%, rgba(91,58,31,.12) 0%, transparent 55%),
+        var(--bg-light);
+      color:var(--text-dark);
+    }
+
+    .container{max-width:1200px;margin:0 auto;padding:2rem;display:flex;flex-direction:column;gap:3rem}
+    .header{text-align:center;margin-bottom:.25rem}
+    .logo-container{display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:.5rem}
+    .logo img{width:64px;height:64px;border-radius:16px;display:block;box-shadow:0 10px 30px var(--shadow)}
+    .app-title{
+      font-family:"Cal Sans",sans-serif; font-size:3rem; font-weight:700;
+      background:linear-gradient(135deg,var(--lion),var(--primary));
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .subtitle{color:var(--text-muted);font-size:1.05rem;max-width:720px;margin:0 auto;line-height:1.6;text-align:center}
+
+    .workspace{display:grid;grid-template-columns:1fr 1fr;gap:2rem;min-height:70vh}
+
+    .panel{
+      background:var(--bg-card-dark);
+      backdrop-filter:blur(18px);
+      border-radius:20px;border:1px solid var(--border-light);
+      padding:2rem;display:flex;flex-direction:column;gap:1.25rem;
+      box-shadow:0 20px 60px rgba(0,0,0,.32);
+    }
+    .light-mode .panel{background:var(--bg-card-light);border:1px solid var(--border-dark);box-shadow:0 20px 60px rgba(0,0,0,.12)}
+
+    .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.25rem}
+    .panel-title{font-size:1.05rem;font-weight:600;color:var(--lion);letter-spacing:.2px}
+
+    .controls{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+    .control-group{display:flex;flex-direction:column;gap:.4rem}
+    .control-label{font-size:.78rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px}
+
+    select{
+      background:rgba(255,255,255,.08);border:1px solid var(--border-light);color:var(--text-light);
+      padding:.65rem .9rem;border-radius:12px;cursor:pointer;font-family:inherit;font-size:.92rem;
+      min-width:150px;appearance:none;
+      background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position:right .55rem center;background-repeat:no-repeat;background-size:1.35em 1.35em;padding-right:2.2rem;
+    }
+    .light-mode select{color:var(--text-dark);background:rgba(0,0,0,.04);border:1px solid var(--border-dark)}
+
+    .btn{border:none;padding:.75rem 1.25rem;border-radius:12px;cursor:pointer;font-weight:700;font-size:.92rem;transition:all .22s ease;white-space:nowrap;display:inline-flex;align-items:center;gap:.4rem}
+    .btn-primary{background:linear-gradient(135deg,var(--primary),#3f2c13);color:#fefefe;box-shadow:0 6px 18px rgba(91,58,31,.45)}
+    .btn-secondary{background:rgba(255,255,255,.08);color:var(--text-light);border:1px solid var(--border-light)}
+    .light-mode .btn-secondary{background:rgba(0,0,0,.05);color:var(--text-dark);border:1px solid var(--border-dark)}
+    .transform-btn:disabled{opacity:.6;pointer-events:none}
+
+    .btn-accent{
+      background:linear-gradient(135deg,var(--accent-start),var(--accent-end));
+      color:var(--accent-text);
+      box-shadow:0 6px 18px rgba(245,158,11,.35);
+    }
+
+    textarea{
+      flex:1;background:rgba(0,0,0,.22);border:1px solid var(--border-light);
+      border-radius:12px;padding:1.25rem;color:var(--text-light);
+      font-family:'Arimo', ui-sans-serif, system-ui; font-size:1rem; resize:none; line-height:1.7; min-height:220px;
+    }
+    .light-mode textarea{background:rgba(255,255,255,.56);color:var(--text-dark);border:1px solid var(--border-dark)}
+
+    .hint{font-size:.9rem;color:#cfcfd8}
+    .subhint{font-size:.82rem;color:#b7bac6}
+    .light-mode .hint{color:#444}
+    .light-mode .subhint{color:#555}
+
+    .output{
+      flex:1;overflow-y:auto;color:var(--text-light);line-height:1.85;padding:1.25rem;
+      font-family:'Arimo', ui-sans-serif, system-ui; font-size:1.02rem; white-space:pre-wrap;
+      background:rgba(255,255,255,.03);border:1px solid var(--border-light);border-radius:12px;min-height:220px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,.08);
+    }
+    .light-mode .output{color:var(--text-dark);background:rgba(0,0,0,.03);border:1px solid var(--border-dark)}
+
+    .loading{display:none;text-align:center;padding:1.35rem;color:var(--lion);font-style:italic;animation:pulse 1.5s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
+
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
+    .toolbar-left{display:flex;align-items:center;gap:.5rem}
+    #swatch-bar{display:flex;gap:.5rem;align-items:center}
+    .swatch{
+      width:28px;height:28px;border-radius:50%; position:relative;
+      border:1px solid rgba(0,0,0,.18); cursor:pointer; outline:0;
+      transition: box-shadow .2s ease, transform .2s ease;
+    }
+    .swatch:hover{ box-shadow:0 0 0 6px rgba(255,255,255,.18), 0 0 12px rgba(0,0,0,.28); transform: translateY(-1px); }
+    .swatch.active{ box-shadow:0 0 0 3px #fff inset, 0 0 0 3px rgba(255,255,255,.35); }
+    .light-mode .swatch.active{ box-shadow:0 0 0 3px #222 inset, 0 0 0 3px rgba(0,0,0,.25); }
+    .swatch::after{
+      content:attr(data-name);
+      position:absolute; left:50%; top:115%; transform:translateX(-50%);
+      white-space:nowrap; font-size:.75rem; padding:.25rem .5rem;
+      color:#0b1020; background:#ffffff; border:1px solid #e5e7eb; border-radius:6px;
+      opacity:0; pointer-events:none; transition:opacity .15s ease, transform .15s ease;
+      box-shadow:0 4px 24px rgba(0,0,0,.14);
+    }
+    .swatch:hover::after{ opacity:1; transform:translateX(-50%) translateY(2px); }
+    .light-mode .swatch::after{ color:#111827; }
+
+    mark.sel-mark{
+      background: linear-gradient(90deg, rgba(247,201,72,.35), rgba(245,158,11,.35));
+      padding:0 .05em; border-radius:.25em;
+    }
+
+    #quote-candidates{display:flex;flex-wrap:wrap;gap:.5rem}
+    .quote-chip{border:1px solid rgba(198,165,117,.5);background:rgba(198,165,117,.1);color:#f1f5f9;padding:.5rem .6rem;border-radius:999px;cursor:pointer}
+    .quote-chip.active{background:rgba(198,165,117,.25)}
+    .light-mode .quote-chip{color:#1f2937}
+
+    .modal-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,10,20,.58);backdrop-filter:blur(6px) saturate(120%);z-index:9999}
+    .modal-backdrop.open{display:flex}
+    .modal-card{
+      position:relative;
+      width:min(92vw, 720px);
+      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 30px 80px rgba(0,0,0,.45);
+      border-radius:18px;padding:18px;color:#f8fafc;
+      display:flex; flex-direction:column; max-height:92vh;
+    }
+    .light-mode .modal-card{background:rgba(255,255,255,.96);border:1px solid #e5e7eb;color:#111827}
+    .modal-title{font-weight:800;margin-bottom:.35rem;font-family:"Cal Sans",sans-serif}
+    .modal-row{display:grid;grid-template-columns:1.2fr .8fr;gap:16px; overflow:auto; flex:1}
+    #share-preview{width:100%;height:auto;border-radius:12px;display:block}
+    .modal-card textarea{width:100%;min-height:96px;border-radius:12px;border:1px solid #e5e7eb;background:#ffffff;color:#111827;padding:.75rem;font-size:1rem}
+    .modal-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem; position:sticky; bottom:0; padding-top:.5rem; background:transparent}
+    .close-x{position:absolute;right:10px;top:8px;background:transparent;border:none;color:#fff;font-size:22px;cursor:pointer;padding:12px}
+    .light-mode .close-x{color:#111}
+
+    .suggest-wrap{display:flex;justify-content:center;align-items:center;margin:1.25rem 0}
+
+    /* Rotating CTA button text */
+    .rotating-cta .rot-text{
+      display:inline-block;
+      transition:opacity .35s ease, transform .35s ease;
+    }
+    .rotating-cta .rot-hide{
+      opacity:0; transform:translateY(4px);
+    }
+
+    /* Subtitle fade/slide animation */
+    .subtitle.rot{
+      transition:opacity .45s ease, transform .45s ease;
+      will-change: opacity, transform;
+    }
+    .subtitle.rot-hide{ opacity:0; transform: translateY(6px); }
+
+    /* ---------------- MOBILE ONLY ---------------- */
+    @media (max-width: 768px){
+      .container{padding:1rem}
+      .header,.subtitle{ text-align:center; margin-left:auto; margin-right:auto; }
+      .app-title{font-size:2.2rem}
+      .workspace{grid-template-columns:1fr;gap:.9rem}
+      .panel{width:min(100%, 640px);margin:0 auto}
+      .panel-header{flex-direction:column;gap:.5rem}
+      .controls{justify-content:center}
+      select, .btn{font-size:16px}
+      textarea{font-size:16px; min-height:280px}
+      .toolbar{gap:.4rem}
+      .toolbar-left{width:100%;justify-content:center}
+      #swatch-bar .swatch{width:40px;height:40px}
+      .modal-row{grid-template-columns:1fr}
+      .modal-card{width:96vw; max-height:92vh}
+      .suggest-wrap{margin:1rem 0}
+    }
+    @media (hover:none){
+      .swatch:hover{transform:none;box-shadow:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo-container">
+        <div class="logo"><img src="https://i.ibb.co/kVyL1XmY/Gemini-Generated-Image-dvk7kidvk7kidvk7.png" alt="QuoteForge logo"/></div>
+        <h1 class="app-title">QuoteForge</h1>
+      </div>
+      <p class="subtitle rot" id="subtitle-rotator">Transform your thoughts into shareable quotes.</p>
+    </header>
+
+    <div class="workspace">
+      <!-- LEFT -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3 class="panel-title">Your Inspiration</h3>
+          <button class="btn btn-secondary" id="theme-toggle">☀️ Light</button>
+        </div>
+
+        <ul class="fairy-list" style="list-style:none;margin:.25rem 0;padding:0;text-align:left;max-width:720px;margin-inline:auto;">
+          <li style="display:flex;gap:.5rem;color:#cfcfd8;font-size:.92rem;line-height:1.7"><span>💭</span><span>Share a thought, feeling, or experience</span></li>
+          <li style="display:flex;gap:.5rem;color:#cfcfd8;font-size:.92rem;line-height:1.7"><span>💭</span><span>Write in <strong>any language</strong></span></li>
+          <li style="display:flex;gap:.5rem;color:#cfcfd8;font-size:.92rem;line-height:1.7"><span>💭</span><span>Get 3 beautiful quote variations instantly</span></li>
+        </ul>
+
+        <div class="controls" style="margin-top:.25rem">
+          <div class="control-group">
+            <label class="control-label">Quote Style</label>
+            <select id="style">
+              <option value="inspirational">Inspirational</option>
+              <option value="reflective">Reflective</option>
+              <option value="poetic">Poetic</option>
+              <option value="motivational">Motivational</option>
+              <option value="philosophical">Philosophical</option>
+              <option value="grateful">Grateful</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Tone</label>
+            <select id="mood">
+              <option value="uplifting">Uplifting</option>
+              <option value="peaceful">Peaceful</option>
+              <option value="thoughtful">Thoughtful</option>
+              <option value="hopeful">Hopeful</option>
+              <option value="empowering">Empowering</option>
+            </select>
+          </div>
+        </div>
+
+        <textarea id="input" aria-label="Write your thought or experience" placeholder="Share what's on your mind... a lesson learned, a feeling, a moment that mattered, or anything you want to transform into a quote"></textarea>
+
+        <button class="btn btn-primary transform-btn" id="transform">✨ Generate My Quotes</button>
+
+        <div class="example-prompts" style="display:flex;flex-direction:column;gap:.5rem;margin-top:.25rem;max-width:720px;margin-inline:auto;">
+          <div class="hint">Try these examples:</div>
+          <div class="example-prompt" style="background:rgba(198,165,117,.12);border:1px solid rgba(198,165,117,.35);border-radius:10px;padding:.9rem;cursor:pointer"
+               data-text="Sometimes the smallest step forward is the bravest thing you can do.">
+            💡 "Sometimes the smallest step forward..."
+          </div>
+          <div class="example-prompt" style="background:rgba(198,165,117,.12);border:1px solid rgba(198,165,117,.35);border-radius:10px;padding:.9rem;cursor:pointer"
+               data-text="I realized today that growth isn't comfortable, but it's where life happens.">
+            💡 "I realized today that growth isn't comfortable..."
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3 class="panel-title">Your Generated Quotes</h3>
+          <div class="toolbar">
+            <div class="toolbar-left">
+              <div id="swatch-bar" aria-label="Quote image color themes"></div>
+            </div>
+            <div class="toolbar-right" style="display:flex;gap:.5rem">
+              <button class="btn btn-secondary" id="share-btn" style="display:none;">📤 Share</button>
+              <button class="btn btn-secondary" id="copy-btn" style="display:none;">📋 Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="loading" id="loading" style="display:none;">Crafting your quotes... ✨</div>
+        <div class="output" id="output">Your beautiful quotes will appear here.</div>
+
+        <div id="candidates-wrap" style="display:none;margin-top:1rem;">
+          <div class="hint" style="margin-bottom:.5rem">Select a quote to share:</div>
+          <div id="quote-candidates"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feedback button -->
+    <div class="suggest-wrap">
+      <button id="suggest-btn" class="btn btn-accent">💬 Send Feedback</button>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="share-backdrop" class="modal-backdrop" aria-hidden="true">
+      <button class="close-x" id="share-close" aria-label="Close">✕</button>
+      <div class="modal-card">
+        <div class="modal-title">Share Your Quote</div>
+        <div class="modal-row">
+          <div><img id="share-preview" alt="Share preview"/></div>
+          <div>
+            <label for="quote-edit" class="control-label" style="display:block;margin-bottom:.25rem">Edit quote</label>
+            <textarea id="quote-edit" placeholder="Edit your quote"></textarea>
+            <div class="modal-actions">
+              <button id="update-preview" class="btn btn-secondary">Update preview</button>
+              <button id="share-copyquote" class="btn btn-secondary">Copy quote</button>
+              <button id="share-download" class="btn btn-secondary">Download PNG</button>
+              <button id="share-do" class="btn btn-secondary">Share</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feedback Modal (Formspree) -->
+    <div id="suggest-backdrop" class="modal-backdrop" aria-hidden="true">
+      <button class="close-x" id="suggest-close" aria-label="Close">✕</button>
+      <div class="modal-card">
+        <div class="modal-title">Send Your Feedback 💬</div>
+        <form id="suggest-form" action="https://formspree.io/f/xblzyelp" method="POST">
+          <input type="hidden" name="_subject" value="QuoteForge feedback"/>
+          <input type="hidden" name="_template" value="table"/>
+          <div style="display:grid;gap:.6rem;margin-top:.25rem">
+            <label>Name (optional)
+              <input type="text" name="name" placeholder="Your name (optional)" style="width:100%;padding:.65rem;border:1px solid #e5e7eb;border-radius:10px"/>
+            </label>
+            <label>Email (optional)
+              <input type="email" name="email" placeholder="you@example.com (optional)" style="width:100%;padding:.65rem;border:1px solid #e5e7eb;border-radius:10px"/>
+            </label>
+            <label>Your feedback (required)
+              <textarea name="message" required placeholder="Share your thoughts..." style="width:100%;min-height:120px;padding:.75rem;border:1px solid #e5e7eb;border-radius:10px"></textarea>
+            </label>
+          </div>
+          <div class="modal-actions">
+            <button type="submit" class="btn btn-accent">Send</button>
+            <span id="suggest-status" style="font-size:.9rem"></span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const BRAND_ICON_URL='https://i.ibb.co/kVyL1XmY/Gemini-Generated-Image-dvk7kidvk7kidvk7.png';
+    const $=id=>document.getElementById(id);
+
+    const themeToggle=$('theme-toggle'), inputEl=$('input'), styleEl=$('style'), moodEl=$('mood');
+    const transformBtn=$('transform'), loading=$('loading'), output=$('output');
+    const copyBtn=$('copy-btn'), shareBtn=$('share-btn'), swatchBar=$('swatch-bar');
+    const examplePrompts=document.querySelectorAll('.example-prompt');
+    const candidatesWrap=$('candidates-wrap'), candidatesEl=$('quote-candidates');
+
+    const shareBackdrop=$('share-backdrop'), shareClose=$('share-close');
+    const sharePreview=$('share-preview'), quoteEdit=$('quote-edit');
+    const updatePreviewBtn=$('update-preview'), shareCopyQuote=$('share-copyquote');
+    const shareDownload=$('share-download'), shareDo=$('share-do');
+
+    const suggestBtn=$('suggest-btn'), suggestBackdrop=$('suggest-backdrop'), suggestClose=$('suggest-close');
+    const suggestForm=$('suggest-form'), suggestStatus=$('suggest-status');
+
+    /* ---------------- Subtitle rotator with soft animation ---------------- */
+    const SUBLINES=[
+      "Transform your thoughts into shareable quotes.",
+      "FREE quote generator for your journal.",
+      "Create beautiful, inspirational quotes in seconds.",
+      "Journal-style quotes for social media.",
+      "Your words, beautifully crafted.",
+      "Perfect quotes for Instagram Stories.",
+      "Turn feelings into wisdom.",
+      "Generate unlimited quotes, completely free."
+    ];
+    const subEl = document.getElementById('subtitle-rotator');
+    let subIdx=0;
+    setInterval(()=>{
+      subEl.classList.add('rot-hide');
+      setTimeout(()=>{
+        subIdx=(subIdx+1)%SUBLINES.length;
+        subEl.textContent=SUBLINES[subIdx];
+        subEl.classList.remove('rot-hide');
+      }, 220);
+    }, 3500);
+
+    // THEME
+    let isDark=true;
+    if(themeToggle){
+      themeToggle.addEventListener('click',()=>{
+        document.body.classList.toggle('light-mode'); isDark=!isDark;
+        themeToggle.textContent=isDark?'☀️ Light':'🌙 Dark';
+        localStorage.setItem('quoteforge-theme',isDark?'dark':'light');
+      });
+      const saved=localStorage.getItem('quoteforge-theme');
+      if(saved==='light'){document.body.classList.add('light-mode');isDark=false;themeToggle.textContent='🌙 Dark';}
+    }
+
+    // Example prompts
+    document.querySelectorAll('.example-prompt').forEach(p=>{
+      p.addEventListener('click',()=>{
+        inputEl.value=p.dataset.text||''; inputEl.focus();
+        localStorage.setItem('quoteforge-draft',inputEl.value);
+      });
+    });
+
+    // Mock backend call (replace with real API)
+    async function generateQuotes(thought, style, tone){
+      // This is a placeholder - replace with your actual API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Return 3 quote variations based on the thought
+      return [
+        `"${thought.slice(0, 100)}${thought.length > 100 ? '...' : ''}"`,
+        `"${thought.split(' ').slice(0, 15).join(' ')}..."`,
+        `"In every moment, ${thought.toLowerCase().slice(0, 80)}..."`
+      ];
+    }
+
+    // Generate quotes
+    transformBtn.addEventListener('click', async ()=>{
+      const thought=(inputEl.value||'').trim(); 
+      if(!thought){alert('Please share your thought first!');return;}
+      
+      const style=styleEl?.value||'inspirational'; 
+      const tone=moodEl?.value||'uplifting';
+
+      try{
+        transformBtn.disabled=true; 
+        transformBtn.textContent='Creating...';
+        loading.style.display='block'; 
+        output.textContent='';
+        if(copyBtn) copyBtn.style.display='none';
+        if(shareBtn) shareBtn.style.display='none';
+        if(candidatesWrap) candidatesWrap.style.display='none';
+        if(candidatesEl) candidatesEl.innerHTML='';
+
+        const quotes = await generateQuotes(thought, style, tone);
+        
+        output.innerHTML = quotes.map(q => escapeHtml(q)).join('\n\n');
+        
+        if(copyBtn) copyBtn.style.display='inline-flex';
+        if(shareBtn) shareBtn.style.display='inline-flex';
+
+        if(quotes.length && candidatesWrap && candidatesEl){
+          candidatesWrap.style.display='block';
+          selectedQuote=quotes[0];
+          quotes.forEach((q,i)=>{
+            const chip=document.createElement('button');
+            chip.className='quote-chip'; 
+            chip.textContent=q.replace(/"/g, '').slice(0, 60) + '...'; 
+            chip.title='Click to select';
+            chip.addEventListener('click',()=>{
+              [...candidatesEl.children].forEach(c=>c.classList.remove('active'));
+              chip.classList.add('active'); 
+              selectedQuote=q;
+              window.getSelection()?.removeAllRanges();
+            });
+            if(i===0) chip.classList.add('active');
+            candidatesEl.appendChild(chip);
+          });
+        }
+      }catch(err){
+        output.textContent='Error: '+(err.message||'Could not generate quotes.');
+      }finally{
+        loading.style.display='none'; 
+        transformBtn.disabled=false; 
+        transformBtn.textContent='✨ Generate My Quotes';
+      }
+    });
+
+    // Copy
+    if(copyBtn){
+      copyBtn.addEventListener('click', async ()=>{
+        try{
+          await navigator.clipboard.writeText(output.textContent||'');
+          copyBtn.textContent='✅ Copied!';
+          setTimeout(()=>copyBtn.textContent='📋 Copy',1200);
+        }catch{}
+      });
+    }
+
+    // Keyboard submit
+    inputEl.addEventListener('keydown',e=>{ 
+      if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)) transformBtn.click(); 
+    });
+
+    // Palettes
+    const PALETTES=[
+      {key:'dawn', name:'Dawn Sand', stops:['#f8f3e7','#e7d8b1'], stripe:'#dcc79b', text:'#1b1f29', badge:'#1b1f29'},
+      {key:'mist', name:'Mist', stops:['#e6eef6','#cfd9e6'], stripe:'#c8d2e1', text:'#0b1020', badge:'#0b1020'},
+      {key:'blush', name:'Blush', stops:['#ffe3e3','#ffd4c7'], stripe:'#ffd9cf', text:'#1f2937', badge:'#1f2937'},
+      {key:'sage', name:'Sage', stops:['#e7f2ea','#cfe5d9'], stripe:'#d7eadf', text:'#16302a', badge:'#16302a'},
+      {key:'lavender', name:'Lavender', stops:['#ece8ff','#dfd8ff'], stripe:'#e0d9ff', text:'#1e1b4b', badge:'#1e1b4b'},
+      {key:'porcelain', name:'Porcelain', stops:['#fafafa','#ececec'], stripe:'#eeeeee', text:'#111827', badge:'#111827'},
+      {key:'ink', name:'Ink', stops:['#0f172a','#1e293b'], stripe:'#334155', text:'#f1f5f9', badge:'#f1f5f9'}
+    ];
+    let activePalette='dawn', selectedQuote='';
+
+    if(swatchBar){
+      swatchBar.innerHTML='';
+      PALETTES.forEach(p=>{
+        const b=document.createElement('button');
+        b.className='swatch';
+        b.setAttribute('data-name',p.name);
+        b.style.background=`linear-gradient(135deg, ${p.stops[0]}, ${p.stops[1]})`;
+        if(p.key===activePalette) b.classList.add('active');
+        b.addEventListener('click',()=>{
+          activePalette=p.key;
+          [...swatchBar.children].forEach(c=>c.classList.remove('active'));
+          b.classList.add('active');
+        });
+        swatchBar.appendChild(b);
+      });
+    }
+
+    // Selection persistence + share modal
+    function getSelectedTextInOutput(){
+      const sel = window.getSelection();
+      if(!sel || sel.rangeCount===0) return '';
+      const range = sel.getRangeAt(0);
+      if(!output.contains(range.commonAncestorContainer)) return '';
+      return sel.toString().trim();
+    }
+    function persistSelectionHighlight(){
+      const sel = window.getSelection();
+      if(!sel || sel.rangeCount===0) return '';
+      const range = sel.getRangeAt(0);
+      if(!output.contains(range.commonAncestorContainer)) return '';
+      const text = sel.toString().trim();
+      if(!text) return '';
+      const mark = document.createElement('mark');
+      mark.className = 'sel-mark';
+      try{
+        range.surroundContents(mark);
+        sel.removeAllRanges();
+      }catch(e){
+        const frag = range.cloneContents();
+        mark.appendChild(frag);
+        range.deleteContents();
+        range.insertNode(mark);
+        sel.removeAllRanges();
+      }
+      return text;
+    }
+    if(shareBtn){
+      const preGrab = ()=>{
+        const chosen = getSelectedTextInOutput();
+        if(chosen){ selectedQuote = persistSelectionHighlight() || chosen; }
+      };
+      shareBtn.addEventListener('touchstart', preGrab, {passive:true});
+      shareBtn.addEventListener('mousedown', preGrab);
+    }
+    function openShareModal(){shareBackdrop.classList.add('open');shareBackdrop.setAttribute('aria-hidden','false');}
+    function closeShareModal(){shareBackdrop.classList.remove('open');shareBackdrop.setAttribute('aria-hidden','true');}
+    if(shareBtn){ 
+      shareBtn.addEventListener('click', async ()=>{
+        const text=(output?.textContent||'').trim();
+        if(!text){alert('Generate quotes first.');return;}
+        if(!selectedQuote){
+          const inlineSel = getSelectedTextInOutput();
+          if(inlineSel) { selectedQuote = persistSelectionHighlight() || inlineSel; }
+        }
+        if(!selectedQuote){
+          selectedQuote=text.split('\n\n')[0] || text.slice(0, 220);
+        }
+        quoteEdit.value=selectedQuote.replace(/"/g, '');
+        await updatePreviewImage();
+        openShareModal();
+      });
+    }
+    if(updatePreviewBtn) updatePreviewBtn.addEventListener('click', updatePreviewImage);
+    if(shareCopyQuote) shareCopyQuote.addEventListener('click', async ()=>{ 
+      try{
+        await navigator.clipboard.writeText(quoteEdit.value.trim());
+        shareCopyQuote.textContent='✅ Copied';
+        setTimeout(()=>shareCopyQuote.textContent='Copy quote',1200);
+      }catch{} 
+    });
+    if(shareDownload) shareDownload.addEventListener('click',()=>{ 
+      const a=document.createElement('a'); 
+      a.href=sharePreview.src; 
+      a.download=`QuoteForge-${new Date().toISOString().slice(0,10)}.png`; 
+      document.body.appendChild(a); 
+      a.click(); 
+      a.remove(); 
+    });
+    if(shareDo) shareDo.addEventListener('click', shareViaNative);
+    if(shareClose) shareClose.addEventListener('click', ()=>{ closeShareModal(); });
+    if(shareBackdrop) shareBackdrop.addEventListener('click', e=>{ 
+      if(e.target===shareBackdrop){ closeShareModal(); } 
+    });
+    
+    async function updatePreviewImage(){ 
+      const dataUrl=await createQuoteImage(quoteEdit.value.trim(), activePalette, true); 
+      sharePreview.src=dataUrl; 
+    }
+    
+    async function shareViaNative(){
+      try{
+        const resp=await fetch(sharePreview.src);
+        const blob=await resp.blob();
+        const file=new File([blob],'quoteforge-quote.png',{type:'image/png'});
+        if(navigator.canShare && navigator.canShare({files:[file]})){ 
+          await navigator.share({files:[file], title:'QuoteForge Quote'}); 
+        }
+        else{ 
+          const a=document.createElement('a'); 
+          a.href=sharePreview.src; 
+          a.download='quoteforge-quote.png'; 
+          document.body.appendChild(a); 
+          a.click(); 
+          a.remove(); 
+          alert('Sharing not supported. Image downloaded instead.'); 
+        }
+      }catch{ 
+        alert('Share failed. Try downloading and posting manually.'); 
+      }
+    }
+    
+    async function createQuoteImage(quote,paletteKey='dawn',includeLogo=true){
+      const style=(PALETTES.find(x=>x.key===paletteKey)||PALETTES[0]);
+      const W=1080,H=1920;
+      const canvas=document.createElement('canvas'); 
+      canvas.width=W; canvas.height=H;
+      const ctx=canvas.getContext('2d');
+
+      const grad=ctx.createLinearGradient(0,0,W,H);
+      grad.addColorStop(0,style.stops[0]); 
+      grad.addColorStop(1,style.stops[1]);
+      ctx.fillStyle=grad; 
+      ctx.fillRect(0,0,W,H);
+
+      ctx.globalAlpha=.08;
+      for(let i=0;i<22;i++){ 
+        ctx.fillStyle=i%2?'#ffffff':style.stripe; 
+        ctx.fillRect(-W,i*80,W*3,2); 
+      }
+      ctx.globalAlpha=1;
+
+      const marginX=120, marginY=240;
+
+      const badgeW=280, badgeH=72, badgeR=18;
+      const badgeX=(W-badgeW)/2, badgeY=marginY-(badgeH+12);
+      ctx.fillStyle='rgba(0,0,0,.12)'; 
+      roundRect(ctx,badgeX,badgeY,badgeW,badgeH,badgeR); 
+      ctx.fill();
+      ctx.fillStyle=style.badge; 
+      ctx.font='700 26px Arimo, sans-serif'; 
+      ctx.textAlign='center'; 
+      ctx.textBaseline='middle';
+      ctx.fillText('QuoteForge', W/2, badgeY+badgeH/2);
+
+      ctx.fillStyle=style.text; 
+      ctx.textAlign='left';
+      let fontSize=64, wrapped;
+      while(fontSize>=40){
+        ctx.font=`800 ${fontSize}px Arimo, sans-serif`;
+        wrapped=wrapText(ctx,quote,W-marginX*2,fontSize*1.3);
+        const blockHeight=wrapped.length*fontSize*1.3;
+        if(blockHeight<=H-marginY*2) break;
+        fontSize-=4;
+      }
+      const startY=(H-wrapped.length*fontSize*1.3)/2; 
+      let y=startY;
+      for(const line of wrapped){ 
+        ctx.fillText(line, marginX, y); 
+        y+=fontSize*1.3; 
+      }
+
+      if(includeLogo){
+        const footerY=H-140, logoSize=72;
+        ctx.fillStyle='rgba(255,255,255,.9)'; 
+        roundRect(ctx, marginX, footerY-logoSize, logoSize, logoSize, 16); 
+        ctx.fill();
+        const img=await loadImage(BRAND_ICON_URL);
+        ctx.save(); 
+        clipRoundRect(ctx, marginX, footerY-logoSize, logoSize, logoSize, 16);
+        ctx.drawImage(img, marginX, footerY-logoSize, logoSize, logoSize); 
+        ctx.restore();
+
+        ctx.textAlign='left'; 
+        ctx.fillStyle='#111827';
+        ctx.font='800 32px "Cal Sans","Syne",sans-serif'; 
+        ctx.fillText('QuoteForge', marginX+logoSize+18, footerY-30);
+        ctx.font='600 20px Arimo, sans-serif'; 
+        ctx.fillStyle='rgba(17,24,39,.72)'; 
+        ctx.fillText('Free AI Quote Generator', marginX+logoSize+18, footerY);
+      }
+
+      return canvas.toDataURL('image/png');
+
+      function roundRect(ctx,x,y,w,h,r){
+        const rr=typeof r==='number'?{tl:r,tr:r,br:r,bl:r}:r; 
+        ctx.beginPath(); 
+        ctx.moveTo(x+rr.tl,y); 
+        ctx.lineTo(x+w-rr.tr,y); 
+        ctx.quadraticCurveTo(x+w,y,x+w,y+rr.tr); 
+        ctx.lineTo(x+w,y+h-rr.br); 
+        ctx.quadraticCurveTo(x+w,y+h,x+w-rr.br,y+h); 
+        ctx.lineTo(x+rr.bl,y+h); 
+        ctx.quadraticCurveTo(x,y+h,x,y+h-rr.bl); 
+        ctx.lineTo(x,y+rr.tl); 
+        ctx.quadraticCurveTo(x,y,x+rr.tl,y); 
+        ctx.closePath(); 
+      }
+      function clipRoundRect(ctx,x,y,w,h,r){ 
+        roundRect(ctx,x,y,w,h,r); 
+        ctx.clip(); 
+      }
+      function wrapText(ctx,text,maxWidth){ 
+        const words=text.split(/\s+/); 
+        const lines=[]; 
+        let line=''; 
+        for(const w of words){ 
+          const test=line?line+' '+w:w; 
+          if(ctx.measureText(test).width<=maxWidth){ 
+            line=test; 
+          }else{ 
+            if(line) lines.push(line); 
+            line=w; 
+          } 
+        } 
+        if(line) lines.push(line); 
+        return lines; 
+      }
+      function loadImage(src){ 
+        return new Promise((resolve,reject)=>{ 
+          const im=new Image(); 
+          im.crossOrigin='anonymous'; 
+          im.onload=()=>resolve(im); 
+          im.onerror=reject; 
+          im.src=src; 
+        }); 
+      }
+    }
+
+    // Suggest modal open/close + simple status
+    if(suggestBtn){ 
+      suggestBtn.addEventListener('click',()=>{ 
+        $('suggest-backdrop').classList.add('open'); 
+        $('suggest-backdrop').setAttribute('aria-hidden','false'); 
+      }); 
+    }
+    if(suggestClose){ 
+      suggestClose.addEventListener('click',()=>{ 
+        $('suggest-backdrop').classList.remove('open'); 
+        $('suggest-backdrop').setAttribute('aria-hidden','true'); 
+      }); 
+    }
+    if(suggestBackdrop){ 
+      suggestBackdrop.addEventListener('click',e=>{ 
+        if(e.target===suggestBackdrop){ 
+          suggestBackdrop.classList.remove('open'); 
+          suggestBackdrop.setAttribute('aria-hidden','true'); 
+        } 
+      }); 
+    }
+    if(suggestForm){
+      suggestForm.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        suggestStatus.textContent='Sending…';
+        try{
+          const formData=new FormData(suggestForm);
+          const res=await fetch(suggestForm.action,{ 
+            method:'POST', 
+            body:formData, 
+            headers:{ 'Accept':'application/json'} 
+          });
+          if(res.ok){ 
+            suggestStatus.textContent='✅ Sent. Thank you!'; 
+            suggestForm.reset(); 
+          }
+          else{ 
+            suggestStatus.textContent='⚠️ Could not send. Try again.'; 
+          }
+        }catch{ 
+          suggestStatus.textContent='⚠️ Network error. Try again.';
+        }
+      });
+    }
+
+    function escapeHtml(s){
+      return s.replace(/[&<>"']/g, m=>({ 
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        "'":'&#39;' 
+      }[m]));
+    }
+  </script>
+</body>
+</html>
